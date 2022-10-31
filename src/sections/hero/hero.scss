@@ -58,6 +58,96 @@
   }
 }
 
+.hero-icons {
+  position: absolute;
+  bottom: 2rem;
+  right: 0;
+  display: flex;
+  align-items: center;
+
+  .discord-copy {
+    margin-right: 2rem;
+    background-color: #27ae6033;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    &-progress {
+      border-radius: 0.3rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      background-color: #27ae60;
+      transition: 0s 0.7s;
+      z-index: -1;
+    }
+
+    white-space: nowrap;
+    width: fit-content;
+
+    &-container {
+      max-width: 0;
+      overflow: hidden;
+      transition: 0.7s ease-in-out;
+
+      &.active {
+        max-width: calc(var(--width) * 1px + 2rem);
+
+        .discord-copy-progress {
+          transition: 3.5s ease-out;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  a,
+  span {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 2rem;
+    font-size: 2rem;
+    color: #fff;
+    transition: 0.3s;
+
+    &:hover {
+      transition: 0.3s cubic-bezier(0.41, 1.8, 0.61, 0.94);
+      transform: scale(1.2);
+
+      &:nth-child(1) {
+        color: #c0392b;
+      }
+
+      &:nth-child(2) {
+        color: #d35400;
+      }
+
+      &:nth-child(4) {
+        color: #f1c40f;
+      }
+    }
+
+    &:active {
+      transform: scale(1.1);
+    }
+  }
+}
+
+@keyframes progress {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
 @keyframes move {
   0% {
     transform: translateY(0);
