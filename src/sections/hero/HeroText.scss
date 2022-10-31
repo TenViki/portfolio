@@ -5,6 +5,7 @@
   transition: 0.5s width, 0.5s height, 0.5s top;
   position: relative;
   width: calc(var(--width) * 1px);
+  z-index: 2;
 
   &.hidden {
     width: 0;
@@ -34,7 +35,9 @@
   height: 5rem;
   font-size: 3rem;
 
-  color: transparent;
+  color: #bdbdbd;
+  opacity: 0;
+  visibility: hidden;
   transition: 0.5s cubic-bezier(0.41, 1.8, 0.61, 0.94);
 }
 
@@ -58,7 +61,8 @@
     transform: translateY(calc(var(--length) * -5rem));
   }
   .hero-text-item {
-    color: #fff;
+    opacity: 1;
+    visibility: visible;
     font-size: 4rem;
 
     margin: 0;
