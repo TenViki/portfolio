@@ -13,6 +13,7 @@
       font-weight: 100;
       margin-bottom: 1rem;
       color: #999;
+      transition: 0.5s;
     }
 
     h2 {
@@ -25,10 +26,16 @@
       align-items: flex-start;
     }
   }
-}
 
-.hero-ima {
-  display: inline-block;
+  &.hover {
+    .hero-background {
+      transform: scale(1.15);
+    }
+
+    h1 {
+      color: #383838;
+    }
+  }
 }
 
 .hero-background {
@@ -38,12 +45,8 @@
   top: 0;
   left: 0;
   z-index: -1;
-  transition: 0.5s;
+  transition: 0.75s;
   transform-origin: 0% 50%;
-
-  &.scale {
-    transform: scale(1.1);
-  }
 
   &-1,
   &-2 {

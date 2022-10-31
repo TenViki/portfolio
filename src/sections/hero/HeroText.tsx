@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect } from "react";
+import React, { CSSProperties, FC, useEffect } from "react";
 import { wait } from "../../utils/timing";
 import "./HeroText.scss";
 
@@ -12,7 +12,7 @@ const values = [
     color: ["#16a085", "#2ecc71"],
   },
   {
-    name: "UI/UX Designer",
+    name: "UI/UX designer",
     color: ["#d35400", "#f1c40f"],
   },
   {
@@ -25,13 +25,26 @@ const values = [
   },
 ];
 
-const HeroText = () => {
+interface HeroTextProps {
+  onHover: (hover: boolean) => void;
+  mouseOver: boolean;
+}
+
+const HeroText: FC<HeroTextProps> = ({ onHover, mouseOver }) => {
   const [index, setIndex] = React.useState(-1);
   const [hidden, setHidden] = React.useState(false);
   const items = React.useRef<{ [key: number]: HTMLDivElement }>({});
 
   useEffect(() => {
     setIndex(0);
+  }, []);
+
+  // pause on hover
+  useEffect(() => {
+    if (mouseOver) {
+      setHidden(false);
+      return;
+    }
 
     const interval = setInterval(async () => {
       setHidden(true);
@@ -41,35 +54,63 @@ const HeroText = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [items]);
+  }, [items, mouseOver]);
 
   return (
-    <div
-      className={`hero-ima ${hidden ? "hidden" : ""}`}
-      style={
-        {
-          "--index": index,
-          "--width": items.current[index]?.offsetWidth,
-        } as CSSProperties
-      }
-    >
-      {values.map((value, index) => (
-        <div
-          key={index}
-          className="hero-ima-text"
-          ref={(el) => {
-            if (el) items.current[index] = el;
-          }}
-          style={
-            {
-              "--color-1": value.color[0],
-              "--color-2": value.color[1],
-            } as CSSProperties
-          }
-        >
-          {value.name}
-        </div>
-      ))}
+    <div className="hero-text-container">
+      <div
+        className="hero-ima-above"
+        style={{ "--length": index } as CSSProperties}
+      >
+        {values
+          .filter((_, i) => i < index)
+          .map((value, i) => (
+            <div key={i} className="hero-text-item">
+              {value.name}
+            </div>
+          ))}
+      </div>
+      <div
+        className={`hero-ima ${hidden ? "hidden" : ""}`}
+        onMouseEnter={() => onHover(true)}
+        onMouseLeave={() => onHover(false)}
+        style={
+          {
+            "--index": index,
+            "--width": items.current[index]?.offsetWidth,
+            "--length": values.length,
+          } as CSSProperties
+        }
+      >
+        {values.map((value, itemIndex) => (
+          <div
+            key={itemIndex}
+            className={`hero-ima-text ${itemIndex === index ? "active" : ""}`}
+            ref={(el) => {
+              if (el) items.current[itemIndex] = el;
+            }}
+            style={
+              {
+                "--color-1": value.color[0],
+                "--color-2": value.color[1],
+                "--idx": itemIndex,
+              } as CSSProperties
+            }
+          >
+            {value.name}
+          </div>
+        ))}
+      </div>
+
+      <div className="hero-ima-below">
+        {values
+          .filter((_, i) => i > index)
+          .map((value, i) => (
+            <div key={i} className="hero-text-item">
+              {value.name}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
