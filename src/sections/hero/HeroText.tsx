@@ -2,9 +2,12 @@ import React, { CSSProperties, FC, useEffect } from "react";
 import { wait } from "../../utils/timing";
 import "./HeroText.scss";
 
-const values = [
+const values: {
+  name: string;
+  color: [string, string];
+}[] = [
   {
-    name: "software engineer",
+    name: "software developer",
     color: ["#8e44ad", "#2980b9"],
   },
   {
@@ -28,9 +31,10 @@ const values = [
 interface HeroTextProps {
   onHover: (hover: boolean) => void;
   mouseOver: boolean;
+  updateColors: (colors: [string, string]) => void;
 }
 
-const HeroText: FC<HeroTextProps> = ({ onHover, mouseOver }) => {
+const HeroText: FC<HeroTextProps> = ({ onHover, mouseOver, updateColors }) => {
   const [index, setIndex] = React.useState(-1);
   const [hidden, setHidden] = React.useState(false);
   const items = React.useRef<{ [key: number]: HTMLDivElement }>({});
@@ -38,6 +42,11 @@ const HeroText: FC<HeroTextProps> = ({ onHover, mouseOver }) => {
   useEffect(() => {
     setIndex(0);
   }, []);
+
+  useEffect(() => {
+    if (index === -1) return;
+    updateColors(values[index].color);
+  }, [index]);
 
   // pause on hover
   useEffect(() => {

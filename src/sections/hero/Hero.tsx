@@ -1,12 +1,17 @@
 import HeroText from "./HeroText";
 import "./Hero.scss";
-import React from "react";
+import React, { CSSProperties } from "react";
 import { FaInstagram, FaGithub, FaDiscord } from "react-icons/fa";
 import { copyToClipboard } from "../../utils/clipboard";
+import HeroButton from "./HeroButton";
 
 const Hero = () => {
   const [hover, setHover] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
+  const [colors, setColors] = React.useState<[string, string]>([
+    "#8e44ad",
+    "#2980b9",
+  ]);
 
   const copyDiscord = () => {
     copyToClipboard("TenViki#0001");
@@ -18,11 +23,25 @@ const Hero = () => {
 
   return (
     <div className={`hero ${hover ? "hover" : ""}`}>
-      <div className="hero-text">
+      <div
+        className="hero-text"
+        style={
+          {
+            "--color-1": colors[0],
+            "--color-2": colors[1],
+          } as CSSProperties
+        }
+      >
         <h1>Hey there! My name is Viki</h1>
         <h2>
-          and I'm a <HeroText onHover={setHover} mouseOver={hover} />
+          and I'm a{" "}
+          <HeroText
+            onHover={setHover}
+            mouseOver={hover}
+            updateColors={setColors}
+          />
         </h2>
+        <HeroButton />
       </div>
       <div className="hero-icons">
         <a href="https://www.instagram.com/tenviki28" target="_blank">

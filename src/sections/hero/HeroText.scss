@@ -5,6 +5,7 @@
   transition: 0.5s width, 0.5s height, 0.5s top;
   position: relative;
   width: calc(var(--width) * 1px);
+  cursor: context-menu;
   z-index: 2;
 
   &.hidden {
