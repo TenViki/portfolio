@@ -6,7 +6,9 @@
   align-items: center;
 
   &-text {
-    margin-left: 10rem;
+    width: 80%;
+    max-width: 90rem;
+    margin: 0 auto;
 
     h1 {
       font-size: 3rem;
