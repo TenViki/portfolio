@@ -1,0 +1,20 @@
+.aboutme-content {
+  display: flex;
+  max-width: 50rem;
+  margin: 0 auto;
+  padding-top: 0.5rem;
+
+  .title {
+    margin-bottom: 2rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  .portrait {
+    width: 15rem;
+    margin-left: 2rem;
+    border-radius: 0.5rem;
+  }
+}

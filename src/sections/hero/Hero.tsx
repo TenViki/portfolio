@@ -32,11 +32,14 @@ const Hero = () => {
           } as CSSProperties
         }
       >
-        <h1>Hey there! My name is Viki</h1>
+        <h1 className="h1-big">Hey there! My name is Viki</h1>
+        <h1 className="h1-small">Hi! I'm Viki.</h1>
         <h2>
           and I'm a{" "}
           <HeroText
-            onHover={setHover}
+            onHover={(state) =>
+              window.screen.availWidth > 1024 && setHover(state)
+            }
             mouseOver={hover}
             updateColors={setColors}
           />

@@ -16,6 +16,28 @@
       margin-bottom: 1rem;
       color: #999;
       transition: 0.5s;
+
+      &.h1-small {
+        display: none;
+      }
+
+      @media screen and (max-width: 1024px) {
+        font-size: 2rem;
+        text-align: center;
+        position: absolute;
+        top: 1rem;
+        left: 0;
+        width: 100%;
+      }
+
+      @media screen and (max-width: 425px) {
+        &.h1-small {
+          display: block;
+        }
+        &.h1-big {
+          display: none;
+        }
+      }
     }
 
     h2 {
@@ -23,9 +45,26 @@
       font-weight: 300;
       margin-bottom: 1rem;
       height: 5rem;
+      white-space: nowrap;
 
       display: flex;
       align-items: flex-start;
+
+      @media screen and (max-width: 1024px) {
+        font-size: 3.5rem;
+        flex-direction: column;
+        align-items: center;
+        height: 10rem;
+
+        .hero-ima {
+          margin-left: 0;
+        }
+      }
+
+      @media screen and (max-width: 500px) {
+        font-size: 2.5rem;
+        height: 8rem;
+      }
     }
   }
 
@@ -65,6 +104,16 @@
       transform: translateX(0.7rem) scale(1.1);
     }
   }
+
+  @media screen and (max-width: 1024px) {
+    margin: 0 auto;
+    font-size: 1.75rem;
+  }
+
+  @media screen and (max-width: 500px) {
+    margin: 0 auto;
+    font-size: 1.25rem;
+  }
 }
 
 .hero-background {
@@ -84,6 +133,11 @@
     height: 100%;
     width: 100%;
     animation: move 30s linear infinite;
+
+    @media screen and (max-width: 1024px) {
+      background-position: center;
+      background-size: auto calc(100% / 17);
+    }
   }
 }
 

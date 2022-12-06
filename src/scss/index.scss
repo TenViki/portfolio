@@ -7,6 +7,19 @@ html {
   overflow-x: hidden;
 }
 
+.title {
+  font-size: 2.5rem;
+  font-weight: 400;
+  text-align: center;
+  margin: 0 auto;
+
+  // clip background gradient
+  background: -webkit-linear-gradient(0deg, #c0392b, #d35400);
+  width: fit-content;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -28,21 +41,36 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    transform: scaleY(.5) translateY(-50%);
+    transform: scaleY(0.5) translateY(calc(-50% - 0.568rem));
   }
 
   #wave-dark {
     width: 100%;
-    top: .568rem;
+    top: 0.568rem;
   }
 }
 
-.background{
+.background {
   background-color: #121212;
+  padding-bottom: 2rem;
 }
 
 .container {
   width: 80%;
   max-width: 90rem;
   margin: 0 auto;
+}
+
+.link {
+  color: #777;
+  text-decoration: none;
+  transition: 0.2s;
+
+  &:hover {
+    color: #d35400;
+  }
+
+  &:active {
+    color: #c0392b;
+  }
 }

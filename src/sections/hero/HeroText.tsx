@@ -7,7 +7,7 @@ const values: {
   color: [string, string];
 }[] = [
   {
-    name: "software developer",
+    name: "software engineer",
     color: ["#8e44ad", "#2980b9"],
   },
   {

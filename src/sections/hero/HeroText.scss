@@ -30,6 +30,10 @@
 .hero-ima-below {
   margin-left: 1rem;
   height: 0;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 }
 
 .hero-text-item {
