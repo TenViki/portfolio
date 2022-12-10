@@ -52,7 +52,6 @@ body {
 
 .background {
   background-color: #121212;
-  padding-bottom: 2rem;
 }
 
 .container {
@@ -62,7 +61,7 @@ body {
 }
 
 .link {
-  color: #777;
+  color: #999;
   text-decoration: none;
   transition: 0.2s;
 
@@ -73,4 +72,16 @@ body {
   &:active {
     color: #c0392b;
   }
+}
+
+body::-webkit-scrollbar {
+  width: 0.2em;
+  background: transparent;
+}
+body::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+body::-webkit-scrollbar-track-piece {
+  display: none;
 }

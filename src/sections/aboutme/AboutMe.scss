@@ -1,20 +1,131 @@
-.aboutme-content {
-  display: flex;
-  max-width: 50rem;
-  margin: 0 auto;
-  padding-top: 0.5rem;
+$animation-duration: 2s;
+$timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
 
-  .title {
+.about-me {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+
+  &-bgr {
+    position: absolute;
+    z-index: 1;
+    transition: transform $animation-duration $timing-function,
+      width $animation-duration $timing-function;
+
+    width: 100%;
+    right: 0;
+    height: 100%;
+    overflow: hidden;
+
+    box-sizing: border-box;
+    transform: scale(1.5);
+
+    &-img {
+      overflow: hidden;
+      position: absolute;
+      right: 0;
+      width: 0;
+      height: 100%;
+      transition: width $animation-duration $timing-function;
+    }
+
+    img {
+      position: absolute;
+      width: 100vw;
+      height: 100%;
+      top: 0;
+      right: 0;
+
+      object-fit: cover;
+      object-position: right;
+
+      transform: translateY(calc(var(--scroll) * 50%));
+    }
+  }
+
+  &-content-wrapper {
+    color: #fff;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.about-me-content {
+  width: 80%;
+  max-width: 90rem;
+  margin: 5rem auto;
+
+  .about-me-title {
+    overflow: hidden;
+    display: flex;
+    font-size: 3rem;
+    letter-spacing: 0.5rem;
+    width: fit-content;
+    position: relative;
+
     margin-bottom: 2rem;
+
+    &::after {
+      content: "the foq";
+      position: absolute;
+      bottom: 0rem;
+      left: 0;
+
+      width: 0;
+      height: 0.2rem;
+      background: linear-gradient(90deg, #c0392b, #d35400);
+      background-color: red;
+      display: block;
+      z-index: 2;
+      transition: $animation-duration $timing-function;
+      z-index: 3;
+      border-radius: 0.5rem;
+    }
+
+    .letter {
+      transition: 0.8s;
+      transition-delay: calc(var(--delay) * $animation-duration / 2);
+      z-index: 2;
+      transform: translateY(100%);
+    }
   }
 
-  p {
-    margin-bottom: 1rem;
+  .button {
+    margin-top: 1rem;
+    font-size: 1.25rem;
   }
 
-  .portrait {
-    width: 15rem;
-    margin-left: 2rem;
-    border-radius: 0.5rem;
+  .in-view {
+    .letter {
+      transform: translateY(0);
+    }
+
+    .about-me-title::after {
+      width: 100%;
+    }
+  }
+
+  .about-me-text {
+    width: 50%;
+    font-size: 1.25rem;
+    opacity: 0.8;
+  }
+}
+
+.in-view .about-me .about-me-bgr {
+  // transform: scale(1);
+  transform: scale(1);
+
+  &-img {
+    width: 100%;
+  }
+
+  img {
+    transform: translateY(calc(var(--scroll) * 50%));
   }
 }
