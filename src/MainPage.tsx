@@ -10,7 +10,7 @@ function App() {
 
       <div className="background">
         <AboutMe />
-        <div style={{ height: "200vh" }}></div>
+        <div style={{ height: "100vh" }}></div>
       </div>
     </div>
   );

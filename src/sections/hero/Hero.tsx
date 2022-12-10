@@ -4,6 +4,7 @@ import React, { CSSProperties } from "react";
 import { FaInstagram, FaGithub, FaDiscord } from "react-icons/fa";
 import { copyToClipboard } from "../../utils/clipboard";
 import HeroButton from "./HeroButton";
+import { FiArrowDown } from "react-icons/fi";
 
 const Hero = () => {
   const [hover, setHover] = React.useState(false);
@@ -45,7 +46,20 @@ const Hero = () => {
           />
         </h2>
         <HeroButton />
+
+        <div
+          className="hero-scroll"
+          onClick={() => {
+            const element = document.getElementById("about-me");
+            if (element) {
+              element.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+        >
+          <FiArrowDown />
+        </div>
       </div>
+
       <div className="hero-icons">
         <a href="https://www.instagram.com/tenviki28" target="_blank">
           <FaInstagram />

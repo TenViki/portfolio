@@ -8,6 +8,7 @@ interface ScrollAnimationProps {
   style?: React.CSSProperties;
   threshold?: number;
   delay?: number;
+  reset?: boolean;
 }
 
 export const ScrollAnimation: FC<ScrollAnimationProps> = ({
@@ -16,6 +17,7 @@ export const ScrollAnimation: FC<ScrollAnimationProps> = ({
   style,
   threshold,
   delay,
+  reset,
 }) => {
   const [ref, inView, entry] = useInView({
     threshold: Math.max(threshold || 0, 0.01),
@@ -30,6 +32,12 @@ export const ScrollAnimation: FC<ScrollAnimationProps> = ({
       }, delay || 0);
     }
   }, [inView]);
+
+  React.useEffect(() => {
+    if (reset) {
+      setHasBeenInView(false);
+    }
+  }, [reset]);
 
   return (
     <div

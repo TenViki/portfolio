@@ -17,8 +17,9 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
     height: 100%;
     overflow: hidden;
 
+    transform: scale(1.6);
+
     box-sizing: border-box;
-    transform: scale(1.5);
 
     &-img {
       overflow: hidden;
@@ -27,6 +28,8 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
       width: 0;
       height: 100%;
       transition: width $animation-duration $timing-function;
+
+      transform: translateX(calc(var(--leave) * -20%));
     }
 
     img {
@@ -71,7 +74,7 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
     margin-bottom: 2rem;
 
     &::after {
-      content: "the foq";
+      content: "";
       position: absolute;
       bottom: 0rem;
       left: 0;
@@ -79,7 +82,6 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
       width: 0;
       height: 0.2rem;
       background: linear-gradient(90deg, #c0392b, #d35400);
-      background-color: red;
       display: block;
       z-index: 2;
       transition: $animation-duration $timing-function;
@@ -88,9 +90,9 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
     }
 
     .letter {
+      flex: 1;
       transition: 0.8s;
       transition-delay: calc(var(--delay) * $animation-duration / 2);
-      z-index: 2;
       transform: translateY(100%);
     }
   }
