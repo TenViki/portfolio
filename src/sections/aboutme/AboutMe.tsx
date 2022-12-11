@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 import portrait from "../../assets/images/portrait.jpg";
+import ArrowScroll from "../../components/ArrowScroll/ArrowScroll";
 import Button from "../../components/Button/Button";
 import { ScrollAnimation } from "../../components/ScrollAnimation/ScrollAnimation";
+import { getColorAtPercentage } from "../../utils/timing";
 import "./AboutMe.scss";
 
 const AboutMe = () => {
@@ -45,6 +47,8 @@ const AboutMe = () => {
         </div>
 
         <div className="about-me-content-wrapper">
+          <ArrowScroll id="hero" facing="top" />
+          <ArrowScroll id="hero" facing="bottom" />
           <div className="about-me-content">
             <ScrollAnimation>
               <div className="about-me-title">
@@ -55,6 +59,16 @@ const AboutMe = () => {
                     style={
                       {
                         "--delay": index / text.length,
+                        "--grad-from": getColorAtPercentage(
+                          "#d35400",
+                          "#f1c40f",
+                          index / text.length
+                        ),
+                        "--grad-to": getColorAtPercentage(
+                          "#d35400",
+                          "#f1c40f",
+                          (index + 1) / text.length
+                        ),
                       } as React.CSSProperties
                     }
                   >

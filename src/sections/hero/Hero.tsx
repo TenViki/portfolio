@@ -23,7 +23,7 @@ const Hero = () => {
   const discordElement = React.useRef<HTMLDivElement>(null);
 
   return (
-    <div className={`hero ${hover ? "hover" : ""}`}>
+    <div className={`hero ${hover ? "hover" : ""}`} id="hero">
       <div
         className="hero-text"
         style={

@@ -3,11 +3,10 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #fff;
   padding: 0;
   display: flex;
   align-items: center;
-  color: #d35400;
+  color: #f1c40f;
   transition: 0.3s;
 
   svg {
@@ -19,12 +18,13 @@
   }
 
   &:hover {
+    color: #d35400;
     svg {
       transform: translateX(0.5rem);
     }
   }
 
   &:active {
-    color: #c0392b;
+    color: #f1c40f;
   }
 }

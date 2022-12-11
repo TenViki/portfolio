@@ -1,0 +1,40 @@
+.scroll-arrow {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+  opacity: 0.4;
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+    transition: 0.3s transform;
+  }
+
+  &:hover {
+    opacity: 1;
+    color: #f1c40f;
+    svg {
+      transform: translateY(0.5rem);
+    }
+  }
+
+  &:active {
+    color: #d35400;
+  }
+
+  &.top {
+    bottom: unset;
+    top: 2rem;
+    &:hover {
+      svg {
+        transform: translateY(-0.5rem);
+      }
+    }
+  }
+}
