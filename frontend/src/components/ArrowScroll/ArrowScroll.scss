@@ -1,6 +1,7 @@
 .scroll-arrow {
   position: absolute;
   bottom: 2rem;
+  margin-bottom: calc(var(--margin) * 1rem);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -31,6 +32,9 @@
   &.top {
     bottom: unset;
     top: 2rem;
+    margin-top: calc(var(--margin) * 1rem);
+    margin-bottom: 0;
+
     &:hover {
       svg {
         transform: translateY(-0.5rem);

@@ -55,8 +55,8 @@ const AboutMe = () => {
           <div className="about-me-bars-bottom">
             <AnimatedBars reverse={true} />
           </div>
-          <ArrowScroll id="hero" facing="top" />
-          <ArrowScroll id="hero" facing="bottom" />
+          <ArrowScroll id="hero" facing="top" margin={2} />
+          <ArrowScroll id="hero" facing="bottom" margin={2} />
 
           <div className="about-me-content">
             <ScrollAnimation>
