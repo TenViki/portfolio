@@ -16,6 +16,7 @@ html {
   // clip background gradient
   background: -webkit-linear-gradient(0deg, #c0392b, #d35400);
   width: fit-content;
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

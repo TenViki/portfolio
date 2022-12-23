@@ -85,6 +85,7 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
       transform: translateY(100%);
 
       background: linear-gradient(to right, var(--grad-from), var(--grad-to));
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
