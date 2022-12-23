@@ -6,6 +6,7 @@ import { ScrollAnimation } from "../../components/ScrollAnimation/ScrollAnimatio
 import { getColorAtPercentage } from "../../utils/timing";
 import "./AboutMe.scss";
 import AnimatedBars from "./AnimatedBars";
+import Spotify from "./Spotify";
 
 const AboutMe = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -57,6 +58,10 @@ const AboutMe = () => {
           </div>
           <ArrowScroll id="hero" facing="top" margin={2} />
           <ArrowScroll id="hero" facing="bottom" margin={2} />
+
+          <div className="about-me-spotify-widget">
+            <Spotify />
+          </div>
 
           <div className="about-me-content">
             <ScrollAnimation>

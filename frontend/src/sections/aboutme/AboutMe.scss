@@ -72,7 +72,7 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
     overflow: hidden;
     display: flex;
     font-size: 3rem;
-    letter-spacing: 0.5rem;
+    letter-spacing: 0.3rem;
     width: fit-content;
     position: relative;
 
@@ -83,6 +83,8 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
       transition: 0.8s;
       transition-delay: calc(var(--delay) * $animation-duration / 2);
       transform: translateY(100%);
+
+      font-weight: bold;
 
       background: linear-gradient(to right, var(--grad-from), var(--grad-to));
       background-clip: text;
@@ -136,4 +138,10 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
   margin-bottom: 1rem;
   left: 0;
   width: 100%;
+}
+
+.about-me-spotify-widget {
+  position: absolute;
+  bottom: 4rem;
+  right: 1rem;
 }
