@@ -120,3 +120,19 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
     transform: translateY(calc(var(--scroll) * 50%));
   }
 }
+
+.about-me-bars-top {
+  position: absolute;
+  top: 0;
+  margin-top: 1rem;
+  left: 0;
+  width: 100%;
+}
+
+.about-me-bars-bottom {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 1rem;
+  left: 0;
+  width: 100%;
+}

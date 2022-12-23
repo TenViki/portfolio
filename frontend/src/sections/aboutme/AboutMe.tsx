@@ -5,6 +5,7 @@ import Button from "../../components/Button/Button";
 import { ScrollAnimation } from "../../components/ScrollAnimation/ScrollAnimation";
 import { getColorAtPercentage } from "../../utils/timing";
 import "./AboutMe.scss";
+import AnimatedBars from "./AnimatedBars";
 
 const AboutMe = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -47,8 +48,16 @@ const AboutMe = () => {
         </div>
 
         <div className="about-me-content-wrapper">
+          <div className="about-me-bars-top">
+            <AnimatedBars />
+          </div>
+
+          <div className="about-me-bars-bottom">
+            <AnimatedBars reverse={true} />
+          </div>
           <ArrowScroll id="hero" facing="top" />
           <ArrowScroll id="hero" facing="bottom" />
+
           <div className="about-me-content">
             <ScrollAnimation>
               <div className="about-me-title">
