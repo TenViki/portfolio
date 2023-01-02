@@ -25,8 +25,6 @@ const AboutMe = () => {
       1
     );
 
-    console.log(scrollScore);
-
     ref.current.style.setProperty("--scroll", `${scrollScore}`);
   };
   useEffect(() => {

@@ -14,7 +14,9 @@ const Spotify = () => {
     }, data.spotify.duration - data.spotify.progress + 1000);
   }, [data]);
 
-  if (!data) return null;
+  if (!data || !data.spotify) return null;
+
+  console.log(data);
 
   return (
     <div className="spotify-widget">

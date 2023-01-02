@@ -7,7 +7,10 @@ export class AppController {
 
   @Get()
   async getHello() {
-    const spotifyData = await this.appService.getData();
+    let spotifyData = await this.appService.getData();
+    if (!spotifyData) {
+      spotifyData = await this.appService.getData();
+    }
 
     return {
       spotify: spotifyData

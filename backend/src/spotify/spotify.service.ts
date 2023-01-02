@@ -41,19 +41,24 @@ export class SpotifyService implements OnModuleInit {
   }
 
   async getCurrentlyPlaying(): Promise<SpotifyCurrentlyPlayingResponse | null> {
-    const response = await axios.get(
-      "https://api.spotify.com/v1/me/player/currently-playing",
-      {
-        headers: {
-          Authorization: `Bearer ${this.accessToken}`,
+    try {
+      const response = await axios.get(
+        "https://api.spotify.com/v1/me/player/currently-playing",
+        {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+          },
         },
-      },
-    );
+      );
 
-    if (!response.data) {
+      if (!response.data) {
+        return null;
+      }
+
+      return response.data;
+    } catch (error) {
+      await this.refreshToken();
       return null;
     }
-
-    return response.data;
   }
 }
