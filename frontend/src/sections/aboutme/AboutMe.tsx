@@ -35,7 +35,7 @@ const AboutMe = () => {
     };
   }, []);
 
-  const text = "ABOUT ME";
+  const text = "About me";
 
   return (
     <ScrollAnimation>

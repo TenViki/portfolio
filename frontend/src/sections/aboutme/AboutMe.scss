@@ -71,8 +71,8 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
   .about-me-title {
     overflow: hidden;
     display: flex;
-    font-size: 3rem;
-    letter-spacing: 0.3rem;
+    font-size: 4rem;
+    // letter-spacing: 0.3rem;
     width: fit-content;
     position: relative;
 
@@ -84,7 +84,7 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
       transition-delay: calc(var(--delay) * $animation-duration / 2);
       transform: translateY(100%);
 
-      font-weight: bold;
+      font-weight: 600;
 
       background: linear-gradient(to right, var(--grad-from), var(--grad-to));
       background-clip: text;
