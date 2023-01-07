@@ -32,6 +32,7 @@
     "concurrently": "^7.6.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "google-auth-library": "^8.7.0",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
