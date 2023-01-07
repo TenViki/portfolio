@@ -92,14 +92,14 @@ const AboutMe = () => {
 
             <ScrollAnimation animation="fade-in" delay={300}>
               <div className="about-me-text">
-                I am years{" "}
+                I am{" "}
                 {new Date().getFullYear() - new Date(2006, 1, 1).getFullYear()}{" "}
-                old. Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Cupiditate deserunt odio ducimus labore quis vitae voluptas
-                impedit ex sit quidem. Soluta voluptates illum nihil, explicabo
-                labore rerum, vitae eligendi neque atque sequi alias amet earum
-                cumque velit, quos dolores ex illo! Minus architecto earum
-                ducimus cupiditate quibusdam iure iste totam?
+                years old. Lorem ipsum dolor sit, amet consectetur adipisicing
+                elit. Cupiditate deserunt odio ducimus labore quis vitae
+                voluptas impedit ex sit quidem. Soluta voluptates illum nihil,
+                explicabo labore rerum, vitae eligendi neque atque sequi alias
+                amet earum cumque velit, quos dolores ex illo! Minus architecto
+                earum ducimus cupiditate quibusdam iure iste totam?
               </div>
             </ScrollAnimation>
 

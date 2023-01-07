@@ -7,7 +7,7 @@ const Spotify = () => {
   const { data, refreshData } = useWebData();
 
   React.useEffect(() => {
-    if (!data) return;
+    if (!data || !data.spotify) return;
 
     setTimeout(() => {
       refreshData();

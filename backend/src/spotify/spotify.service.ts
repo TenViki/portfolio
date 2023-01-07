@@ -37,6 +37,8 @@ export class SpotifyService implements OnModuleInit {
     );
 
     const accessToken = response.data.access_token;
+    this.accessToken = accessToken;
+
     return accessToken;
   }
 
