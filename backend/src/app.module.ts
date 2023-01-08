@@ -4,7 +4,9 @@ import { AppService } from "./app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { SpotifyModule } from "./spotify/spotify.module";
-import { GoogleModule } from './google/google.module';
+import { GoogleModule } from "./google/google.module";
+import { AuthModule } from "./auth/auth.module";
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { GoogleModule } from './google/google.module';
     }),
     SpotifyModule,
     GoogleModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

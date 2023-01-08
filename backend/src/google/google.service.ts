@@ -16,15 +16,12 @@ export class GoogleService implements OnModuleInit {
     });
   }
 
-  async getGoogleAuthUrl() {
-    const scopes = [
-      "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/userinfo.profile",
-    ];
-
-    return this.auth.generateAuthUrl({
-      access_type: "offline",
-      scope: scopes,
+  async getGoogleUser(token: string) {
+    const ticket = await this.auth.verifyIdToken({
+      idToken: token,
+      audience: this.configService.get("GOOGLE_CLIENT_ID"),
     });
+
+    return ticket.getPayload();
   }
 }

@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router";
 import App from "./MainPage";
 import { api } from "./api/server";
 import { WebDataResponse } from "./types/data";
+import { loginWithToken } from "./api/auth";
 
 export const WebDataContext = React.createContext<{
   data: WebDataResponse | null;
@@ -19,9 +20,14 @@ const Router = () => {
     const fetchData = async () => {
       const response = await api.get("/");
       setData(response.data);
-
       console.log(response.data);
     };
+
+    window.google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      callback: (res) => loginWithToken(res.credential),
+      auto_select: true,
+    });
 
     fetchData();
   }, []);
