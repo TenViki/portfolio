@@ -26,6 +26,11 @@ export class AuthService {
         googleId: userData.sub,
         email: userData.email,
       });
+    } else {
+      user.picture = userData.picture;
+      user.name = userData.name;
+      user.email = userData.email;
+      await this.usersService.update(user);
     }
 
     const session = await this.sessionsService.createSession(user, new Date());
