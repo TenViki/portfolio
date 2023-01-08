@@ -20,6 +20,7 @@ export class SessionsService {
   async getSession(sessionId: string) {
     const session = await this.sessionrepo.findOne({
       where: { id: sessionId },
+      relations: { user: true },
     });
     if (!session) {
       return null;
