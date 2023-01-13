@@ -1,22 +1,38 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { BlogPost } from "./post.entity";
 import { Comment } from "./comment.entity";
 import { User } from "../users/users.entity";
+import { Tag } from "./tag.entity";
 
 @Injectable()
 export class BlogService {
   constructor(
     @InjectRepository(BlogPost) private postsRepository: Repository<BlogPost>,
     @InjectRepository(Comment) private commentsRepository: Repository<Comment>,
+    @InjectRepository(Tag) private tagsRepository: Repository<Tag>,
   ) {}
 
-  async getPosts(limit?: number, offset?: number) {
+  async getPosts(limit?: number, offset?: number, tags?: string[]) {
+    if (tags.length) {
+      const t = await Promise.all(
+        tags.map((tag) => this.tagsRepository.findOne({ where: { id: tag } })),
+      );
+
+      return this.postsRepository.find({
+        take: limit,
+        skip: offset,
+        relations: ["user", "tags"],
+        order: { createdAt: "DESC" },
+        where: { published: true, tags: t },
+      });
+    }
+
     return this.postsRepository.find({
       take: limit,
       skip: offset,
-      relations: ["user"],
+      relations: ["user", "tags"],
       order: { createdAt: "DESC" },
       where: { published: true },
     });
@@ -66,7 +82,10 @@ export class BlogService {
     return this.commentsRepository.save(newComment);
   }
 
-  async deleteComment(comment: Comment) {
+  async deleteComment(comment: Comment, user: User) {
+    if (comment.user.id !== user.id || !user.admin) {
+      throw new ForbiddenException("You can only delete your own comments");
+    }
     return this.commentsRepository.remove(comment);
   }
 }

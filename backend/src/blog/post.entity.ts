@@ -1,12 +1,15 @@
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "../users/users.entity";
 import { Comment } from "./comment.entity";
+import { Tag } from "./tag.entity";
 
 @Entity()
 export class BlogPost {
@@ -36,6 +39,10 @@ export class BlogPost {
 
   @Column({ default: () => "CURRENT_TIMESTAMP" })
   updatedAt: Date;
+
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
 
   // @Column()
   // banner: File;
