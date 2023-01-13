@@ -1,15 +1,13 @@
 import {
-  createParamDecorator,
   ExecutionContext,
   Injectable,
   NestMiddleware,
+  createParamDecorator,
 } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
-import { Repository } from "typeorm";
-import { User } from "../users/users.entity";
 import { SessionsService } from "../auth/sessions/sessions.service";
+import { User } from "../users/users.entity";
 declare global {
   namespace Express {
     interface Request {
