@@ -9,7 +9,7 @@ import { User } from "../users/users.entity";
 import { Comment } from "./comment.entity";
 
 @Entity()
-export class Post {
+export class BlogPost {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -28,9 +28,15 @@ export class Post {
   @ManyToOne(() => User)
   author: User;
 
-  @Column()
+  @Column({ default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  @Column({ default: () => "CURRENT_TIMESTAMP" })
+  updatedAt: Date;
+
+  // @Column()
+  // banner: File;
 }

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "../users/users.entity";
-import { Post } from "./post.entity";
+import { BlogPost } from "./post.entity";
 
 @Entity()
 export class Comment {
@@ -10,12 +10,12 @@ export class Comment {
   @Column()
   content: string;
 
-  @Column()
+  @Column({ default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 
   @ManyToOne(() => User)
   user: User;
 
-  @ManyToOne(() => Post, (post) => post.comments)
-  post: Post;
+  @ManyToOne(() => BlogPost, (post) => post.comments)
+  post: BlogPost;
 }
