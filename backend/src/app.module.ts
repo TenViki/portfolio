@@ -6,8 +6,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { SpotifyModule } from "./spotify/spotify.module";
 import { GoogleModule } from "./google/google.module";
 import { AuthModule } from "./auth/auth.module";
-import { UsersModule } from './users/users.module';
-import { BlogModule } from './blog/blog.module';
+import { UsersModule } from "./users/users.module";
+import { BlogModule } from "./blog/blog.module";
+import { APP_PIPE } from "@nestjs/core";
+import { ValidationPipeCheck } from "./interceptors/validation.pipe";
 
 @Module({
   imports: [
@@ -35,6 +37,15 @@ import { BlogModule } from './blog/blog.module';
     BlogModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipeCheck({
+        whitelist: true,
+        stopAtFirstError: true,
+      }),
+    },
+  ],
 })
 export class AppModule {}

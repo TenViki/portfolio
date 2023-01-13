@@ -1,5 +1,5 @@
 import { Expose, Type } from "class-transformer";
-import { UserLowDto } from "../users/user-low.dto";
+import { UserLowDto } from "../../users/user-low.dto";
 
 export class BlogPostDto {
   @Expose()
