@@ -7,6 +7,7 @@ import { SpotifyModule } from "./spotify/spotify.module";
 import { GoogleModule } from "./google/google.module";
 import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from './users/users.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UsersModule } from './users/users.module';
     GoogleModule,
     AuthModule,
     UsersModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

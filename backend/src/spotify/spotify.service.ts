@@ -20,8 +20,6 @@ export class SpotifyService implements OnModuleInit {
     const clientSecret = this.configService.get("SPOTIFY_CLIENT_SECRET");
     const clientId = this.configService.get("SPOTIFY_CLIENT_ID");
 
-    console.log("refreshing token");
-
     const response = await axios.post(
       SPOTIFY_TOKEN_URL,
       {

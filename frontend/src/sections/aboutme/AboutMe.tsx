@@ -105,7 +105,7 @@ const AboutMe = () => {
 
             <ScrollAnimation animation="fade-in" delay={600}>
               <div className="about-me-button">
-                <Button text="See my blog" to="/about" />
+                <Button text="See my blog" to="/blog" />
               </div>
             </ScrollAnimation>
           </div>
