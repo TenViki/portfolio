@@ -26,7 +26,7 @@ const AnimatedBars: React.FC<AnimatedBarsProps> = ({ reverse }) => {
   }, []);
 
   return (
-    <div className={`${styles.bar_wrapper} ${styles.reverse ? "reverse" : ""}`}>
+    <div className={`${styles.bar_wrapper} ${reverse ? styles.reverse : ""}`}>
       {Array.from({ length: numberOfBars }).map((_, index) => (
         <div
           key={index}
