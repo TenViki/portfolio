@@ -9,11 +9,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "@next/font": "^13.2.4",
     "@types/google-one-tap": "^1.2.2",
     "@zeit/next-sass": "^1.0.1",
     "axios": "^1.2.1",
     "bezier-easing": "^2.1.0",
+    "framer-motion": "^10.10.0",
     "next": "^13.1.7-canary.10",
     "react": "latest",
     "react-dom": "latest",
@@ -28,8 +28,6 @@
     "@types/node": "18.15.11",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
-    "@vitejs/plugin-react": "^2.2.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.2.0"
+    "typescript": "^4.6.4"
   }
 }

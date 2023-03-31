@@ -18,15 +18,13 @@ const Button: React.FC<ButtonProps> = ({ text, to, direction }) => {
   const { setTransition } = usePageTransition();
 
   const handleClick = () => {
-    setTransition({
-      transitioning: true,
-      state: "entering",
-      side: direction || "left",
-    });
+    // setTransition({
+    //   transitioning: true,
+    //   state: "entering",
+    //   side: direction || "left",
+    // });
 
-    setTimeout(() => {
-      navigate.push(to);
-    }, pageTransitionDuration);
+    navigate.push(to);
   };
 
   return (

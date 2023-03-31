@@ -9,7 +9,7 @@ const GoogleLogin = () => {
   React.useEffect(() => {
     if (!ref.current) return;
 
-    window.google.accounts.id.renderButton(ref.current, {
+    window.google?.accounts.id.renderButton(ref.current, {
       theme: "outline",
       size: "large",
       text: "continue_with",

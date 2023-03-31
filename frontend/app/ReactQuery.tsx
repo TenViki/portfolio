@@ -1,12 +1,19 @@
-import React from "react";
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
+import React, { FC } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-const ReactQuery = (children: React.ReactNode) => {
+const ReactQueryContext: FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const [queryClient] = React.useState(() => new QueryClient());
+  const pathname = usePathname();
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
 
-export default ReactQuery;
+export default ReactQueryContext;

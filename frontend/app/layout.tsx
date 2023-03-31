@@ -2,6 +2,10 @@ import { Nunito } from "next/font/google";
 import React from "react";
 import { Metadata } from "next";
 import "../scss/index.scss";
+import ReactQueryContext from "./ReactQuery";
+import WebDataContext from "./Context";
+import AppContextSettings from "./Context";
+import { AnimatePresence } from "framer-motion";
 
 const inter = Nunito({
   subsets: ["latin"],
@@ -29,7 +33,11 @@ export default function RootLayout({
       <head />
 
       <body>
-        <div id="root">{children}</div>
+        <div id="root">
+          <ReactQueryContext>
+            <AppContextSettings>{children}</AppContextSettings>
+          </ReactQueryContext>
+        </div>
         <script
           src="https://accounts.google.com/gsi/client"
           async

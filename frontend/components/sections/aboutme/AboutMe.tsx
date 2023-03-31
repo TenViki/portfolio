@@ -9,6 +9,7 @@ import { getColorAtPercentage } from "../../../utils/timing";
 import Spotify from "./Spotify";
 import styles from "./AboutMe.module.scss";
 import dynamic from "next/dynamic";
+import React from "react";
 
 const AnimatedBars = dynamic(() => import("./AnimatedBars"), {
   ssr: false,
