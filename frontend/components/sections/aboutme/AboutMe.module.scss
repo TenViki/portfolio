@@ -1,0 +1,147 @@
+$animation-duration: 2s;
+$timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
+
+.about_me {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+
+  &_bgr {
+    position: absolute;
+    z-index: 1;
+    transition: transform $animation-duration $timing-function,
+      width $animation-duration $timing-function;
+
+    width: 100%;
+    right: 0;
+    height: 100%;
+    overflow: hidden;
+
+    transform: scale(1.6);
+
+    box-sizing: border-box;
+
+    &_img {
+      overflow: hidden;
+      position: absolute;
+      right: 0;
+      width: 0;
+      height: 100%;
+      transition: width $animation-duration $timing-function;
+
+      transform: translateX(calc(var(--leave) * -20%));
+    }
+
+    img {
+      position: absolute;
+      width: 100vw;
+      height: 100%;
+      top: 0;
+      right: 0;
+
+      object-fit: cover;
+      object-position: right;
+
+      transform: translateY(calc(var(--scroll) * 50%));
+    }
+  }
+
+  &_content_wrapper {
+    color: #fff;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.about_me_content {
+  width: 80%;
+  height: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 5rem 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .about_me_title {
+    overflow: hidden;
+    display: flex;
+    font-size: 4rem;
+    // letter-spacing: 0.3rem;
+    width: fit-content;
+    position: relative;
+
+    margin-bottom: 0.5rem;
+
+    .letter {
+      flex: 1;
+      transition: 0.8s;
+      transition-delay: calc(var(--delay) * $animation-duration / 2);
+      transform: translateY(100%);
+
+      font-weight: 600;
+
+      background: linear-gradient(to right, var(--grad-from), var(--grad-to));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .button {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+  }
+
+  .in_view {
+    .letter {
+      transform: translateY(0);
+    }
+  }
+
+  .about_me_text {
+    width: 50%;
+    font-size: 1.25rem;
+    opacity: 0.8;
+  }
+}
+
+.in_view .about_me .about_me_bgr {
+  // transform: scale(1);
+  transform: scale(1);
+
+  &_img {
+    width: 100%;
+  }
+
+  img {
+    transform: translateY(calc(var(--scroll) * 50%));
+  }
+}
+
+.about_me_bars_top {
+  position: absolute;
+  top: 0;
+  margin-top: 1rem;
+  left: 0;
+  width: 100%;
+}
+
+.about_me_bars_bottom {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 1rem;
+  left: 0;
+  width: 100%;
+}
+
+.about-me-spotify-widget {
+  position: absolute;
+  bottom: 4rem;
+  right: 1rem;
+}
