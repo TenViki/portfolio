@@ -6,10 +6,13 @@ import styles from "./blog.module.scss";
 import { FiPlus } from "react-icons/fi";
 import { DataTable } from "mantine-datatable";
 import { useDisclosure } from "@mantine/hooks";
+import TagManager from "../../../components/admin/blog/TagManager/TagManager";
 import CreatePost from "../../../components/admin/blog/CreatePost";
 
 const BlogAdminPage = () => {
-  const [opened, { open, close }] = useDisclosure(false);
+  const [createOpened, { open, close: closeCreate }] = useDisclosure(false);
+  const [tagsOpened, { open: openTags, close: closeTags }] =
+    useDisclosure(false);
 
   return (
     <div>
@@ -22,6 +25,10 @@ const BlogAdminPage = () => {
           Blog
         </Title>
 
+        <Button color="gray" onClick={openTags}>
+          Správa tagů
+        </Button>
+
         <Button leftIcon={<FiPlus />} color="blue" onClick={open}>
           Vytvořit příspěvek
         </Button>
@@ -29,7 +36,8 @@ const BlogAdminPage = () => {
 
       {/* <DataTable></DataTable> */}
 
-      <CreatePost close={close} opened={opened} />
+      <CreatePost close={closeCreate} opened={createOpened} />
+      <TagManager close={closeTags} opened={tagsOpened} />
     </div>
   );
 };

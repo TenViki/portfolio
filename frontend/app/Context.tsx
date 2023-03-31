@@ -53,9 +53,12 @@ export default function AppContextSettings({
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const response = await api.get("/");
-      setData(response.data);
-      console.log(response.data);
+      const response = await api.request<WebDataResponse>({
+        url: "/",
+        method: "GET",
+      });
+      setData(response);
+      console.log(response);
     };
 
     console.log(window.google);

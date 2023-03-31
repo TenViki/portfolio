@@ -2,13 +2,17 @@ import { Auth, User } from "../types/auth";
 import { api } from "./server";
 
 export const loginWithToken = async (token: string) => {
-  const response = await api.post<Auth>("/auth/login", { googleToken: token });
-  return response.data;
+  return api.request<Auth>({
+    method: "POST",
+    url: "/auth/login",
+    body: { googleToken: token },
+  });
 };
 
 export const getUserInfo = async (token: string) => {
-  const response = await api.get<User>("/auth/me", {
-    headers: { Authorization: token },
+  return api.request<User>({
+    method: "GET",
+    url: "/auth/me",
+    useAuth: true,
   });
-  return response.data;
 };

@@ -7,6 +7,7 @@ import { User } from "../users/users.entity";
 import { Tag } from "./tag.entity";
 import { NotFoundException } from "@nestjs/common/exceptions";
 import { NewPostDto } from "./dtos/new-post.dto";
+import { NewTagDto } from "./dtos/new-tag.dto";
 
 @Injectable()
 export class BlogService {
@@ -20,13 +21,25 @@ export class BlogService {
     return this.tagsRepository.find();
   }
 
-  async createTag(name: string) {
-    const newTag = this.tagsRepository.create({ name });
+  async createTag(tag: NewTagDto) {
+    const newTag = this.tagsRepository.create({
+      name: tag.name,
+      color: tag.color,
+    });
     return this.tagsRepository.save(newTag);
   }
 
   async deleteTag(id: string) {
     return this.tagsRepository.delete(id);
+  }
+
+  async updateTag(id: string, name: string) {
+    const tag = await this.tagsRepository.findOne({ where: { id } });
+    if (!tag) {
+      throw new NotFoundException("Tag not found");
+    }
+    tag.name = name;
+    return this.tagsRepository.save(tag);
   }
 
   async getPosts(limit?: number, offset?: number, tags?: string[]) {

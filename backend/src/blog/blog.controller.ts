@@ -7,6 +7,7 @@ import {
   Query,
   Post,
   Body,
+  Patch,
 } from "@nestjs/common";
 import { BlogService } from "./blog.service";
 import { AdminGuard } from "../guards/admin.guard";
@@ -17,6 +18,7 @@ import { CurrentUser } from "../middleware/current-user.middleware";
 import { User } from "../users/users.entity";
 import { NewCommentDto } from "./dtos/new-comment.dto";
 import { AuthGuard } from "../guards/auth.guard";
+import { NewTagDto } from "./dtos/new-tag.dto";
 
 @Controller("blog")
 export class BlogController {
@@ -28,13 +30,9 @@ export class BlogController {
     return this.blogService.getPosts();
   }
 
-  @Get("/:slug")
-  getPost(@Param("slug") slug: string) {
-    return this.blogService.getPost(slug);
-  }
-
   @Get("/tags")
-  getTags() {
+  async getTags() {
+    console.log("the fuck is this", await this.blogService.getTags());
     return this.blogService.getTags();
   }
 
@@ -55,8 +53,14 @@ export class BlogController {
 
   @Post("/tags")
   @UseGuards(AdminGuard)
-  createTag(@Body("name") name: string) {
-    return this.blogService.createTag(name);
+  createTag(@Body() newTagObj: NewTagDto) {
+    return this.blogService.createTag(newTagObj);
+  }
+
+  @Patch("/tags/:id")
+  @UseGuards(AdminGuard)
+  updateTag(@Param("id") id: string, @Body("name") name: string) {
+    return this.blogService.updateTag(id, name);
   }
 
   @Post("/")
@@ -86,5 +90,10 @@ export class BlogController {
   @UseGuards(AuthGuard)
   deleteComment(@Param("id") id: string, @CurrentUser() user: User) {
     return this.blogService.deleteComment(id, user);
+  }
+
+  @Get("/:slug")
+  getPost(@Param("slug") slug: string) {
+    return this.blogService.getPost(slug);
   }
 }

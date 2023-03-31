@@ -1,18 +1,9 @@
-import {
-  ActionIcon,
-  Avatar,
-  Button,
-  Group,
-  Navbar,
-  Text,
-  Title,
-} from "@mantine/core";
-import React from "react";
-import { useUser } from "../../../utils/useUser";
+import { ActionIcon, Avatar, Group, Navbar, Text } from "@mantine/core";
 import { FiBook, FiHome, FiLogOut, FiUsers } from "react-icons/fi";
+import { useUser } from "utils/useUser";
 
-import NavbarLink from "./NavbarLink";
 import { useRouter } from "next/navigation";
+import NavbarLink from "./NavbarLink";
 
 const AdminNavbar = () => {
   const { user, setUser } = useUser();
