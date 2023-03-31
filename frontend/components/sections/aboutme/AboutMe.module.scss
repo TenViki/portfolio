@@ -5,6 +5,7 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
   height: 100vh;
   overflow: hidden;
   position: relative;
+  scroll-snap-align: start;
 
   &_bgr {
     position: absolute;

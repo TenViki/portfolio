@@ -4,6 +4,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  scroll-snap-align: start;
 
   .hero_scroll {
     position: absolute;
