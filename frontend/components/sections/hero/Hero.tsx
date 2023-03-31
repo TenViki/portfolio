@@ -1,7 +1,7 @@
 "use client";
 
 import HeroText from "./HeroText";
-import "./Hero.scss";
+import styles from "./Hero.module.scss";
 import React, { CSSProperties } from "react";
 import { FaInstagram, FaGithub, FaDiscord } from "react-icons/fa";
 import { copyToClipboard } from "../../../utils/clipboard";
@@ -25,9 +25,13 @@ const Hero = () => {
   const discordElement = React.useRef<HTMLDivElement>(null);
 
   return (
-    <div className={`hero ${hover ? "hover" : ""}`} id="hero">
+    <div
+      className={`${styles.hero} ${hover ? styles.hover : ""}`}
+      id="hero"
+      {...{ "x-data-hover": hover ? "true" : "false" }}
+    >
       <div
-        className="hero-text"
+        className={styles.hero_text}
         style={
           {
             "--color-1": colors[0],
@@ -35,8 +39,8 @@ const Hero = () => {
           } as CSSProperties
         }
       >
-        <h1 className="h1-big">Hey there! My name is Viki</h1>
-        <h1 className="h1-small">Hi! I'm Viki.</h1>
+        <h1 className={styles.h1_big}>Hey there! My name is Viki</h1>
+        <h1 className={styles.h1_small}>Hi! I'm Viki.</h1>
         <h2>
           and I'm a{" "}
           <HeroText
@@ -50,7 +54,7 @@ const Hero = () => {
         <HeroButton />
 
         <div
-          className="hero-scroll"
+          className={styles.hero_scroll}
           onClick={() => {
             const element = document.getElementById("about-me");
             if (element) {
@@ -62,7 +66,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="hero-icons">
+      <div className={styles.hero_icons}>
         <a href="https://www.instagram.com/tenviki28" target="_blank">
           <FaInstagram />
         </a>
@@ -70,15 +74,17 @@ const Hero = () => {
           <FaGithub />
         </a>
         <div
-          className={`discord-copy-container ${copied ? "active" : ""}`}
+          className={`${styles.discord_copy_container} ${
+            copied ? styles.active : ""
+          }`}
           style={
             {
               "--width": discordElement.current?.offsetWidth,
             } as React.CSSProperties
           }
         >
-          <div className={`discord-copy`} ref={discordElement}>
-            <span className="discord-copy-progress" />
+          <div className={styles.discord_copy} ref={discordElement}>
+            <span className={styles.discord_copy_progress} />
             TenViki#0001 copied to clipboard!
           </div>
         </div>
@@ -87,9 +93,9 @@ const Hero = () => {
           <FaDiscord />
         </span>
       </div>
-      <div className="hero-background">
-        <div className="hero-background-1" />
-        <div className="hero-background-2" />
+      <div className={styles.hero_background}>
+        <div className={styles.hero_background_1} />
+        <div className={styles.hero_background_2} />
       </div>
     </div>
   );

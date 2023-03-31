@@ -48,7 +48,7 @@ const AboutMe = () => {
       <div className={styles.about_me} ref={ref} id="about-me">
         <div className={styles.about_me_bgr}>
           <div className={styles.about_me_bgr_img}>
-            <Image src={"/images/portrait.jpg"} fill alt="Background image" />
+            <img src={"/images/portrait.jpg"} alt="Background image" />
           </div>
         </div>
 

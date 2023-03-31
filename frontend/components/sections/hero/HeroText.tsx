@@ -1,6 +1,7 @@
 import React, { CSSProperties, FC, useEffect } from "react";
 import { wait } from "../../../utils/timing";
-import "./HeroText.scss";
+import Hero from "./Hero";
+import styles from "./HeroText.module.scss";
 
 const values: {
   name: string;
@@ -66,21 +67,21 @@ const HeroText: FC<HeroTextProps> = ({ onHover, mouseOver, updateColors }) => {
   }, [items, mouseOver]);
 
   return (
-    <div className="hero-text-container">
+    <div className={styles.hero_text_container}>
       <div
-        className="hero-ima-above"
+        className={styles.hero_ima_above}
         style={{ "--length": index } as CSSProperties}
       >
         {values
           .filter((_, i) => i < index)
           .map((value, i) => (
-            <div key={i} className="hero-text-item">
+            <div key={i} className={styles.hero_text_item}>
               {value.name}
             </div>
           ))}
       </div>
       <div
-        className={`hero-ima ${hidden ? "hidden" : ""}`}
+        className={`${styles.hero_ima} ${hidden ? styles.hidden : ""}`}
         onMouseEnter={() => onHover(true)}
         onMouseLeave={() => onHover(false)}
         style={
@@ -94,7 +95,9 @@ const HeroText: FC<HeroTextProps> = ({ onHover, mouseOver, updateColors }) => {
         {values.map((value, itemIndex) => (
           <div
             key={itemIndex}
-            className={`hero-ima-text ${itemIndex === index ? "active" : ""}`}
+            className={`${styles.hero_ima_text} ${
+              itemIndex === index ? styles.active : ""
+            }`}
             ref={(el) => {
               if (el) items.current[itemIndex] = el;
             }}
@@ -111,11 +114,11 @@ const HeroText: FC<HeroTextProps> = ({ onHover, mouseOver, updateColors }) => {
         ))}
       </div>
 
-      <div className="hero-ima-below">
+      <div className={styles.hero_ima_below}>
         {values
           .filter((_, i) => i > index)
           .map((value, i) => (
-            <div key={i} className="hero-text-item">
+            <div key={i} className={styles.hero_text_item}>
               {value.name}
             </div>
           ))}

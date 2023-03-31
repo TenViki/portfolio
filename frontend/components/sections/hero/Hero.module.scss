@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
 
-  .hero-scroll {
+  .hero_scroll {
     position: absolute;
     bottom: 2rem;
     left: 50%;
@@ -34,7 +34,7 @@
     }
   }
 
-  &-text {
+  &_text {
     width: 80%;
     max-width: 90rem;
     margin: 0 auto;
@@ -46,7 +46,7 @@
       color: #999;
       transition: 0.5s;
 
-      &.h1-small {
+      &.h1_small {
         display: none;
       }
 
@@ -60,10 +60,10 @@
       }
 
       @media screen and (max-width: 425px) {
-        &.h1-small {
+        &.h1_small {
           display: block;
         }
-        &.h1-big {
+        &.h1_big {
           display: none;
         }
       }
@@ -98,7 +98,7 @@
   }
 
   &.hover {
-    .hero-background {
+    .hero_background {
       transform: scale(1.15);
     }
 
@@ -108,7 +108,7 @@
   }
 }
 
-.hero-button {
+.hero_button {
   font-size: 2rem;
   border: none;
   cursor: pointer;
@@ -145,7 +145,7 @@
   }
 }
 
-.hero-background {
+.hero_background {
   height: 100%;
   width: 100%;
   position: fixed;
@@ -155,8 +155,8 @@
   transition: 0.75s;
   transform-origin: 0% 50%;
 
-  &-1,
-  &-2 {
+  &_1,
+  &_2 {
     background-image: url("/pattern-tile.png");
     background-size: auto calc(100% / 15);
     height: 100%;
@@ -170,14 +170,14 @@
   }
 }
 
-.hero-icons {
+.hero_icons {
   position: absolute;
   bottom: 2rem;
   right: 0;
   display: flex;
   align-items: center;
 
-  .discord-copy {
+  .discord_copy {
     margin-right: 2rem;
     background-color: #27ae6033;
     padding: 0.5rem 1rem;
@@ -186,7 +186,7 @@
     overflow: hidden;
     z-index: 1;
 
-    &-progress {
+    &_progress {
       border-radius: 0.3rem;
       position: absolute;
       top: 0;
@@ -201,7 +201,7 @@
     white-space: nowrap;
     width: fit-content;
 
-    &-container {
+    &_container {
       max-width: 0;
       overflow: hidden;
       transition: 0.7s ease-in-out;
@@ -209,7 +209,7 @@
       &.active {
         max-width: calc(var(--width) * 1px + 2rem);
 
-        .discord-copy-progress {
+        .discord_copy_progress {
           transition: 3.5s ease-out;
           width: 100%;
         }
