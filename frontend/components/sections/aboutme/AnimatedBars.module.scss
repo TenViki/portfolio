@@ -1,4 +1,4 @@
-.bar-wrapper {
+.bar_wrapper {
   width: fit-content;
   height: 2rem;
   display: flex;
@@ -8,11 +8,11 @@
   animation: bar-wrapper 1.5s infinite linear;
 }
 
-.bar-wrapper.reverse {
+.bar_wrapper.reverse {
   animation: bar-wrapper-reverse 1.5s infinite linear;
 }
 
-.bar-about-me {
+.bar_about_me {
   width: 0.6rem;
   background-color: #ffffff22;
   flex-shrink: 0;

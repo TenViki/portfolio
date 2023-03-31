@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import "./AnimatedBars.scss";
+import styles from "./AnimatedBars.module.scss";
 
 interface AnimatedBarsProps {
   reverse?: boolean;
@@ -26,11 +26,11 @@ const AnimatedBars: React.FC<AnimatedBarsProps> = ({ reverse }) => {
   }, []);
 
   return (
-    <div className={`bar-wrapper ${reverse ? "reverse" : ""}`}>
+    <div className={`${styles.bar_wrapper} ${styles.reverse ? "reverse" : ""}`}>
       {Array.from({ length: numberOfBars }).map((_, index) => (
         <div
           key={index}
-          className="bar-about-me"
+          className={styles.bar_about_me}
           style={{ "--bar-width": barWidth } as React.CSSProperties}
         />
       ))}
