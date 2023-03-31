@@ -63,7 +63,7 @@ const AboutMe = () => {
           <ArrowScroll id="hero" facing="top" margin={2} />
           <ArrowScroll id="hero" facing="bottom" margin={2} />
 
-          <div className="about-me-spotify-widget">
+          <div className={styles.about_me_spotify_widget}>
             <Spotify />
           </div>
 

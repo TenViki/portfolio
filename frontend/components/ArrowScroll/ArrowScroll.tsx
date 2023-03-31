@@ -1,6 +1,6 @@
 import React from "react";
 import { FiArrowDown, FiArrowUp } from "react-icons/fi";
-import "./ArrowScroll.module.scss";
+import styles from "./ArrowScroll.module.scss";
 
 interface ArrowScrollProps {
   id: string;
@@ -11,7 +11,7 @@ interface ArrowScrollProps {
 const ArrowScroll: React.FC<ArrowScrollProps> = ({ facing, id, margin }) => {
   return (
     <div
-      className={`scroll-arrow ${facing}`}
+      className={`${styles.scroll_arrow} ${styles[facing]}`}
       style={{ "--margin": margin } as React.CSSProperties}
       onClick={() => {
         const element = document.getElementById(id);
