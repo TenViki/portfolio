@@ -3,12 +3,23 @@
   "private": true,
   "version": "0.0.0",
   "type": "commonjs",
+  "preferRelative": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@mantine/core": "^6.0.5",
+    "@mantine/form": "^6.0.5",
+    "@mantine/hooks": "^6.0.5",
+    "@mantine/modals": "^6.0.5",
+    "@mantine/tiptap": "^6.0.5",
+    "@tabler/icons-react": "^2.12.0",
+    "@tiptap/extension-link": "^2.0.1",
+    "@tiptap/react": "^2.0.1",
+    "@tiptap/starter-kit": "^2.0.1",
     "@types/google-one-tap": "^1.2.2",
     "@zeit/next-sass": "^1.0.1",
     "axios": "^1.2.1",

@@ -2,6 +2,7 @@ import React from "react";
 import Hero from "../components/sections/hero/Hero";
 import AboutMe from "../components/sections/aboutme/AboutMe";
 import GoogleLogin from "../components/GoogleLogin/GoogleLogin";
+import UserProfile from "../components/User/UserProfile";
 
 const MainPage = () => {
   return (
@@ -14,6 +15,7 @@ const MainPage = () => {
           <div id="google-login">
             <GoogleLogin />
           </div>
+          Current user state: <UserProfile />
         </div>
       </div>
     </div>

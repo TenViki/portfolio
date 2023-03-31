@@ -10,6 +10,7 @@ import {
 import { User } from "../users/users.entity";
 import { Comment } from "./comment.entity";
 import { Tag } from "./tag.entity";
+import { FileEntity } from "../files/file.entity";
 
 @Entity()
 export class BlogPost {
@@ -44,6 +45,6 @@ export class BlogPost {
   @JoinTable()
   tags: Tag[];
 
-  // @Column()
-  // banner: File;
+  @ManyToOne(() => FileEntity)
+  banner: FileEntity;
 }

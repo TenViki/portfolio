@@ -30,27 +30,19 @@ export class BlogService {
   }
 
   async getPosts(limit?: number, offset?: number, tags?: string[]) {
-    if (tags.length) {
-      const t = await Promise.all(
-        tags.map((tag) => this.tagsRepository.findOne({ where: { id: tag } })),
-      );
-
-      return this.postsRepository.find({
-        take: limit,
-        skip: offset,
-        relations: ["user", "tags"],
-        order: { createdAt: "DESC" },
-        where: { published: true, tags: t },
-      });
-    }
-
-    return this.postsRepository.find({
+    const posts = await this.postsRepository.find({
       take: limit,
       skip: offset,
       relations: ["user", "tags"],
       order: { createdAt: "DESC" },
       where: { published: true },
     });
+
+    if (tags) {
+      return posts.filter((post) => {
+        return post.tags.some((tag) => tags.includes(tag.id));
+      });
+    }
   }
 
   async getPost(slug: string) {

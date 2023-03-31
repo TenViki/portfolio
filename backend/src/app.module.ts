@@ -10,6 +10,7 @@ import { UsersModule } from "./users/users.module";
 import { BlogModule } from "./blog/blog.module";
 import { APP_PIPE } from "@nestjs/core";
 import { ValidationPipeCheck } from "./interceptors/validation.pipe";
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ValidationPipeCheck } from "./interceptors/validation.pipe";
     AuthModule,
     UsersModule,
     BlogModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [

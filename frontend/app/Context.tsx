@@ -6,8 +6,7 @@ import { User } from "../types/auth";
 import { useQuery } from "react-query";
 import { getUserInfo, loginWithToken } from "../api/auth";
 import { api } from "../api/server";
-import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { UserContext, useUser } from "../utils/useUser";
 
 export const WebDataContext = React.createContext<{
   data: WebDataResponse | null;
@@ -24,11 +23,15 @@ export default function AppContextSettings({
 }) {
   const [data, setData] = React.useState<WebDataResponse | null>(null);
   const [user, setUser] = React.useState<User | null>(null);
-  const pathname = usePathname();
 
   if (typeof window !== "undefined") {
     useQuery("user", () => getUserInfo(localStorage.getItem("token")!), {
       enabled: !!window && !!localStorage.getItem("token"),
+      onSuccess: (data) => {
+        setUser(data);
+        console.log("Authenticated user");
+      },
+      refetchOnWindowFocus: false,
     });
 
     React.useEffect(() => {
@@ -36,13 +39,15 @@ export default function AppContextSettings({
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
         callback: async (res) => {
           const data = await loginWithToken(res.credential);
+          console.log(data);
           setUser(data.user);
           localStorage.setItem("token", data.token);
+          console.log("Authenticated user");
+
+          console.log(data);
         },
         auto_select: true,
       });
-
-      console.log("Google init", window.google);
     }, [window.google]);
   }
 
@@ -51,20 +56,18 @@ export default function AppContextSettings({
       const response = await api.get("/");
       setData(response.data);
       console.log(response.data);
-      console.log("Deta have been fetchen");
     };
 
     console.log(window.google);
 
-    console.log("Fetching data");
     fetchData();
   }, []);
 
-  console.log(pathname);
-
   return (
-    <WebDataContext.Provider value={{ data, setData }}>
-      {children}
-    </WebDataContext.Provider>
+    <UserContext.Provider value={{ user, setUser }}>
+      <WebDataContext.Provider value={{ data, setData }}>
+        {children}
+      </WebDataContext.Provider>
+    </UserContext.Provider>
   );
 }
