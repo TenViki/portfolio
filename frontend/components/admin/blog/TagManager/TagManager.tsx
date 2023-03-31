@@ -11,6 +11,7 @@ import {
 import { useMutation, useQuery } from "react-query";
 import { createTag, getTags } from "api/tags";
 import Tag from "./Tag";
+import { notifications } from "@mantine/notifications";
 
 interface TagManagerProps {
   close: () => void;
@@ -30,6 +31,14 @@ const TagManager: FC<TagManagerProps> = ({ close, opened }) => {
 
       refetch();
     },
+
+    onError: (error: any) => {
+      notifications.show({
+        message: error.message,
+        color: "red",
+        title: "Chyba",
+      });
+    },
   });
 
   return (
@@ -47,7 +56,7 @@ const TagManager: FC<TagManagerProps> = ({ close, opened }) => {
       />
 
       {data?.map((tag) => (
-        <Tag {...tag} key={tag.id} />
+        <Tag {...tag} key={tag.id} triggerRefetch={refetch} />
       ))}
 
       {data?.length === 0 && (
@@ -62,7 +71,6 @@ const TagManager: FC<TagManagerProps> = ({ close, opened }) => {
         <TextInput
           label="Název tagu"
           placeholder="Název tagu"
-          required
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
           style={{
@@ -73,7 +81,6 @@ const TagManager: FC<TagManagerProps> = ({ close, opened }) => {
         <ColorInput
           label="Barva tagu"
           placeholder="Vyberte barvu tagu"
-          required
           swatches={[
             "#16a085",
             "#1abc9c",

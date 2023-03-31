@@ -33,12 +33,15 @@ export class BlogService {
     return this.tagsRepository.delete(id);
   }
 
-  async updateTag(id: string, name: string) {
+  async updateTag(id: string, tagData: NewTagDto) {
     const tag = await this.tagsRepository.findOne({ where: { id } });
     if (!tag) {
       throw new NotFoundException("Tag not found");
     }
-    tag.name = name;
+
+    tag.name = tagData.name;
+    tag.color = tagData.color;
+
     return this.tagsRepository.save(tag);
   }
 

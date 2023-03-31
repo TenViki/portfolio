@@ -50,7 +50,7 @@ export class ApiWrapper {
       return response.data;
     } catch (error) {
       if (isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || error.message);
+        throw new Error(error.response?.data.message || error.message);
       } else {
         throw new Error(`Neznámá chyba (${error})`);
       }

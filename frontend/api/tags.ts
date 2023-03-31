@@ -5,12 +5,12 @@ export const getTags = async () => {
   return api.request<Tag[]>({ method: "GET", url: "/blog/tags" });
 };
 
-interface createTagArgs {
+interface CreateTagArgs {
   name: string;
   color: string;
 }
 
-export const createTag = async ({ name, color }: createTagArgs) => {
+export const createTag = async ({ name, color }: CreateTagArgs) => {
   return api.request({
     method: "POST",
     url: "/blog/tags",
@@ -27,11 +27,17 @@ export const deleteTag = async (id: string) => {
   });
 };
 
-export const updateTag = async (id: string, name: string) => {
+interface UpdateTagArgs {
+  id: string;
+  name: string;
+  color: string;
+}
+
+export const updateTag = async ({ id, name, color }: UpdateTagArgs) => {
   return api.request({
     method: "PATCH",
     url: `/blog/tags/${id}`,
-    body: { name },
+    body: { name, color },
     useAuth: true,
   });
 };

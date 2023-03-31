@@ -59,8 +59,8 @@ export class BlogController {
 
   @Patch("/tags/:id")
   @UseGuards(AdminGuard)
-  updateTag(@Param("id") id: string, @Body("name") name: string) {
-    return this.blogService.updateTag(id, name);
+  updateTag(@Param("id") id: string, @Body() tagData: NewTagDto) {
+    return this.blogService.updateTag(id, tagData);
   }
 
   @Post("/")

@@ -4,6 +4,7 @@ import { AppShell, MantineProvider } from "@mantine/core";
 import React, { FC } from "react";
 import { useUser } from "../../utils/useUser";
 import AdminNavbar from "../../components/admin/shared/Navbar";
+import { Notifications } from "@mantine/notifications";
 
 const AdminLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useUser();
@@ -24,6 +25,7 @@ const AdminLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
         navbar={<AdminNavbar />}
       >
         {children}
+        <Notifications />
       </AppShell>
     </MantineProvider>
   );
