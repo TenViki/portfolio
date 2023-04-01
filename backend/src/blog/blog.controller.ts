@@ -95,6 +95,12 @@ export class BlogController {
     return this.blogService.deleteComment(id, user);
   }
 
+  @Get("/all-blog-posts-admin")
+  @UseGuards(AdminGuard)
+  getAllBlogPostsAdmin(@Query("l") l: string, @Query("o") o: string) {
+    return this.blogService.getAllBlogPostsAdmin(+l, +o);
+  }
+
   @Get("/:slug")
   getPost(@Param("slug") slug: string) {
     return this.blogService.getPost(slug);

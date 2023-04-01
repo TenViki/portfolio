@@ -64,6 +64,15 @@ export class BlogService {
     }
   }
 
+  async getAllBlogPostsAdmin(limit?: number, offset?: number) {
+    return this.postsRepository.find({
+      take: limit,
+      skip: offset,
+      relations: ["user", "tags"],
+      order: { createdAt: "DESC" },
+    });
+  }
+
   async getPost(slug: string) {
     return this.postsRepository.findOne({ where: { slug, published: true } });
   }
