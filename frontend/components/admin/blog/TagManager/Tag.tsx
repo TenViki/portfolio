@@ -5,6 +5,7 @@ import { deleteTag, updateTag } from "api/tags";
 import React from "react";
 import { FiAlertTriangle, FiEdit, FiTrash } from "react-icons/fi";
 import { useMutation } from "react-query";
+import { flatUiColors } from "./TagManager";
 
 interface TagProps {
   id: string;
@@ -54,7 +55,7 @@ const Tag: React.FC<TagProps> = ({ id, color, name, triggerRefetch }) => {
         }}
         {...form.getInputProps("name")}
       />
-      <ColorInput {...form.getInputProps("color")} />
+      <ColorInput swatches={flatUiColors} {...form.getInputProps("color")} />
       <ActionIcon
         size={"lg"}
         variant="default"

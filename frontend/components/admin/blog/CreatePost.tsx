@@ -1,5 +1,18 @@
-import React, { FC } from "react";
-import { Button, FileInput, Group, Modal, TextInput } from "@mantine/core";
+import React, { FC, forwardRef } from "react";
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  Button,
+  CloseButton,
+  FileInput,
+  Group,
+  Modal,
+  MultiSelect,
+  MultiSelectValueProps,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
 
 import { useForm } from "@mantine/form";
@@ -14,10 +27,87 @@ import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
 
 import styles from "./CreatePost.module.scss";
+import { useQuery } from "react-query";
+import { getTags } from "api/tags";
+import { FiX } from "react-icons/fi";
 
 interface CreatePostProps {
   close: () => void;
   opened: boolean;
+}
+
+interface ItemProps {
+  label: string;
+  color: string;
+  value: string;
+}
+
+const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+  ({ label, color, value, ...others }: ItemProps, ref) => (
+    <div ref={ref} {...others}>
+      <Group noWrap>
+        <div
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: 4,
+            backgroundColor: color,
+          }}
+        />
+
+        <Text>{label}</Text>
+      </Group>
+    </div>
+  )
+);
+
+function Value({
+  value,
+  label,
+  onRemove,
+  classNames,
+  ...others
+}: MultiSelectValueProps & ItemProps) {
+  return (
+    <div {...others}>
+      <Box
+        sx={(theme) => ({
+          display: "flex",
+          cursor: "default",
+          alignItems: "center",
+          backgroundColor: others.color + "20",
+          color: "#fff",
+          paddingLeft: theme.spacing.xs,
+          borderRadius: theme.radius.sm,
+        })}
+      >
+        <Box
+          mr={8}
+          sx={{
+            backgroundColor: others.color,
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+          }}
+        />
+        <Box sx={{ lineHeight: 1 }}>{label}</Box>
+        <CloseButton
+          onClick={onRemove}
+          variant="transparent"
+          size={22}
+          iconSize={14}
+          tabIndex={-1}
+        />
+      </Box>
+    </div>
+  );
+}
+
+interface FormValues {
+  title: string;
+  slug: string;
+  banner: File | undefined;
+  tags: string[];
 }
 
 const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
@@ -26,13 +116,18 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
       title: "",
       slug: "",
       banner: undefined,
+      tags: [],
     },
 
     validate: {
       slug: (value: string) =>
         /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value) ? null : "Neplatný slug",
+      tags: (value: string[]) =>
+        value.length > 0 ? null : "Musíte vybrat alespoň jeden tag",
     },
   });
+
+  const tagsQuery = useQuery("tags", getTags);
 
   const editor = useEditor({
     extensions: [
@@ -61,6 +156,10 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
     form.setFieldValue("slug", slug);
   };
 
+  const handleSubmit = (values: FormValues) => {
+    console.log(values);
+  };
+
   return (
     <Modal
       opened={opened}
@@ -69,7 +168,7 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
       title="Přidat příspěvek na blog"
       closeOnClickOutside={false}
     >
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
           label="Název příspěvku"
           placeholder="Název příspěvku"
@@ -87,9 +186,34 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
           {...form.getInputProps("slug")}
         />
 
+        {tagsQuery.isLoading || !tagsQuery.data ? (
+          <Text align="center" color="dimmed">
+            Načítání tagů...
+          </Text>
+        ) : (
+          <MultiSelect
+            label="Tagy"
+            placeholder="Vyberte tagy"
+            required
+            itemComponent={SelectItem}
+            valueComponent={Value}
+            transitionProps={{
+              duration: 150,
+              timingFunction: "ease",
+            }}
+            mb={16}
+            data={tagsQuery.data?.map((tag) => ({
+              label: tag.name,
+              value: tag.id,
+              color: tag.color,
+            }))}
+            {...form.getInputProps("tags")}
+          />
+        )}
+
         <FileInput
-          label="Baner článku"
-          placeholder="Kliknutím vyberete baner článku"
+          label="Baner příspěvku"
+          placeholder="Kliknutím vyberete baner příspěvku"
           required
           accept="image/png, image/jpeg"
           mb={16}
@@ -104,6 +228,21 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
               alt="Banner"
               style={{ width: "100%" }}
             />
+
+            <ActionIcon
+              variant="filled"
+              size="sm"
+              onClick={() => form.setFieldValue("banner", undefined)}
+              color="red"
+              sx={{
+                position: "absolute",
+                bottom: 8,
+                right: 8,
+                zIndex: 1,
+              }}
+            >
+              <FiX />
+            </ActionIcon>
           </div>
         )}
 
@@ -150,14 +289,16 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
 
           <RichTextEditor.Content />
         </RichTextEditor>
-      </form>
 
-      <Group mt="xl" position="right">
-        <Button variant="outline" color="gray" onClick={close}>
-          Zavřít
-        </Button>
-        <Button color="blue">Vytvořit příspěvek</Button>
-      </Group>
+        <Group mt="xl" position="right">
+          <Button variant="outline" color="gray" onClick={close}>
+            Zavřít
+          </Button>
+          <Button color="blue" type="submit">
+            Vytvořit příspěvek
+          </Button>
+        </Group>
+      </form>
     </Modal>
   );
 };
