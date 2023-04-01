@@ -147,3 +147,53 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
   bottom: 4rem;
   right: 1rem;
 }
+
+.blog_post {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  width: calc(50% + 1rem);
+  position: relative;
+  left: -0.5rem;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 0.25rem;
+
+  &_text {
+    flex-grow: 1;
+  }
+
+  &_chevron {
+    opacity: 0;
+    font-size: 2rem;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+  }
+
+  &_title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  &_tags {
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+
+  &:hover {
+    .blog_post_chevron {
+      opacity: 1;
+    }
+
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.blog_posts {
+  margin-bottom: 1rem;
+}

@@ -14,7 +14,7 @@ import {
 import { BlogService } from "./blog.service";
 import { AdminGuard } from "../guards/admin.guard";
 import { Serialize } from "../interceptors/serialize.interceptor";
-import { BlogPostDto } from "./dtos/blog.dto";
+import { BlogPostDto, BlogPostListDto } from "./dtos/blog.dto";
 import { NewPostDto } from "./dtos/new-post.dto";
 import { CurrentUser } from "../middleware/current-user.middleware";
 import { User } from "../users/users.entity";
@@ -28,14 +28,15 @@ export class BlogController {
   constructor(private blogService: BlogService) {}
 
   @Get()
-  @Serialize(BlogPostDto)
-  getPosts() {
-    return this.blogService.getPosts();
+  @Serialize(BlogPostListDto)
+  getPosts(@Query("l") l: string, @Query("o") o: string) {
+    if (isNaN(+l)) l = "10";
+    if (isNaN(+o)) o = "0";
+    return this.blogService.getPosts(+l, +o);
   }
 
   @Get("/tags")
   async getTags() {
-    console.log("the fuck is this", await this.blogService.getTags());
     return this.blogService.getTags();
   }
 
@@ -108,6 +109,7 @@ export class BlogController {
   }
 
   @Get("/:slug")
+  @Serialize(BlogPostDto)
   getPost(@Param("slug") slug: string) {
     return this.blogService.getPost(slug);
   }

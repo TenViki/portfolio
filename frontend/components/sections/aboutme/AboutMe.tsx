@@ -10,6 +10,10 @@ import Spotify from "./Spotify";
 import styles from "./AboutMe.module.scss";
 import dynamic from "next/dynamic";
 import React from "react";
+import { getBlogPosts } from "api/blog";
+import { useQuery } from "react-query";
+import { FiChevronRight } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 const AnimatedBars = dynamic(() => import("./AnimatedBars"), {
   ssr: false,
@@ -17,6 +21,7 @@ const AnimatedBars = dynamic(() => import("./AnimatedBars"), {
 
 const AboutMe = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const handleScroll = () => {
     if (!ref.current) return;
@@ -41,6 +46,10 @@ const AboutMe = () => {
       document.body.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const blogPostsQuery = useQuery("blogPostsHomepage", () =>
+    getBlogPosts({ limit: 3, offset: 0 })
+  );
 
   const text = "About me";
 
@@ -110,7 +119,33 @@ const AboutMe = () => {
               </div>
             </ScrollAnimation>
 
-            <ScrollAnimation animation="fade-in" delay={600}>
+            <div className={styles.blog_posts}>
+              {blogPostsQuery.data?.map((post, i) => (
+                <ScrollAnimation
+                  animation="fade-in"
+                  delay={300 + (i + 1) * 100}
+                  key={post.id}
+                >
+                  <div
+                    className={styles.blog_post}
+                    onClick={() => router.push(`/${post.slug}`)}
+                  >
+                    <div className={styles.blog_post_text}>
+                      <div className={styles.blog_post_title}>{post.title}</div>
+                      <div className={styles.blog_post_tags}>
+                        {post.tags.map((tag) => tag.name).join(" • ")}
+                      </div>
+                    </div>
+
+                    <div className={styles.blog_post_chevron}>
+                      <FiChevronRight />
+                    </div>
+                  </div>
+                </ScrollAnimation>
+              ))}
+            </div>
+
+            <ScrollAnimation animation="fade-in" delay={800}>
               <div className="about-me-button">
                 <Button text="See my blog" to="/blog" />
               </div>

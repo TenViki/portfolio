@@ -52,7 +52,7 @@ export class BlogService {
     const posts = await this.postsRepository.find({
       take: limit,
       skip: offset,
-      relations: ["author", "tags"],
+      relations: ["author", "tags", "banner"],
       order: { createdAt: "DESC" },
       where: { published: true },
     });
@@ -62,6 +62,8 @@ export class BlogService {
         return post.tags.some((tag) => tags.includes(tag.id));
       });
     }
+
+    return posts;
   }
 
   async getAllBlogPostsAdmin(limit?: number, offset?: number) {
@@ -76,7 +78,10 @@ export class BlogService {
   }
 
   async getPost(slug: string) {
-    return this.postsRepository.findOne({ where: { slug, published: true } });
+    return this.postsRepository.findOne({
+      where: { slug, published: true },
+      relations: ["author", "tags", "banner"],
+    });
   }
 
   async getPostComments(postId: string, limit?: number, offset?: number) {
@@ -119,6 +124,7 @@ export class BlogService {
     console.log(id);
     const post = await this.postsRepository.findOne({
       where: { id },
+      relations: ["tags", "banner"],
     });
 
     if (!post) {
@@ -131,11 +137,18 @@ export class BlogService {
       ),
     );
 
+    let file = post.banner;
+
+    if (postData.bannerImageId) {
+      file = await this.filesService.getFile(postData.bannerImageId);
+    }
+
     post.title = postData.title;
     post.slug = postData.slug;
     post.content = filterXSS(postData.content);
     post.published = postData.published;
     post.tags = t;
+    post.banner = file;
 
     post.updatedAt = new Date();
     return this.postsRepository.save(post);

@@ -43,3 +43,23 @@ export const deleteBlogPost = async (id: string) => {
     useAuth: true,
   });
 };
+
+export const getBlogPosts = async ({
+  limit,
+  offset,
+  tag,
+}: {
+  limit: number;
+  offset: number;
+  tag?: string;
+}) => {
+  return api.request<BlogPost[]>({
+    method: "GET",
+    url: "/blog/",
+    queryParameters: {
+      limit: limit.toString(),
+      offset: offset.toString(),
+      ...(tag && { tag }),
+    },
+  });
+};

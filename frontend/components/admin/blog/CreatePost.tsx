@@ -213,8 +213,10 @@ const CreatePost: FC<CreatePostProps> = ({
 
       try {
         setStatus("Nahrávání obrázku...");
+        console.log("uploading file");
         const response = await uploadFile(values.banner);
         fileId = response.data.id;
+        console.log("file uploaded", fileId);
       } catch (error) {
         console.error(error);
         notifications.show({ message: "Nahrávání obrázku selhalo" });
@@ -330,9 +332,9 @@ const CreatePost: FC<CreatePostProps> = ({
           <div className={styles.banner}>
             <img
               src={
-                editRecord
-                  ? getFileUrl(editRecord.banner!.id)
-                  : URL.createObjectURL(form.values.banner!)
+                form.values.banner
+                  ? URL.createObjectURL(form.values.banner!)
+                  : getFileUrl(editRecord!.banner!.id)
               }
               alt="Banner"
               style={{ width: "100%" }}
