@@ -23,6 +23,6 @@ export interface BlogPost {
   tags: Tag[];
   banner: FileType | null;
   author: User;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

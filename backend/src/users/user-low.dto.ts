@@ -5,7 +5,7 @@ export class UserLowDto {
   id: string;
 
   @Expose()
-  username: string;
+  name: string;
 
   @Expose()
   picture: string;

@@ -1,6 +1,8 @@
 .banner {
   overflow: hidden;
   border-radius: 0.5rem;
+  display: flex;
+
   img {
     aspect-ratio: 16/9;
     object-fit: cover;
@@ -8,4 +10,143 @@
   }
   margin-bottom: 1rem;
   position: relative;
+}
+
+.header {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+
+  .banner_img {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+
+  .overlay {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+
+    background: linear-gradient(to top, #000000aa, transparent);
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    text-shadow: 0 0 0.5rem #00000088;
+  }
+}
+
+.user {
+  display: flex;
+  // align-items: center;
+  color: #ffffffaa;
+
+  img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+
+  .username {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+
+  .date {
+    display: flex;
+    align-items: flex-end;
+  }
+}
+
+.tags {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.tag {
+  margin-right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #ffffff22;
+  color: #ffffffaa;
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: 0.2s;
+
+  background-color: var(--tag-color-background);
+  color: var(--tag-color);
+
+  &:hover {
+    background-color: var(--tag-color);
+    color: #fff;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.content {
+  p {
+    margin-bottom: 1rem;
+    color: #ffffffaa;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 30rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  a {
+    color: #3498db;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
