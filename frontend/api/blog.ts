@@ -18,3 +18,11 @@ export const newBlogPost = async (post: NewBlogPostArgs) => {
     useAuth: true,
   });
 };
+
+export const getAllBlogPostsAdmin = async () => {
+  return api.request<BlogPost[]>({
+    method: "GET",
+    url: "/blog/all-blog-posts-admin",
+    useAuth: true,
+  });
+};

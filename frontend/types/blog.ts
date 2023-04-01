@@ -1,3 +1,5 @@
+import { User } from "./auth";
+
 export interface Tag {
   id: string;
   name: string;
@@ -20,4 +22,7 @@ export interface BlogPost {
   published: boolean;
   tags: Tag[];
   bannerImage: FileType | null;
+  author: User;
+  createdAt: Date;
+  updatedAt: Date;
 }

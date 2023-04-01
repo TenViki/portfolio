@@ -52,7 +52,7 @@ export class BlogService {
     const posts = await this.postsRepository.find({
       take: limit,
       skip: offset,
-      relations: ["user", "tags"],
+      relations: ["author", "tags"],
       order: { createdAt: "DESC" },
       where: { published: true },
     });
@@ -65,10 +65,12 @@ export class BlogService {
   }
 
   async getAllBlogPostsAdmin(limit?: number, offset?: number) {
+    if (isNaN(limit)) limit = undefined;
+    if (isNaN(offset)) offset = undefined;
     return this.postsRepository.find({
       take: limit,
       skip: offset,
-      relations: ["user", "tags"],
+      relations: ["author", "tags"],
       order: { createdAt: "DESC" },
     });
   }
