@@ -70,7 +70,7 @@ export class BlogService {
     return this.postsRepository.find({
       take: limit,
       skip: offset,
-      relations: ["author", "tags"],
+      relations: ["author", "tags", "banner"],
       order: { createdAt: "DESC" },
     });
   }
@@ -116,6 +116,7 @@ export class BlogService {
   }
 
   async updatePost(id: string, postData: NewPostDto) {
+    console.log(id);
     const post = await this.postsRepository.findOne({
       where: { id },
     });

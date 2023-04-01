@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import {
   ActionIcon,
   Avatar,
@@ -26,17 +26,21 @@ import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
 
 import styles from "./CreatePost.module.scss";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getTags } from "api/tags";
 import { FiX } from "react-icons/fi";
 import { SelectItem, Value } from "./SelectItem";
 import { uploadFile } from "api/files";
-import { newBlogPost } from "api/blog";
+import { editBlogPost, newBlogPost } from "api/blog";
 import { notifications } from "@mantine/notifications";
+import { BlogPost } from "types/blog";
 
 interface CreatePostProps {
   close: () => void;
   opened: boolean;
+
+  mode: "create" | "edit";
+  editRecord?: BlogPost;
 }
 
 interface FormValues {
@@ -47,8 +51,13 @@ interface FormValues {
   published: boolean;
 }
 
-const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
-  const form = useForm({
+const CreatePost: FC<CreatePostProps> = ({
+  close,
+  opened,
+  mode,
+  editRecord,
+}) => {
+  const form = useForm<FormValues>({
     initialValues: {
       title: "",
       slug: "",
@@ -65,8 +74,33 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
     },
   });
 
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (mode === "edit" && editRecord) {
+      form.setFieldValue("title", editRecord.title);
+      form.setFieldValue("slug", editRecord.slug);
+      form.setFieldValue(
+        "tags",
+        editRecord.tags.map((tag) => tag.id)
+      );
+      form.setFieldValue("published", editRecord.published);
+
+      editor?.commands.setContent(editRecord.content);
+    } else {
+      form.reset();
+      editor?.commands.setContent("");
+    }
+  }, [mode, editRecord]);
+
   const tagsQuery = useQuery("tags", getTags);
   const newBlogPostMutation = useMutation(newBlogPost, {
+    onError: () => {
+      notifications.show({ message: "Ukládání příspěvku selhalo" });
+      setStatus("");
+    },
+  });
+  const updatePostMutation = useMutation(editBlogPost, {
     onError: () => {
       notifications.show({ message: "Ukládání příspěvku selhalo" });
       setStatus("");
@@ -126,6 +160,27 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
     }
 
     setStatus("Ukládání příspěvku...");
+
+    if (mode === "edit" && editRecord) {
+      // update post on server
+      await updatePostMutation.mutateAsync({
+        id: editRecord.id,
+        title: values.title,
+        slug: values.slug,
+        bannerImageId: fileId,
+        tags: values.tags,
+        content: editor!.getHTML(),
+        published: values.published,
+      });
+
+      setStatus("");
+      close();
+      notifications.show({ message: "Příspěvek byl úspěšně upraven" });
+      queryClient.invalidateQueries("blogPostsAdmin");
+
+      return;
+    }
+
     // save post to server
     await newBlogPostMutation.mutateAsync({
       title: values.title,
@@ -139,14 +194,17 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
     setStatus("");
     close();
     notifications.show({ message: "Příspěvek byl úspěšně vytvořen" });
+    queryClient.invalidateQueries("blogPostsAdmin");
   };
+
+  console.log(editRecord);
 
   return (
     <Modal
       opened={opened}
       onClose={close}
       size={"xl"}
-      title="Přidat příspěvek na blog"
+      title={mode === "edit" ? "Upravit příspěvek" : "Přidat příspěvek na blog"}
       closeOnClickOutside={false}
     >
       <LoadingOverlay visible={status !== ""} />
@@ -196,7 +254,7 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
 
         <FileInput
           label="Baner příspěvku"
-          placeholder="Kliknutím vyberete baner příspěvku"
+          placeholder={"Kliknutím vyberete baner příspěvku"}
           required
           accept="image/png, image/jpeg"
           mb={16}
@@ -204,10 +262,14 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
         />
 
         {/* Preview banner image */}
-        {form.values.banner && (
+        {(editRecord?.banner || form.values.banner) && (
           <div className={styles.banner}>
             <img
-              src={URL.createObjectURL(form.values.banner)}
+              src={
+                editRecord
+                  ? editRecord.banner?.path
+                  : URL.createObjectURL(form.values.banner!)
+              }
               alt="Banner"
               style={{ width: "100%" }}
             />
@@ -274,7 +336,9 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
         </RichTextEditor>
 
         <Checkbox
-          label="Zveřejnit hned po uložení"
+          label={
+            mode === "edit" ? "Veřejný příspěvek" : "Zveřejnit hned po uložení"
+          }
           {...form.getInputProps("published", { type: "checkbox" })}
         />
 
@@ -283,7 +347,9 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
             Zavřít
           </Button>
           <Button color="blue" type="submit" disabled={!!status}>
-            {status || "Vytvořit příspěvek"}
+            {status || mode === "edit"
+              ? "Uložit příspěvek"
+              : "Vytvořit příspěvek"}
           </Button>
         </Group>
       </form>

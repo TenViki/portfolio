@@ -26,3 +26,12 @@ export const getAllBlogPostsAdmin = async () => {
     useAuth: true,
   });
 };
+
+export const editBlogPost = async (post: NewBlogPostArgs & { id: string }) => {
+  return api.request<BlogPost>({
+    method: "PATCH",
+    url: `/blog/${post.id}`,
+    body: post,
+    useAuth: true,
+  });
+};

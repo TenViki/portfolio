@@ -1,9 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Group, Text, TextInput, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Avatar,
+  Button,
+  Group,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import styles from "./blog.module.scss";
-import { FiPlus, FiSearch } from "react-icons/fi";
+import { FiEdit2, FiPlus, FiSearch, FiTrash } from "react-icons/fi";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import TagManager from "../../../components/admin/blog/TagManager/TagManager";
@@ -43,9 +51,14 @@ const BlogAdminPage = () => {
   const [query, setQuery] = useState("");
   const [debouncedQuery] = useDebouncedValue(query, 200);
 
+  const [creationStatus, setCreationStatus] = useState<"create" | "edit">(
+    "create"
+  );
+  const [editRecord, setEditRecord] = useState<BlogPost>();
+
   return (
     <div>
-      <Group className="" mb={16}>
+      <Group mb={16}>
         <Title
           style={{
             flexGrow: 1,
@@ -58,7 +71,15 @@ const BlogAdminPage = () => {
           Správa tagů
         </Button>
 
-        <Button leftIcon={<FiPlus />} color="blue" onClick={open}>
+        <Button
+          leftIcon={<FiPlus />}
+          color="blue"
+          onClick={() => {
+            setCreationStatus("create");
+            setEditRecord(undefined);
+            open();
+          }}
+        >
           Vytvořit příspěvek
         </Button>
       </Group>
@@ -139,6 +160,30 @@ const BlogAdminPage = () => {
             ),
             sortable: true,
           },
+          // a column for actions
+          {
+            title: "Akce",
+            accessor: "",
+            width: "0%",
+            render: (record) => (
+              <Group spacing={8} noWrap>
+                <ActionIcon
+                  variant="default"
+                  onClick={() => {
+                    setCreationStatus("edit");
+                    setEditRecord(record);
+                    open();
+                  }}
+                >
+                  <FiEdit2 />
+                </ActionIcon>
+
+                <ActionIcon variant="filled" color="red">
+                  <FiTrash />
+                </ActionIcon>
+              </Group>
+            ),
+          },
         ]}
         records={records.filter((record) => {
           if (!debouncedQuery) return true;
@@ -151,12 +196,14 @@ const BlogAdminPage = () => {
               .includes(debouncedQuery.toLowerCase())
           );
         })}
-        onRowClick={(data) =>
-          alert(`You clicked on row with id ${data.id} and title ${data.title}`)
-        }
       />
 
-      <CreatePost close={closeCreate} opened={createOpened} />
+      <CreatePost
+        close={closeCreate}
+        opened={createOpened}
+        mode={creationStatus}
+        editRecord={editRecord}
+      />
       <TagManager close={closeTags} opened={tagsOpened} />
     </div>
   );

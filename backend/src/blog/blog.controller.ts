@@ -72,6 +72,12 @@ export class BlogController {
     return this.blogService.createPost(body, user);
   }
 
+  @Patch("/:id")
+  @UseGuards(AdminGuard)
+  updatePost(@Body() body: NewPostDto, @Param("id") id: string) {
+    return this.blogService.updatePost(id, body);
+  }
+
   @Delete("/:id")
   @UseGuards(AdminGuard)
   deletePost(@Param("id") id: string) {

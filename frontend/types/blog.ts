@@ -21,7 +21,7 @@ export interface BlogPost {
   content: string;
   published: boolean;
   tags: Tag[];
-  bannerImage: FileType | null;
+  banner: FileType | null;
   author: User;
   createdAt: Date;
   updatedAt: Date;
