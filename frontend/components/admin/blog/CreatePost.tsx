@@ -145,6 +145,8 @@ const CreatePost: FC<CreatePostProps> = ({
 
     let fileId = undefined;
 
+    console.log(values.banner);
+
     if (values.banner) {
       // uplaod image to server
 
@@ -178,6 +180,7 @@ const CreatePost: FC<CreatePostProps> = ({
       close();
       notifications.show({ message: "Příspěvek byl úspěšně upraven" });
       queryClient.invalidateQueries("blogPostsAdmin");
+      form.reset();
 
       return;
     }
@@ -196,6 +199,7 @@ const CreatePost: FC<CreatePostProps> = ({
     close();
     notifications.show({ message: "Příspěvek byl úspěšně vytvořen" });
     queryClient.invalidateQueries("blogPostsAdmin");
+    form.reset();
   };
 
   console.log(editRecord);
