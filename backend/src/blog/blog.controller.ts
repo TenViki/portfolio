@@ -8,6 +8,8 @@ import {
   Post,
   Body,
   Patch,
+  UseInterceptors,
+  UploadedFile,
 } from "@nestjs/common";
 import { BlogService } from "./blog.service";
 import { AdminGuard } from "../guards/admin.guard";
@@ -19,6 +21,7 @@ import { User } from "../users/users.entity";
 import { NewCommentDto } from "./dtos/new-comment.dto";
 import { AuthGuard } from "../guards/auth.guard";
 import { NewTagDto } from "./dtos/new-tag.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller("blog")
 export class BlogController {

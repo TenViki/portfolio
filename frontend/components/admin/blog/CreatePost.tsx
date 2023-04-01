@@ -1,15 +1,14 @@
-import React, { FC, forwardRef } from "react";
+import React, { FC } from "react";
 import {
   ActionIcon,
   Avatar,
-  Box,
   Button,
-  CloseButton,
+  Checkbox,
   FileInput,
   Group,
+  LoadingOverlay,
   Modal,
   MultiSelect,
-  MultiSelectValueProps,
   Text,
   TextInput,
 } from "@mantine/core";
@@ -27,80 +26,17 @@ import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
 
 import styles from "./CreatePost.module.scss";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getTags } from "api/tags";
 import { FiX } from "react-icons/fi";
+import { SelectItem, Value } from "./SelectItem";
+import { uploadFile } from "api/files";
+import { newBlogPost } from "api/blog";
+import { notifications } from "@mantine/notifications";
 
 interface CreatePostProps {
   close: () => void;
   opened: boolean;
-}
-
-interface ItemProps {
-  label: string;
-  color: string;
-  value: string;
-}
-
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ label, color, value, ...others }: ItemProps, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <div
-          style={{
-            width: 24,
-            height: 24,
-            borderRadius: 4,
-            backgroundColor: color,
-          }}
-        />
-
-        <Text>{label}</Text>
-      </Group>
-    </div>
-  )
-);
-
-function Value({
-  value,
-  label,
-  onRemove,
-  classNames,
-  ...others
-}: MultiSelectValueProps & ItemProps) {
-  return (
-    <div {...others}>
-      <Box
-        sx={(theme) => ({
-          display: "flex",
-          cursor: "default",
-          alignItems: "center",
-          backgroundColor: others.color + "20",
-          color: "#fff",
-          paddingLeft: theme.spacing.xs,
-          borderRadius: theme.radius.sm,
-        })}
-      >
-        <Box
-          mr={8}
-          sx={{
-            backgroundColor: others.color,
-            width: 10,
-            height: 10,
-            borderRadius: "50%",
-          }}
-        />
-        <Box sx={{ lineHeight: 1 }}>{label}</Box>
-        <CloseButton
-          onClick={onRemove}
-          variant="transparent"
-          size={22}
-          iconSize={14}
-          tabIndex={-1}
-        />
-      </Box>
-    </div>
-  );
 }
 
 interface FormValues {
@@ -108,6 +44,7 @@ interface FormValues {
   slug: string;
   banner: File | undefined;
   tags: string[];
+  published: boolean;
 }
 
 const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
@@ -117,6 +54,7 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
       slug: "",
       banner: undefined,
       tags: [],
+      published: false,
     },
 
     validate: {
@@ -128,6 +66,14 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
   });
 
   const tagsQuery = useQuery("tags", getTags);
+  const newBlogPostMutation = useMutation(newBlogPost, {
+    onError: () => {
+      notifications.show({ message: "Ukládání příspěvku selhalo" });
+      setStatus("");
+    },
+  });
+
+  const [status, setStatus] = React.useState("");
 
   const editor = useEditor({
     extensions: [
@@ -156,8 +102,43 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
     form.setFieldValue("slug", slug);
   };
 
-  const handleSubmit = (values: FormValues) => {
+  const handleSubmit = async (values: FormValues) => {
     console.log(values);
+
+    if (!editor)
+      return notifications.show({ message: "Editor není připravený" });
+
+    let fileId = undefined;
+
+    if (values.banner) {
+      // uplaod image to server
+
+      try {
+        setStatus("Nahrávání obrázku...");
+        const response = await uploadFile(values.banner);
+        fileId = response.data.id;
+      } catch (error) {
+        console.error(error);
+        notifications.show({ message: "Nahrávání obrázku selhalo" });
+        setStatus("");
+        return;
+      }
+    }
+
+    setStatus("Ukládání příspěvku...");
+    // save post to server
+    await newBlogPostMutation.mutateAsync({
+      title: values.title,
+      slug: values.slug,
+      bannerImageId: fileId,
+      tags: values.tags,
+      content: editor!.getHTML(),
+      published: values.published,
+    });
+
+    setStatus("");
+    close();
+    notifications.show({ message: "Příspěvek byl úspěšně vytvořen" });
   };
 
   return (
@@ -168,6 +149,8 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
       title="Přidat příspěvek na blog"
       closeOnClickOutside={false}
     >
+      <LoadingOverlay visible={status !== ""} />
+
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
           label="Název příspěvku"
@@ -246,7 +229,7 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
           </div>
         )}
 
-        <RichTextEditor editor={editor}>
+        <RichTextEditor editor={editor} mb={16} mih={200}>
           <RichTextEditor.Toolbar>
             <RichTextEditor.ControlsGroup>
               <RichTextEditor.Bold />
@@ -290,12 +273,17 @@ const CreatePost: FC<CreatePostProps> = ({ close, opened }) => {
           <RichTextEditor.Content />
         </RichTextEditor>
 
+        <Checkbox
+          label="Zveřejnit hned po uložení"
+          {...form.getInputProps("published", { type: "checkbox" })}
+        />
+
         <Group mt="xl" position="right">
           <Button variant="outline" color="gray" onClick={close}>
             Zavřít
           </Button>
-          <Button color="blue" type="submit">
-            Vytvořit příspěvek
+          <Button color="blue" type="submit" disabled={!!status}>
+            {status || "Vytvořit příspěvek"}
           </Button>
         </Group>
       </form>

@@ -8,6 +8,8 @@ import { Tag } from "./tag.entity";
 import { NotFoundException } from "@nestjs/common/exceptions";
 import { NewPostDto } from "./dtos/new-post.dto";
 import { NewTagDto } from "./dtos/new-tag.dto";
+import { filterXSS } from "xss";
+import { FilesService } from "../files/files.service";
 
 @Injectable()
 export class BlogService {
@@ -15,6 +17,7 @@ export class BlogService {
     @InjectRepository(BlogPost) private postsRepository: Repository<BlogPost>,
     @InjectRepository(Comment) private commentsRepository: Repository<Comment>,
     @InjectRepository(Tag) private tagsRepository: Repository<Tag>,
+    private filesService: FilesService,
   ) {}
 
   async getTags() {
@@ -82,6 +85,12 @@ export class BlogService {
       ),
     );
 
+    let file = null;
+
+    if (object.bannerImageId) {
+      file = await this.filesService.getFile(object.bannerImageId);
+    }
+
     const newPost = this.postsRepository.create({
       title: object.title,
       slug: object.slug,
@@ -89,6 +98,7 @@ export class BlogService {
       published: object.published,
       author: user,
       tags: t,
+      banner: file,
     });
     newPost.author = user;
     return this.postsRepository.save(newPost);

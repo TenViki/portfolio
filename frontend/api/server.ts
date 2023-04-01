@@ -20,7 +20,7 @@ interface RequestOptions {
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void;
 }
 export class ApiWrapper {
-  constructor(private server: AxiosInstance) {}
+  constructor(public server: AxiosInstance) {}
 
   async request<T>({
     method,

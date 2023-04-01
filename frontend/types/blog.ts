@@ -3,3 +3,21 @@ export interface Tag {
   name: string;
   color: string;
 }
+
+export interface FileType {
+  id: string;
+  filename: string;
+  size: number;
+  mimetype: string;
+  path: string;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  published: boolean;
+  tags: Tag[];
+  bannerImage: FileType | null;
+}

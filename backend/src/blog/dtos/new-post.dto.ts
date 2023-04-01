@@ -1,5 +1,11 @@
 import { Transform, TransformFnParams } from "class-transformer";
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class NewPostDto {
   @IsString()
@@ -12,9 +18,13 @@ export class NewPostDto {
   @IsString()
   content: string;
 
-  @IsString()
+  @IsBoolean()
   published: boolean;
 
   @IsArray()
   tags: string[];
+
+  @IsString()
+  @IsOptional()
+  bannerImageId: string;
 }
