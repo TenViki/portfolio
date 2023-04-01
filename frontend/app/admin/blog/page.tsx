@@ -16,11 +16,13 @@ import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useDebouncedValue, useDisclosure } from "@mantine/hooks";
 import TagManager from "../../../components/admin/blog/TagManager/TagManager";
 import CreatePost from "../../../components/admin/blog/CreatePost";
-import { useQuery } from "react-query";
-import { getAllBlogPostsAdmin } from "api/blog";
+import { useMutation, useQuery } from "react-query";
+import { deleteBlogPost, getAllBlogPostsAdmin } from "api/blog";
 import TagTable from "components/admin/blog/TagTable";
 import { BlogPost } from "types/blog";
 import { sortBy } from "lodash";
+import { modals } from "@mantine/modals";
+import { notifications } from "@mantine/notifications";
 
 const BlogAdminPage = () => {
   const [createOpened, { open, close: closeCreate }] = useDisclosure(false);
@@ -37,6 +39,15 @@ const BlogAdminPage = () => {
     onSuccess: (data) => {
       const d = sortBy(data, sortStatus.columnAccessor) as BlogPost[];
       setRecords(sortStatus.direction === "desc" ? d.reverse() : d);
+    },
+  });
+
+  const deletePostMutation = useMutation(deleteBlogPost, {
+    onSuccess: () => {
+      blogPostsQuery.refetch();
+      notifications.show({
+        message: "Příspěvek byl úspěšně smazán",
+      });
     },
   });
 
@@ -178,7 +189,30 @@ const BlogAdminPage = () => {
                   <FiEdit2 />
                 </ActionIcon>
 
-                <ActionIcon variant="filled" color="red">
+                <ActionIcon
+                  variant="filled"
+                  color="red"
+                  onClick={() => {
+                    modals.openConfirmModal({
+                      title: "Opravdu chcete smazat tento příspěvek?",
+                      children: (
+                        <Text>
+                          Opravdu chcete smazat příspěvek <b>{record.title}</b>?{" "}
+                          <br></br>
+                          <b>Tato akce nelze vrátit!</b>
+                        </Text>
+                      ),
+                      onConfirm: () => {
+                        deletePostMutation.mutate(record.id);
+                      },
+                      labels: {
+                        confirm: "Ano, smazat příspěvek.",
+                        cancel: "No, ponechat.",
+                      },
+                      confirmProps: { color: "red" },
+                    });
+                  }}
+                >
                   <FiTrash />
                 </ActionIcon>
               </Group>

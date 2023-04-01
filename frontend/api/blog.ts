@@ -35,3 +35,11 @@ export const editBlogPost = async (post: NewBlogPostArgs & { id: string }) => {
     useAuth: true,
   });
 };
+
+export const deleteBlogPost = async (id: string) => {
+  return api.request<BlogPost>({
+    method: "DELETE",
+    url: `/blog/${id}`,
+    useAuth: true,
+  });
+};

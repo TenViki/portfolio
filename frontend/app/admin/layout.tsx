@@ -5,6 +5,7 @@ import React, { FC } from "react";
 import { useUser } from "../../utils/useUser";
 import AdminNavbar from "../../components/admin/shared/Navbar";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 
 const AdminLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useUser();
@@ -19,14 +20,16 @@ const AdminLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
       withNormalizeCSS
       theme={{ colorScheme: "dark" }}
     >
-      <AppShell
-        padding="md"
-        navbarOffsetBreakpoint="sm"
-        navbar={<AdminNavbar />}
-      >
-        {children}
-        <Notifications />
-      </AppShell>
+      <ModalsProvider>
+        <AppShell
+          padding="md"
+          navbarOffsetBreakpoint="sm"
+          navbar={<AdminNavbar />}
+        >
+          {children}
+          <Notifications />
+        </AppShell>
+      </ModalsProvider>
     </MantineProvider>
   );
 };
