@@ -26,7 +26,7 @@ export class FilesService {
       filename: file.originalname,
       size: file.size,
       mimetype: file.mimetype,
-      path: `${saveFileTo}/${uniqueFilename}`,
+      path: uniqueFilename,
     });
 
     return this.filesRepository.save(fileEntity);

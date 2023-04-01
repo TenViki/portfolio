@@ -34,6 +34,7 @@ import { uploadFile } from "api/files";
 import { editBlogPost, newBlogPost } from "api/blog";
 import { notifications } from "@mantine/notifications";
 import { BlogPost } from "types/blog";
+import { getFileUrl } from "utils/files";
 
 interface CreatePostProps {
   close: () => void;
@@ -267,7 +268,7 @@ const CreatePost: FC<CreatePostProps> = ({
             <img
               src={
                 editRecord
-                  ? editRecord.banner?.path
+                  ? getFileUrl(editRecord.banner!.id)
                   : URL.createObjectURL(form.values.banner!)
               }
               alt="Banner"

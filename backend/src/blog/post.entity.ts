@@ -35,7 +35,9 @@ export class BlogPost {
   @Column({ default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 
-  @OneToMany(() => Comment, (comment) => comment.post)
+  @OneToMany(() => Comment, (comment) => comment.post, {
+    cascade: true,
+  })
   comments: Comment[];
 
   @Column({ default: () => "CURRENT_TIMESTAMP" })
@@ -45,6 +47,8 @@ export class BlogPost {
   @JoinTable()
   tags: Tag[];
 
-  @ManyToOne(() => FileEntity)
+  @ManyToOne(() => FileEntity, {
+    onDelete: "SET NULL",
+  })
   banner: FileEntity;
 }
