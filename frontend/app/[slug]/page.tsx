@@ -5,6 +5,7 @@ import blogStyles from "../blog/blog.module.scss";
 import { BlogPost } from "types/blog";
 import { getFileUrl } from "utils/files";
 import BlogHeader from "components/blog/BlogHeader/BlogHeader";
+import BlogGallery from "components/blog/BlogGallery/BlogGallery";
 
 interface BlogPostProps {
   params: {
@@ -76,10 +77,13 @@ const BlogPost = async ({ params }: BlogPostProps) => {
 
         <div
           className={styles.content}
+          id="blog-content"
           dangerouslySetInnerHTML={{
             __html: data.content,
           }}
         ></div>
+
+        <BlogGallery />
       </div>
     </>
   );
