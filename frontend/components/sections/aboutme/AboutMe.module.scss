@@ -197,3 +197,36 @@ $timing-function: cubic-bezier(0.22, 0.8, 0.37, 1);
 .blog_posts {
   margin-bottom: 1rem;
 }
+
+@media screen and (max-width: 1224px) {
+  .about_me {
+    .about_me_text {
+      width: 70%;
+      font-size: 1rem;
+    }
+
+    .about_me_bgr img {
+      object-position: 80%;
+    }
+  }
+
+  .blog_post {
+    width: 70%;
+
+    &_title {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .about_me {
+    .about_me_text {
+      width: 100%;
+    }
+  }
+
+  .blog_post {
+    width: 100%;
+  }
+}

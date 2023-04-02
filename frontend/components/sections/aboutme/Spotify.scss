@@ -81,3 +81,9 @@
     transform: scaleY(0.6); /* scale down to 60% */
   }
 }
+
+@media screen and (max-width: 768px) {
+  .spotify-widget {
+    display: none;
+  }
+}
