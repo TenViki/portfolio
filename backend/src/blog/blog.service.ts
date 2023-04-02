@@ -125,7 +125,6 @@ export class BlogService {
   }
 
   async updatePost(id: string, postData: NewPostDto) {
-    console.log(id);
     const post = await this.postsRepository.findOne({
       where: { id },
       relations: ["tags", "banner"],

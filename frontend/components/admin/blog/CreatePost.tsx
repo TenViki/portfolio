@@ -206,24 +206,18 @@ const CreatePost: FC<CreatePostProps> = ({
   };
 
   const handleSubmit = async (values: FormValues) => {
-    console.log(values);
-
     if (!editor)
       return notifications.show({ message: "Editor není připravený" });
 
     let fileId = undefined;
-
-    console.log(values.banner);
 
     if (values.banner) {
       // uplaod image to server
 
       try {
         setStatus("Nahrávání obrázku...");
-        console.log("uploading file");
         const response = await uploadFile(values.banner);
         fileId = response.data.id;
-        console.log("file uploaded", fileId);
       } catch (error) {
         console.error(error);
         notifications.show({ message: "Nahrávání obrázku selhalo" });

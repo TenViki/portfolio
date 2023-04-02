@@ -16,8 +16,6 @@ const Spotify = () => {
 
   if (!data || !data.spotify) return null;
 
-  console.log(data);
-
   return (
     <div className="spotify-widget">
       <ScrollAnimation delay={150} animation="fade-in">

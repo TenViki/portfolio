@@ -39,12 +39,9 @@ export default function AppContextSettings({
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
         callback: async (res) => {
           const data = await loginWithToken(res.credential);
-          console.log(data);
           setUser(data.user);
           localStorage.setItem("token", data.token);
           console.log("Authenticated user");
-
-          console.log(data);
         },
         auto_select: true,
       });
@@ -58,10 +55,7 @@ export default function AppContextSettings({
         method: "GET",
       });
       setData(response);
-      console.log(response);
     };
-
-    console.log(window.google);
 
     fetchData();
   }, []);
