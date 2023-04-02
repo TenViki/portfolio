@@ -20,8 +20,13 @@
     opacity: 1;
     pointer-events: all;
 
-    img {
+    .current_image img {
       transform: scale(1);
+    }
+
+    .img_wrapper img {
+      transform: translateY(0);
+      opacity: 1;
     }
   }
 }
@@ -44,8 +49,9 @@
 
 .current_image {
   display: flex;
-  width: 100vw;
-  height: calc(100vh - 11rem);
+  width: 100%;
+  height: calc(100% - 11rem);
+  margin-top: 1rem;
   align-items: center;
   justify-content: space-between;
 
@@ -54,6 +60,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
     width: 3rem;
     height: 3rem;
@@ -84,8 +91,8 @@
   }
 
   img {
-    max-width: 70%;
-    max-height: 70%;
+    max-width: calc(100% - 10rem);
+    max-height: 100%;
     object-fit: cover;
     border-radius: 1rem;
     transform: scale(0.8);
@@ -100,25 +107,28 @@
   padding: 0 1rem;
   overflow-x: scroll;
   max-width: 100vw;
+  // overflow-y: hidden;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  img {
-    height: 10rem;
-    object-fit: cover;
-    border-radius: 0.5rem;
-    opacity: 0.5;
-    transition: 0.2s ease;
-    cursor: pointer;
-
-    &.active {
-      opacity: 1;
-    }
+  .img_wrapper {
+    padding: 1rem 0;
+    opacity: 0.3;
 
     &:not(:last-child) {
       margin-right: 1rem;
+    }
+
+    transition: 0.45s;
+    height: 10rem;
+    width: fit-content;
+    overflow-y: hidden;
+    flex-shrink: 0;
+
+    &.active {
+      opacity: 1;
     }
 
     &:active {
@@ -127,6 +137,52 @@
 
     &:hover {
       opacity: 1;
+    }
+  }
+
+  img {
+    object-fit: cover;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    height: 8rem;
+
+    opacity: 0;
+    transform: translateY(3rem);
+    transition: 0.3s ease;
+    transition-delay: calc(var(--index) * 0.075s);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .current_image {
+    height: calc(100% - 10rem);
+    align-items: center;
+    position: relative;
+
+    img {
+      margin: 0 auto;
+      max-width: calc(100% - 2rem);
+      max-height: 100%;
+    }
+
+    button {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      margin: 0 1rem;
+
+      &:nth-child(3) {
+        left: auto;
+        right: 0;
+      }
+    }
+  }
+
+  .slider_nav {
+    img {
+      height: 7rem;
     }
   }
 }

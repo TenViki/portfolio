@@ -1,7 +1,7 @@
 "use client";
 
 import { useDisclosure } from "@mantine/hooks";
-import React, { CSSProperties, FC } from "react";
+import React, { CSSProperties, FC, useRef } from "react";
 import styles from "./BlogGallery.module.scss";
 import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
 
@@ -9,6 +9,7 @@ const BlogGallery: FC = () => {
   const [images, setImages] = React.useState<string[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const [currentImage, setCurrentImage] = React.useState(0);
+  const imagesRef = useRef<HTMLDivElement[]>([]);
 
   React.useEffect(() => {
     const element = document.getElementById("blog-content");
@@ -34,6 +35,22 @@ const BlogGallery: FC = () => {
       img.addEventListener("click", handleImageClick.bind(null, i, img.src));
     });
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        close();
+      }
+
+      if (e.key === "ArrowRight") {
+        setCurrentImage((prev) => (prev + 1) % images.length);
+      }
+
+      if (e.key === "ArrowLeft") {
+        setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       images.forEach((img, i) => {
         img.removeEventListener(
@@ -41,8 +58,20 @@ const BlogGallery: FC = () => {
           handleImageClick.bind(null, i, img.src)
         );
       });
+
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  React.useEffect(() => {
+    if (!imagesRef.current[currentImage]) return;
+
+    imagesRef.current[currentImage].scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  }, [currentImage]);
 
   return (
     <div className={styles.overlay + " " + (opened ? styles.opened : "")}>
@@ -52,16 +81,22 @@ const BlogGallery: FC = () => {
       <div className={styles.current_image}>
         <button
           className={styles.slider_nav_button}
-          onClick={() => setCurrentImage(currentImage - 1)}
-          disabled={currentImage === 0}
+          onClick={() =>
+            currentImage === 0
+              ? setCurrentImage(images.length - 1)
+              : setCurrentImage(currentImage - 1)
+          }
         >
           <FiChevronLeft />
         </button>
         <img src={images[currentImage]} alt="Image gallery" />
         <button
           className={styles.slider_nav_button}
-          onClick={() => setCurrentImage(currentImage + 1)}
-          disabled={currentImage === images.length - 1}
+          onClick={() =>
+            currentImage === images.length - 1
+              ? setCurrentImage(0)
+              : setCurrentImage(currentImage + 1)
+          }
         >
           <FiChevronRight />
         </button>
@@ -69,13 +104,23 @@ const BlogGallery: FC = () => {
 
       <div className={styles.slider_nav}>
         {images.map((img, i) => (
-          <img
-            src={img}
+          <div
             key={i}
-            alt="Image gallery"
+            style={
+              {
+                "--index": i,
+              } as CSSProperties
+            }
             onClick={() => setCurrentImage(i)}
-            className={currentImage === i ? styles.active : ""}
-          />
+            className={
+              styles.img_wrapper +
+              " " +
+              (currentImage === i ? styles.active : "")
+            }
+            ref={(el) => el && (imagesRef.current[i] = el)}
+          >
+            <img src={img} alt="Image gallery" />
+          </div>
         ))}
       </div>
     </div>
