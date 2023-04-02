@@ -4,6 +4,7 @@ import { FileEntity } from "./file.entity";
 import { Repository } from "typeorm";
 
 import * as fs from "fs/promises";
+import * as sharp from "sharp";
 
 @Injectable()
 export class FilesService {
@@ -20,7 +21,22 @@ export class FilesService {
       .toString(36)
       .substring(2, 9)}`;
 
-    await fs.writeFile(`${saveFileTo}/${uniqueFilename}`, file.buffer);
+    let buffer = file.buffer;
+
+    if (file.mimetype.startsWith("image/")) {
+      buffer = await sharp(file.buffer)
+        .withMetadata()
+        .resize({
+          width: 1920,
+          height: 1080,
+          fit: "inside",
+          withoutEnlargement: true,
+        })
+        .jpeg({ quality: 80 })
+        .toBuffer();
+    }
+
+    await fs.writeFile(`${saveFileTo}/${uniqueFilename}`, buffer);
 
     const fileEntity = this.filesRepository.create({
       filename: file.originalname,
