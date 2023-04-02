@@ -78,10 +78,14 @@ export class BlogService {
   }
 
   async getPost(slug: string) {
-    return this.postsRepository.findOne({
+    const post = await this.postsRepository.findOne({
       where: { slug, published: true },
       relations: ["author", "tags", "banner"],
     });
+
+    if (!post) throw new NotFoundException("Post not found");
+
+    return post;
   }
 
   async getPostComments(postId: string, limit?: number, offset?: number) {

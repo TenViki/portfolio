@@ -20,6 +20,11 @@ const fetchPostData = async (slug: string) => {
       cache: "no-cache",
     }
   );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch post data");
+  }
+
   const data = (await response.json()) as BlogPost;
   return data;
 };
@@ -29,62 +34,59 @@ const BlogPost = async ({ params }: BlogPostProps) => {
 
   return (
     <>
-      <div className={blogStyles.blog_container}>
-        <BlogHeader />
-        <div
-          className={
-            styles.header + " " + (data.banner ? styles.with_banner : "")
-          }
-        >
-          {data.banner && (
-            <>
-              <img
-                className={styles.banner_img}
-                src={getFileUrl(data.banner.id)}
-              />
-              <div className={styles.overlay} />
-            </>
-          )}
+      <div
+        className={
+          styles.header + " " + (data.banner ? styles.with_banner : "")
+        }
+      >
+        {data.banner && (
+          <>
+            <img
+              className={styles.banner_img}
+              src={getFileUrl(data.banner.id)}
+            />
+            <div className={styles.overlay} />
+          </>
+        )}
 
-          <h1>{data.title}</h1>
+        <h1>{data.title}</h1>
 
-          <div className={styles.user}>
-            <img src={data.author.picture} alt="Userpfp" />
-            <span className={styles.username}>{data.author.name}</span>{" "}
-            <span className={styles.date}>
-              {new Date(data.createdAt).toLocaleDateString("cs")}
-            </span>
-          </div>
+        <div className={styles.user}>
+          <img src={data.author.picture} alt="Userpfp" />
+          <span className={styles.username}>{data.author.name}</span>{" "}
+          <span className={styles.date}>
+            {new Date(data.createdAt).toLocaleDateString("cs")}
+          </span>
         </div>
-
-        <div className={styles.tags}>
-          {data.tags.map((tag) => (
-            <Link
-              href={`/blog/tag/${tag.id}`}
-              key={tag.id}
-              className={styles.tag}
-              style={
-                {
-                  "--tag-color": tag.color,
-                  "--tag-color-background": tag.color + "33",
-                } as CSSProperties
-              }
-            >
-              {tag.name}
-            </Link>
-          ))}
-        </div>
-
-        <div
-          className={styles.content}
-          id="blog-content"
-          dangerouslySetInnerHTML={{
-            __html: data.content,
-          }}
-        ></div>
-
-        <BlogGallery />
       </div>
+
+      <div className={styles.tags}>
+        {data.tags.map((tag) => (
+          <Link
+            href={`/blog/tag/${tag.id}`}
+            key={tag.id}
+            className={styles.tag}
+            style={
+              {
+                "--tag-color": tag.color,
+                "--tag-color-background": tag.color + "33",
+              } as CSSProperties
+            }
+          >
+            {tag.name}
+          </Link>
+        ))}
+      </div>
+
+      <div
+        className={styles.content}
+        id="blog-content"
+        dangerouslySetInnerHTML={{
+          __html: data.content,
+        }}
+      ></div>
+
+      <BlogGallery />
     </>
   );
 };
