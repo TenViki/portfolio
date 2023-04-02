@@ -1,7 +1,5 @@
-import React, { FC, useEffect } from "react";
 import {
   ActionIcon,
-  Avatar,
   Button,
   Checkbox,
   FileInput,
@@ -9,32 +7,37 @@ import {
   LoadingOverlay,
   Modal,
   MultiSelect,
+  ScrollArea,
   Text,
   TextInput,
 } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
+import React, { FC, useEffect } from "react";
 
 import { useForm } from "@mantine/form";
+import Code from "@tiptap/extension-code";
+import Highlight from "@tiptap/extension-highlight";
+import ImageExtension from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import SubScript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import TextAlign from "@tiptap/extension-text-align";
+import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Link from "@tiptap/extension-link";
-import Superscript from "@tiptap/extension-superscript";
-import SubScript from "@tiptap/extension-subscript";
-import Highlight from "@tiptap/extension-highlight";
-import TextAlign from "@tiptap/extension-text-align";
-import ImageExtension from "@tiptap/extension-image";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { lowlight } from "lowlight";
 
-import styles from "./CreatePost.module.scss";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { notifications } from "@mantine/notifications";
+import { editBlogPost, newBlogPost } from "api/blog";
+import { uploadFile } from "api/files";
 import { getTags } from "api/tags";
 import { FiX } from "react-icons/fi";
-import { SelectItem, Value } from "./SelectItem";
-import { uploadFile } from "api/files";
-import { editBlogPost, newBlogPost } from "api/blog";
-import { notifications } from "@mantine/notifications";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { BlogPost } from "types/blog";
 import { getFileUrl } from "utils/files";
+import styles from "./CreatePost.module.scss";
+import { SelectItem, Value } from "./SelectItem";
 
 interface CreatePostProps {
   close: () => void;
@@ -87,7 +90,7 @@ const CreatePost: FC<CreatePostProps> = ({
       );
       form.setFieldValue("published", editRecord.published);
 
-      editor?.commands.setContent(editRecord.content);
+      editor?.commands.setContent(JSON.parse(editRecord.content));
     } else {
       form.reset();
       editor?.commands.setContent("");
@@ -120,6 +123,10 @@ const CreatePost: FC<CreatePostProps> = ({
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       ImageExtension,
+      Code,
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
     ],
     editorProps: {
       handleDrop: function (view, event, slice, moved) {
@@ -235,7 +242,7 @@ const CreatePost: FC<CreatePostProps> = ({
         slug: values.slug,
         bannerImageId: fileId,
         tags: values.tags,
-        content: editor!.getHTML(),
+        content: JSON.stringify(editor!.getJSON()),
         published: values.published,
       });
 
@@ -254,7 +261,7 @@ const CreatePost: FC<CreatePostProps> = ({
       slug: values.slug,
       bannerImageId: fileId,
       tags: values.tags,
-      content: editor!.getHTML(),
+      content: JSON.stringify(editor!.getJSON()),
       published: values.published,
     });
 
@@ -272,6 +279,7 @@ const CreatePost: FC<CreatePostProps> = ({
       size={"xl"}
       title={mode === "edit" ? "Upravit příspěvek" : "Přidat příspěvek na blog"}
       closeOnClickOutside={false}
+      scrollAreaComponent={ScrollArea.Autosize}
     >
       <LoadingOverlay visible={status !== ""} />
 
@@ -358,7 +366,7 @@ const CreatePost: FC<CreatePostProps> = ({
         )}
 
         <RichTextEditor editor={editor} mb={16} mih={200}>
-          <RichTextEditor.Toolbar>
+          <RichTextEditor.Toolbar sticky stickyOffset={48}>
             <RichTextEditor.ControlsGroup>
               <RichTextEditor.Bold />
               <RichTextEditor.Italic />
@@ -366,7 +374,11 @@ const CreatePost: FC<CreatePostProps> = ({
               <RichTextEditor.Strikethrough />
               <RichTextEditor.ClearFormatting />
               <RichTextEditor.Highlight />
+            </RichTextEditor.ControlsGroup>
+
+            <RichTextEditor.ControlsGroup>
               <RichTextEditor.Code />
+              <RichTextEditor.CodeBlock />
             </RichTextEditor.ControlsGroup>
 
             <RichTextEditor.ControlsGroup>
@@ -377,7 +389,6 @@ const CreatePost: FC<CreatePostProps> = ({
             </RichTextEditor.ControlsGroup>
 
             <RichTextEditor.ControlsGroup>
-              <RichTextEditor.Blockquote />
               <RichTextEditor.Hr />
               <RichTextEditor.BulletList />
               <RichTextEditor.OrderedList />

@@ -114,7 +114,7 @@ export class BlogService {
     const newPost = this.postsRepository.create({
       title: object.title,
       slug: object.slug,
-      content: filterXSS(object.content),
+      content: object.content,
       published: object.published,
       author: user,
       tags: t,
@@ -149,7 +149,7 @@ export class BlogService {
 
     post.title = postData.title;
     post.slug = postData.slug;
-    post.content = filterXSS(postData.content);
+    post.content = postData.content;
     post.published = postData.published;
     post.tags = t;
     post.banner = file;

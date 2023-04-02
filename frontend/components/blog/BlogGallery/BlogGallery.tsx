@@ -15,7 +15,9 @@ const BlogGallery: FC = () => {
     const element = document.getElementById("blog-content");
     if (!element) return;
 
-    const images = element.querySelectorAll("img");
+    const images = element.querySelectorAll(
+      "img:not(.copy-button)"
+    ) as NodeListOf<HTMLImageElement>;
     const imagesArray = Array.from(images);
 
     setImages(imagesArray.map((img) => img.src));

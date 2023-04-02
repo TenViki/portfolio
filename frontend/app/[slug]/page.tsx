@@ -1,11 +1,28 @@
+import { generateHTML } from "@tiptap/html";
+import BlogGallery from "components/blog/BlogGallery/BlogGallery";
 import Link from "next/link";
-import React, { CSSProperties, FC } from "react";
-import styles from "./BlogPost.module.scss";
-import blogStyles from "../blog/blog.module.scss";
+import { CSSProperties } from "react";
 import { BlogPost } from "types/blog";
 import { getFileUrl } from "utils/files";
-import BlogHeader from "components/blog/BlogHeader/BlogHeader";
-import BlogGallery from "components/blog/BlogGallery/BlogGallery";
+import styles from "./BlogPost.module.scss";
+
+// Tiptap extensions
+import Code from "@tiptap/extension-code";
+import Highlight from "@tiptap/extension-highlight";
+import ImageExtension from "@tiptap/extension-image";
+import LinkExtension from "@tiptap/extension-link";
+import Subscript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import TextAlign from "@tiptap/extension-text-align";
+import Underline from "@tiptap/extension-underline";
+import StarterKit from "@tiptap/starter-kit";
+
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+
+import { lowlight } from "lowlight";
+import BlogCode from "components/blog/BlogCode/BlogCode";
+
+import "highlight.js/styles/atom-one-dark.css";
 
 interface BlogPostProps {
   params: {
@@ -31,6 +48,27 @@ const fetchPostData = async (slug: string) => {
 
 const BlogPost = async ({ params }: BlogPostProps) => {
   const data = await fetchPostData(params.slug);
+
+  const output = generateHTML(JSON.parse(data.content), [
+    StarterKit,
+    Underline,
+    LinkExtension,
+    Superscript,
+    Subscript,
+    Highlight,
+    TextAlign.configure({ types: ["heading", "paragraph"] }),
+    ImageExtension,
+    Code,
+    CodeBlockLowlight.configure({
+      lowlight,
+    }).extend({
+      renderHTML({ HTMLAttributes }) {
+        // render html with highlight.js
+
+        return ["pre", ["code", HTMLAttributes, 0]];
+      },
+    }),
+  ]);
 
   return (
     <>
@@ -82,11 +120,12 @@ const BlogPost = async ({ params }: BlogPostProps) => {
         className={styles.content}
         id="blog-content"
         dangerouslySetInnerHTML={{
-          __html: data.content,
+          __html: output,
         }}
       ></div>
 
       <BlogGallery />
+      <BlogCode />
     </>
   );
 };
