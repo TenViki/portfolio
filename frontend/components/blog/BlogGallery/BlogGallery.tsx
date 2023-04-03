@@ -51,10 +51,12 @@ const BlogGallery: FC = () => {
 
       if (e.key === "ArrowRight") {
         setCurrentImage((prev) => (prev + 1) % images.length);
+        setLoading(true);
       }
 
       if (e.key === "ArrowLeft") {
         setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
+        setLoading(true);
       }
     };
 
@@ -74,8 +76,6 @@ const BlogGallery: FC = () => {
 
   React.useEffect(() => {
     if (!imagesRef.current[currentImage]) return;
-
-    setLoading(true);
 
     imagesRef.current[currentImage].scrollIntoView({
       behavior: opened ? "smooth" : "auto",
@@ -98,11 +98,12 @@ const BlogGallery: FC = () => {
         )}
         <button
           className={styles.slider_nav_button}
-          onClick={() =>
+          onClick={() => {
             currentImage === 0
               ? setCurrentImage(images.length - 1)
-              : setCurrentImage(currentImage - 1)
-          }
+              : setCurrentImage(currentImage - 1);
+            setLoading(true);
+          }}
         >
           <FiChevronLeft />
         </button>
@@ -115,11 +116,12 @@ const BlogGallery: FC = () => {
         />
         <button
           className={styles.slider_nav_button}
-          onClick={() =>
+          onClick={() => {
             currentImage === images.length - 1
               ? setCurrentImage(0)
-              : setCurrentImage(currentImage + 1)
-          }
+              : setCurrentImage(currentImage + 1);
+            setLoading(true);
+          }}
         >
           <FiChevronRight />
         </button>
@@ -134,7 +136,10 @@ const BlogGallery: FC = () => {
                 "--index": Math.abs(currentImage - i),
               } as CSSProperties
             }
-            onClick={() => setCurrentImage(i)}
+            onClick={() => {
+              setCurrentImage(i);
+              setLoading(true);
+            }}
             className={
               styles.img_wrapper +
               " " +
