@@ -9,6 +9,7 @@ import { AnimatePresence } from "framer-motion";
 
 const inter = Nunito({
   subsets: ["latin"],
+  variable: "--font-nunito",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html className={inter.className}>
+    <html className={inter.variable}>
       <head />
 
       <body>

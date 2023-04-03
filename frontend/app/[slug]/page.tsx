@@ -58,10 +58,10 @@ const BlogPost = async ({ params }: BlogPostProps) => {
     Highlight,
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     ImageExtension,
-    Code,
     CodeBlockLowlight.configure({
       lowlight,
     }).extend({
+      name: "codeBlock-lowlight",
       renderHTML({ HTMLAttributes }) {
         // render html with highlight.js
 

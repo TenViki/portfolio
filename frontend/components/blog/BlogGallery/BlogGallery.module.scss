@@ -32,6 +32,33 @@
   }
 }
 
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  padding: 1rem;
+  border-radius: .5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(16px);
+
+  .loading_spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 0.25rem solid rgba(255, 255, 255, 0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .close {
   position: absolute;
   top: 0;
@@ -54,6 +81,7 @@
   height: calc(100% - 11rem);
   margin-top: 1rem;
   align-items: center;
+  position: relative;
   justify-content: space-between;
 
   button {
@@ -116,7 +144,7 @@
 
   .img_wrapper {
     padding: 1rem 0;
-    opacity: 0.3;
+    opacity: 0.6;
 
     &:not(:last-child) {
       margin-right: 1rem;

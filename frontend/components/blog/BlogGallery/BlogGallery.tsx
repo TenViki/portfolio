@@ -4,12 +4,15 @@ import { useDisclosure } from "@mantine/hooks";
 import React, { CSSProperties, FC, useRef } from "react";
 import styles from "./BlogGallery.module.scss";
 import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
+import { CgSpinner } from "react-icons/cg";
 
 const BlogGallery: FC = () => {
   const [images, setImages] = React.useState<string[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const [currentImage, setCurrentImage] = React.useState(0);
   const imagesRef = useRef<HTMLDivElement[]>([]);
+
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     const element = document.getElementById("blog-content");
@@ -28,8 +31,12 @@ const BlogGallery: FC = () => {
       const img = new Image();
       img.src = src;
 
+      // change cursor to loading
+      document.body.style.cursor = "wait";
+
       img.onload = () => {
         open();
+        document.body.style.cursor = "auto";
       };
     };
 
@@ -68,19 +75,27 @@ const BlogGallery: FC = () => {
   React.useEffect(() => {
     if (!imagesRef.current[currentImage]) return;
 
+    setLoading(true);
+
     imagesRef.current[currentImage].scrollIntoView({
-      behavior: "smooth",
+      behavior: opened ? "smooth" : "auto",
       block: "center",
       inline: "center",
     });
-  }, [currentImage]);
+  }, [currentImage, opened]);
 
   return (
     <div className={styles.overlay + " " + (opened ? styles.opened : "")}>
       <div className={styles.close} onClick={close}>
         <FiX />
       </div>
+
       <div className={styles.current_image}>
+        {loading && (
+          <div className={styles.loading}>
+            <div className={styles.loading_spinner}></div>
+          </div>
+        )}
         <button
           className={styles.slider_nav_button}
           onClick={() =>
@@ -91,7 +106,13 @@ const BlogGallery: FC = () => {
         >
           <FiChevronLeft />
         </button>
-        <img src={images[currentImage]} alt="Image gallery" />
+        <img
+          src={images[currentImage]}
+          alt="Image gallery"
+          onLoad={() => {
+            setLoading(false);
+          }}
+        />
         <button
           className={styles.slider_nav_button}
           onClick={() =>
@@ -110,7 +131,7 @@ const BlogGallery: FC = () => {
             key={i}
             style={
               {
-                "--index": i,
+                "--index": Math.abs(currentImage - i),
               } as CSSProperties
             }
             onClick={() => setCurrentImage(i)}

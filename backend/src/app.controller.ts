@@ -18,7 +18,7 @@ export class AppController {
             progress: spotifyData.progress_ms,
             name: spotifyData.item.name,
             artist: spotifyData.item.artists[0].name,
-            cover: spotifyData.item.album.images[0].url,
+            cover: spotifyData.item.album.images[0].url || "/images/cover.png",
             duration: spotifyData.item.duration_ms,
           }
         : null,
