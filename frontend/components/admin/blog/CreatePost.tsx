@@ -126,8 +126,6 @@ const CreatePost: FC<CreatePostProps> = ({
       Code,
       CodeBlockLowlight.configure({
         lowlight,
-      }).extend({
-        name: "codeBlock-lowlight",
       }),
     ],
     editorProps: {
