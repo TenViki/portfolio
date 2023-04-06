@@ -14,14 +14,17 @@
 
 .header {
   position: relative;
-  aspect-ratio: 16/9;
   border-radius: 0.5rem;
   overflow: hidden;
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
-  padding: 1rem;
   margin-bottom: 0.5rem;
+
+  &.with_banner {
+    aspect-ratio: 16/9;
+    padding: 1rem;
+  }
 
   .banner_img {
     position: absolute;
@@ -32,6 +35,10 @@
     height: 100%;
     object-fit: cover;
     z-index: -2;
+
+    .date {
+      align-items: flex-end;
+    }
   }
 
   .overlay {
@@ -77,7 +84,7 @@
 
   .date {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
   }
 }
 
