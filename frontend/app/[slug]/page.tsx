@@ -23,6 +23,7 @@ import { lowlight } from "lowlight";
 import BlogCode from "components/blog/BlogCode/BlogCode";
 
 import "highlight.js/styles/atom-one-dark.css";
+import Tag from "components/blog/BlogTag/Tag";
 
 interface BlogPostProps {
   params: {
@@ -63,7 +64,7 @@ const BlogPost = async ({ params }: BlogPostProps) => {
     }).extend({
       name: "codeBlock-lowlight",
       renderHTML({ HTMLAttributes }) {
-        // render html with highlight.js
+        // render html w  c    ith highlight.js
 
         return ["pre", ["code", HTMLAttributes, 0]];
       },
@@ -100,19 +101,7 @@ const BlogPost = async ({ params }: BlogPostProps) => {
 
       <div className={styles.tags}>
         {data.tags.map((tag) => (
-          <Link
-            href={`/blog/tag/${tag.id}`}
-            key={tag.id}
-            className={styles.tag}
-            style={
-              {
-                "--tag-color": tag.color,
-                "--tag-color-background": tag.color + "33",
-              } as CSSProperties
-            }
-          >
-            {tag.name}
-          </Link>
+          <Tag tag={tag} />
         ))}
       </div>
 

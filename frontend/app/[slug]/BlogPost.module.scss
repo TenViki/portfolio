@@ -93,31 +93,6 @@
   margin-bottom: 1rem;
 }
 
-.tag {
-  margin-right: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
-  background-color: #ffffff22;
-  color: #ffffffaa;
-  font-size: 0.75rem;
-  font-weight: 400;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: 0.2s;
-
-  background-color: var(--tag-color-background);
-  color: var(--tag-color);
-
-  &:hover {
-    background-color: var(--tag-color);
-    color: #fff;
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
 .content {
   p {
     margin-bottom: 1rem;
