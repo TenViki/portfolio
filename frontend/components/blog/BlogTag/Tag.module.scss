@@ -17,13 +17,15 @@
   background-color: var(--tag-color-background);
   color: var(--tag-color);
 
-  &:hover {
-    background-color: var(--tag-color);
-    color: #fff;
-  }
+  &:not(.not_link) {
+    &:hover {
+      background-color: var(--tag-color);
+      color: #fff;
+    }
 
-  &:active {
-    transform: scale(0.95);
+    &:active {
+      transform: scale(0.95);
+    }
   }
 
   max-width: 10rem;

@@ -101,7 +101,7 @@ const BlogPost = async ({ params }: BlogPostProps) => {
 
       <div className={styles.tags}>
         {data.tags.map((tag) => (
-          <Tag tag={tag} />
+          <Tag tag={tag} key={tag.id} />
         ))}
       </div>
 

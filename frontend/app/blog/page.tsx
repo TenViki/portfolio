@@ -5,6 +5,7 @@ import { BlogPost, Tag as TagType } from "types/blog";
 import styles from "./blog.module.scss";
 import Tag from "components/blog/BlogTag/Tag";
 import BlogTags from "components/blog/BlogTag/BlogTags";
+import BlogPostList from "components/blog/BlogPostList/BlogPostList";
 
 const getPosts = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog`, {
@@ -43,7 +44,12 @@ const BlogPage = async () => {
       <BlogHeader linkBackHref="/" linkBackText="Home" />
       <h1 className={styles.title}>Blog posts</h1>
       <BlogTags tags={tags} />
-      Content under
+
+      <div className={styles.posts}>
+        {posts.map((post) => (
+          <BlogPostList post={post} key={post.id} />
+        ))}
+      </div>
     </div>
   );
 };
