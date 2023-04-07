@@ -23,6 +23,7 @@ import { BlogPost } from "types/blog";
 import { sortBy } from "lodash";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
+import "./katex.scss";
 
 const BlogAdminPage = () => {
   const [createOpened, { open, close: closeCreate }] = useDisclosure(false);

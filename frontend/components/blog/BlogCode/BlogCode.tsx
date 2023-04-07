@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import higlight from "highlight.js";
 import { copyToClipboard } from "utils/clipboard";
+import katex from "katex";
 
 const BlogCode = () => {
   useEffect(() => {
@@ -11,6 +12,7 @@ const BlogCode = () => {
     if (!container) return;
 
     const code = container.querySelectorAll("pre code");
+    const katexViews = container.querySelectorAll<HTMLElement>("katex-view");
 
     code.forEach((block) => {
       const copyButton = document.createElement("img");
@@ -27,9 +29,22 @@ const BlogCode = () => {
       higlight.highlightBlock(block as HTMLElement);
     });
 
+    katexViews.forEach((katexView) => {
+      console.log("rendering katex");
+
+      katexView.setAttribute("x-content", katexView.textContent || "");
+      katex.render(katexView.textContent || "", katexView, {
+        throwOnError: false,
+      });
+    });
+
     return () => {
       code.forEach((block) => {
         block.parentElement?.removeChild(block.parentElement.lastChild!);
+      });
+
+      katexViews.forEach((katexView) => {
+        katexView.innerHTML = katexView.getAttribute("x-content") || "";
       });
     };
   }, []);

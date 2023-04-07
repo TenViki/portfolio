@@ -24,6 +24,10 @@ import BlogCode from "components/blog/BlogCode/BlogCode";
 
 import "highlight.js/styles/atom-one-dark.css";
 import Tag from "components/blog/BlogTag/Tag";
+import { Metadata } from "next";
+import { KatexExtension } from "utils/KatexExtension";
+
+import "../admin/blog/katex.scss";
 
 interface BlogPostProps {
   params: {
@@ -59,6 +63,7 @@ const BlogPost = async ({ params }: BlogPostProps) => {
     Highlight,
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     ImageExtension,
+    KatexExtension,
     CodeBlockLowlight.configure({
       lowlight,
     }).extend({

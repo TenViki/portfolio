@@ -11,7 +11,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { RichTextEditor } from "@mantine/tiptap";
+import { RichTextEditor, useRichTextEditorContext } from "@mantine/tiptap";
 import React, { FC, useEffect } from "react";
 
 import { useForm } from "@mantine/form";
@@ -32,12 +32,15 @@ import { notifications } from "@mantine/notifications";
 import { editBlogPost, newBlogPost } from "api/blog";
 import { uploadFile } from "api/files";
 import { getTags } from "api/tags";
-import { FiX } from "react-icons/fi";
+import { FiCode, FiX } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { BlogPost } from "types/blog";
 import { getFileUrl } from "utils/files";
 import styles from "./CreatePost.module.scss";
 import { SelectItem, Value } from "./SelectItem";
+import { KatexExtension } from "utils/KatexExtension";
+
+import { TbMathFunction } from "react-icons/tb";
 
 interface CreatePostProps {
   close: () => void;
@@ -54,6 +57,21 @@ interface FormValues {
   tags: string[];
   published: boolean;
 }
+
+export const InsertKatexBlock = () => {
+  const { editor } = useRichTextEditorContext();
+
+  return (
+    <RichTextEditor.Control
+      onClick={() => {
+        editor?.commands.toggleKatexBlock();
+      }}
+      active={editor?.isActive("katexBlock")}
+    >
+      <TbMathFunction />
+    </RichTextEditor.Control>
+  );
+};
 
 const CreatePost: FC<CreatePostProps> = ({
   close,
@@ -123,6 +141,7 @@ const CreatePost: FC<CreatePostProps> = ({
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       ImageExtension,
+      KatexExtension,
       Code,
       CodeBlockLowlight.configure({
         lowlight,
@@ -371,8 +390,9 @@ const CreatePost: FC<CreatePostProps> = ({
             </RichTextEditor.ControlsGroup>
 
             <RichTextEditor.ControlsGroup>
-              <RichTextEditor.Code />
+              <RichTextEditor.Code icon={FiCode} />
               <RichTextEditor.CodeBlock />
+              <InsertKatexBlock />
             </RichTextEditor.ControlsGroup>
 
             <RichTextEditor.ControlsGroup>
