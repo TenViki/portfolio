@@ -1,5 +1,5 @@
 import { Fragment } from "@tiptap/pm/model";
-import { Node, mergeAttributes } from "@tiptap/core";
+import { Node, mergeAttributes, Mark } from "@tiptap/core";
 import katex from "katex";
 
 declare module "@tiptap/core" {
@@ -64,10 +64,6 @@ export const KatexExtension = Node.create({
     ];
   },
 
-  onDestroy() {
-    console.log("KatexExtension onDestroy");
-  },
-
   renderHTML({ HTMLAttributes }) {
     return ["katex-view", mergeAttributes(HTMLAttributes), 0];
   },
@@ -126,10 +122,6 @@ export const KatexExtension = Node.create({
           }
 
           return true;
-        },
-
-        destroy() {
-          console.log("KatexExtension NodeView destroy");
         },
       };
     };
