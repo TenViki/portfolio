@@ -24,10 +24,21 @@ export class BlogService {
     return this.tagsRepository.find();
   }
 
+  toSlug(text: string) {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s\s+/g, " ")
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
+  }
+
   async createTag(tag: NewTagDto) {
     const newTag = this.tagsRepository.create({
       name: tag.name,
       color: tag.color,
+      slug: this.toSlug(tag.name),
     });
     return this.tagsRepository.save(newTag);
   }
@@ -44,6 +55,7 @@ export class BlogService {
 
     tag.name = tagData.name;
     tag.color = tagData.color;
+    tag.slug = this.toSlug(tagData.name);
 
     return this.tagsRepository.save(tag);
   }

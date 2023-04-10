@@ -10,6 +10,9 @@ export class Tag {
   name: string;
 
   @Column()
+  slug: string;
+
+  @Column()
   color: string;
 
   @ManyToMany(() => BlogPost)
