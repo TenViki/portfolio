@@ -28,6 +28,7 @@ import { Metadata } from "next";
 import { KatexExtension } from "utils/KatexExtension";
 
 import "../admin/blog/katex.scss";
+import { GalleryExtension } from "utils/GalleryExtension";
 
 interface BlogPostProps {
   params: {
@@ -74,6 +75,7 @@ const BlogPost = async ({ params }: BlogPostProps) => {
         return ["pre", ["code", HTMLAttributes, 0]];
       },
     }),
+    GalleryExtension,
   ]);
 
   return (

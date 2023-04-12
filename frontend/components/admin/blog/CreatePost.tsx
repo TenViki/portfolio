@@ -35,12 +35,15 @@ import { getTags } from "api/tags";
 import { FiCode, FiX } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { BlogPost } from "types/blog";
-import { getFileUrl } from "utils/files";
+import { getFileUrl, isImageValid } from "utils/files";
 import styles from "./CreatePost.module.scss";
 import { SelectItem, Value } from "./SelectItem";
 import { KatexExtension } from "utils/KatexExtension";
 
 import { TbMathFunction } from "react-icons/tb";
+import { GalleryExtension } from "utils/GalleryExtension";
+import { modals } from "@mantine/modals";
+import { getUserTextInput } from "utils/useGetTextValue";
 
 interface CreatePostProps {
   close: () => void;
@@ -146,6 +149,7 @@ const CreatePost: FC<CreatePostProps> = ({
       CodeBlockLowlight.configure({
         lowlight,
       }),
+      GalleryExtension,
     ],
     editorProps: {
       handleDrop: function (view, event, slice, moved) {
@@ -155,56 +159,147 @@ const CreatePost: FC<CreatePostProps> = ({
           event.dataTransfer.files &&
           event.dataTransfer.files[0]
         ) {
-          // if dropping external files
-          let file = event.dataTransfer.files[0]; // the dropped file
-          let filesize = (file.size / 1024 / 1024).toFixed(4); // get the filesize in MB
-          if (
-            (file.type === "image/jpeg" || file.type === "image/png") &&
-            +filesize < 10
-          ) {
-            // check valid image type under 10MB
-            // check the dimensions
-            let _URL = window.URL || window.webkitURL;
-            let img = new Image(); /* global Image */
-            img.src = _URL.createObjectURL(file);
-            img.onload = function () {
-              // valid image so upload to server
-              // uploadImage will be your function to upload the image to the server or s3 bucket somewhere
+          const files = event.dataTransfer.files;
 
-              uploadFile(file)
-                .then((res) => {
-                  const { schema } = view.state;
-                  const coordinates = view.posAtCoords({
-                    left: event.clientX,
-                    top: event.clientY,
+          const handleDataUpload = async () => {
+            const images = [];
+
+            for (let i = 0; i < files.length; i++) {
+              const file = files[i];
+              if (file.type === "image/jpeg" || file.type === "image/png") {
+                images.push(file);
+              }
+            }
+
+            const uploadedData = [];
+
+            if (images.length > 0) {
+              for (const i in images) {
+                const image = images[i];
+
+                // check if image is valid
+                const valid = await isImageValid(image);
+                if (!valid) continue;
+
+                try {
+                  const response = await uploadFile(image);
+                  const src = getFileUrl(response.data.id);
+
+                  const alt = await getUserTextInput(
+                    "Alt text for image " + (+i + 1) + "/" + images.length,
+                    <img
+                      style={{
+                        maxWidth: "100%",
+                        marginBottom: 16,
+                      }}
+                      src={src}
+                    />
+                  );
+
+                  uploadedData.push({
+                    src,
+                    alt,
                   });
-                  const node = schema.nodes.image.create({
-                    src: getFileUrl(res.data.id),
-                  }); // creates the image element
-                  const transaction = view.state.tr.insert(
-                    coordinates!.pos,
-                    node
-                  ); // places it in the correct position
-                  return view.dispatch(transaction);
-                })
-                .catch((err) => {
+                } catch (error) {
                   notifications.show({
                     title: "Nahrávání obrázku se nepovedlo",
                     message: "Podívejte se do konzole pro více informací",
                     color: "red",
                   });
-                  console.error(err);
-                });
-            };
-          } else {
-            notifications.show({
-              message:
-                "Images need to be in jpg or png format and less than 10mb in size.",
+                  console.error(error);
+                  return;
+                }
+              }
+            }
+
+            const { schema } = view.state;
+            const coordinates = view.posAtCoords({
+              left: event.clientX,
+              top: event.clientY,
             });
-          }
-          return true; // handled
+
+            if (images.length === 1) {
+              const node = schema.nodes.image.create({
+                src: uploadedData[0].src,
+                alt: uploadedData[0].alt,
+              }); // creates the image element
+              const transaction = view.state.tr.insert(coordinates!.pos, node); // places it in the correct position
+              return view.dispatch(transaction);
+            }
+
+            if (images.length > 1) {
+              console.log("initaiting gallery insert");
+
+              const galleryNode = schema.nodes.gallery.create({
+                src: uploadedData.map((data) => data.src),
+                alt: uploadedData.map((data) => data.alt),
+              });
+
+              console.log("Gallery node: ", galleryNode);
+
+              const transaction = view.state.tr.insert(
+                coordinates!.pos,
+                galleryNode
+              );
+              return view.dispatch(transaction);
+            }
+          };
+
+          handleDataUpload();
+          return true;
+
+          // if dropping external files
+          //     let file = event.dataTransfer.files[0]; // the dropped file
+          //     let filesize = (file.size / 1024 / 1024).toFixed(4); // get the filesize in MB
+          //     if (
+          //       (file.type === "image/jpeg" || file.type === "image/png") &&
+          //       +filesize < 10
+          //     ) {
+          //       // check valid image type under 10MB
+          //       // check the dimensions
+          //       let _URL = window.URL || window.webkitURL;
+          //       let img = new Image(); /* global Image */
+          //       img.src = _URL.createObjectURL(file);
+          //       img.onload = function () {
+          //         // valid image so upload to server
+          //         // uploadImage will be your function to upload the image to the server or s3 bucket somewhere
+
+          //         uploadFile(file)
+          //           .then((res) => {
+          //             const { schema } = view.state;
+          //             const coordinates = view.posAtCoords({
+          //               left: event.clientX,
+          //               top: event.clientY,
+          //             });
+
+          //             const node = schema.nodes.image.create({
+          //               src: getFileUrl(res.data.id),
+          //             }); // creates the image element
+          //             const transaction = view.state.tr.insert(
+          //               coordinates!.pos,
+          //               node
+          //             ); // places it in the correct position
+          //             return view.dispatch(transaction);
+          //           })
+          //           .catch((err) => {
+          //             notifications.show({
+          //               title: "Nahrávání obrázku se nepovedlo",
+          //               message: "Podívejte se do konzole pro více informací",
+          //               color: "red",
+          //             });
+          //             console.error(err);
+          //           });
+          //       };
+          //     } else {
+          //       notifications.show({
+          //         message:
+          //           "Images need to be in jpg or png format and less than 10mb in size.",
+          //       });
+          //     }
+          //     return true; // handled
+          //   }
+          //   return false; // not handled use default behaviour
         }
-        return false; // not handled use default behaviour
       },
     },
   });

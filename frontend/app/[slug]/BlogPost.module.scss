@@ -184,6 +184,20 @@
       font-family: monospace !important;
     }
   }
+
+  gallery-view {
+    img {
+      &:hover {
+        // inner object size bigger
+        transform: scale(0.98);
+      }
+
+      &:active {
+        // inner object size smaller
+        transform: scale(0.95) !important;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
