@@ -32,4 +32,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   flex-shrink: 0;
+
+  &.active {
+    background-color: var(--tag-color);
+    color: #fff;
+  }
 }

@@ -60,7 +60,7 @@ export class BlogService {
     return this.tagsRepository.save(tag);
   }
 
-  async getPosts(limit?: number, offset?: number, tags?: string[]) {
+  async getPosts(limit?: number, offset?: number, tag?: string) {
     const posts = await this.postsRepository.find({
       take: limit,
       skip: offset,
@@ -69,9 +69,10 @@ export class BlogService {
       where: { published: true },
     });
 
-    if (tags) {
+    if (tag) {
       return posts.filter((post) => {
-        return post.tags.some((tag) => tags.includes(tag.id));
+        const postTags = post.tags.map((tag) => tag.slug);
+        return postTags.includes(tag);
       });
     }
 

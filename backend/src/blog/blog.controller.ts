@@ -29,10 +29,14 @@ export class BlogController {
 
   @Get()
   @Serialize(BlogPostListDto)
-  getPosts(@Query("l") l: string, @Query("o") o: string) {
+  getPosts(
+    @Query("l") l: string,
+    @Query("o") o: string,
+    @Query("tag") t: string,
+  ) {
     if (isNaN(+l)) l = "10";
     if (isNaN(+o)) o = "0";
-    return this.blogService.getPosts(+l, +o);
+    return this.blogService.getPosts(+l, +o, t);
   }
 
   @Get("/tags")

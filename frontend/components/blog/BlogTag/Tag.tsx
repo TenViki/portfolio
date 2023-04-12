@@ -6,13 +6,16 @@ import styles from "./Tag.module.scss";
 interface TagProps {
   tag: TagType;
   isNotLink?: boolean;
+  active?: boolean;
 }
 
-const Tag: FC<TagProps> = ({ tag, isNotLink }) => {
+const Tag: FC<TagProps> = ({ tag, isNotLink, active }) => {
   if (isNotLink)
     return (
       <div
-        className={styles.tag + " " + styles.not_link}
+        className={
+          styles.tag + " " + styles.not_link + " " + (active && styles.active)
+        }
         style={
           {
             "--tag-color": tag.color,
@@ -26,9 +29,9 @@ const Tag: FC<TagProps> = ({ tag, isNotLink }) => {
 
   return (
     <Link
-      href={`/blog/${tag.id}`}
+      href={active ? `/blog/` : `/blog/${tag.slug}`}
       key={tag.id}
-      className={styles.tag}
+      className={styles.tag + " " + (active && styles.active)}
       style={
         {
           "--tag-color": tag.color,
