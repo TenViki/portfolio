@@ -39,7 +39,7 @@
   transform: translate(-50%, -50%);
   z-index: 1;
   padding: 1rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(16px);
 
@@ -78,7 +78,7 @@
 .current_image {
   display: flex;
   width: 100%;
-  height: calc(100% - 11rem);
+  height: calc(100% - 12rem);
   margin-top: 1rem;
   align-items: center;
   position: relative;
@@ -127,6 +127,12 @@
     transform: scale(0.8);
     transition: transform 0.3s ease;
   }
+}
+
+.alt {
+  height: 1rem;
+  text-align: center;
+  opacity: 0.5;
 }
 
 .slider_nav {
@@ -183,7 +189,7 @@
 
 @media screen and (max-width: 768px) {
   .current_image {
-    height: calc(100% - 10rem);
+    height: calc(100% - 11rem);
     align-items: center;
     position: relative;
 

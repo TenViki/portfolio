@@ -7,7 +7,9 @@ import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
 import { CgSpinner } from "react-icons/cg";
 
 const BlogGallery: FC = () => {
-  const [images, setImages] = React.useState<string[]>([]);
+  const [images, setImages] = React.useState<{ src: string; alt: string }[]>(
+    []
+  );
   const [opened, { open, close }] = useDisclosure(false);
   const [currentImage, setCurrentImage] = React.useState(0);
   const imagesRef = useRef<HTMLDivElement[]>([]);
@@ -23,7 +25,12 @@ const BlogGallery: FC = () => {
     ) as NodeListOf<HTMLImageElement>;
     const imagesArray = Array.from(images);
 
-    setImages(imagesArray.map((img) => img.src));
+    setImages(
+      imagesArray.map((img) => ({
+        src: img.src,
+        alt: img.alt,
+      }))
+    );
 
     const handleImageClick = (i: number, src: string) => {
       setCurrentImage(i);
@@ -108,8 +115,8 @@ const BlogGallery: FC = () => {
           <FiChevronLeft />
         </button>
         <img
-          src={images[currentImage]}
-          alt="Image gallery"
+          src={images[currentImage]?.src}
+          alt={images[currentImage]?.alt}
           onLoad={() => {
             setLoading(false);
           }}
@@ -126,6 +133,8 @@ const BlogGallery: FC = () => {
           <FiChevronRight />
         </button>
       </div>
+
+      <p className={styles.alt}>{images[currentImage]?.alt}</p>
 
       <div className={styles.slider_nav}>
         {images.map((img, i) => (
@@ -147,7 +156,7 @@ const BlogGallery: FC = () => {
             }
             ref={(el) => el && (imagesRef.current[i] = el)}
           >
-            <img src={img} alt="Image gallery" />
+            <img src={img.src} alt={img.alt} />
           </div>
         ))}
       </div>
