@@ -147,7 +147,7 @@ const BlogGallery: FC = () => {
             }
             onClick={() => {
               setCurrentImage(i);
-              setLoading(true);
+              if (currentImage !== i) setLoading(true);
             }}
             className={
               styles.img_wrapper +
