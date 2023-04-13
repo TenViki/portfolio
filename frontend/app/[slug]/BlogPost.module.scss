@@ -24,6 +24,10 @@
   &.with_banner {
     aspect-ratio: 16/9;
     padding: 1rem;
+
+    .date {
+      align-items: flex-end;
+    }
   }
 
   .banner_img {
@@ -36,9 +40,7 @@
     object-fit: cover;
     z-index: -2;
 
-    .date {
-      align-items: flex-end;
-    }
+    
   }
 
   .overlay {
