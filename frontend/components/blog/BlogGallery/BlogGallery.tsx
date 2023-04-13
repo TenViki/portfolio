@@ -5,6 +5,7 @@ import React, { CSSProperties, FC, useRef } from "react";
 import styles from "./BlogGallery.module.scss";
 import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
 import { CgSpinner } from "react-icons/cg";
+import { AnimatePresence, motion } from "framer-motion";
 
 const BlogGallery: FC = () => {
   const [images, setImages] = React.useState<{ src: string; alt: string }[]>(
@@ -114,13 +115,22 @@ const BlogGallery: FC = () => {
         >
           <FiChevronLeft />
         </button>
-        <img
-          src={images[currentImage]?.src}
-          alt={images[currentImage]?.alt}
-          onLoad={() => {
-            setLoading(false);
-          }}
-        />
+
+        <AnimatePresence>
+          <motion.img
+            key={images[currentImage]?.src}
+            src={images[currentImage]?.src}
+            alt={images[currentImage]?.alt}
+            onLoad={() => {
+              setLoading(false);
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          />
+        </AnimatePresence>
+
         <button
           className={styles.slider_nav_button}
           onClick={() => {
