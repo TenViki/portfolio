@@ -4,18 +4,73 @@ import { useDisclosure } from "@mantine/hooks";
 import React, { CSSProperties, FC, useRef } from "react";
 import styles from "./BlogGallery.module.scss";
 import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
-import { CgSpinner } from "react-icons/cg";
 import { AnimatePresence, motion } from "framer-motion";
+
+type VariantArgument = [number, boolean];
+
+const variants = {
+  enter: ([direction, opened]: VariantArgument) => {
+    if (!opened)
+      return {
+        x: "-50%",
+        y: "-50%",
+        scale: 0.5,
+      };
+    return {
+      x: `calc(-50% + ${direction > 0 ? 1000 : -1000}px)`,
+      opacity: 0,
+      y: "-50%",
+    };
+  },
+
+  center: {
+    x: "-50%",
+    y: "-50%",
+    opacity: 1,
+  },
+
+  exit: ([direction, opened]: VariantArgument) => {
+    if (!opened)
+      return {
+        x: "-50%",
+        y: "-50%",
+        scale: 0.5,
+      };
+    return {
+      x: `calc(-50% + ${direction < 0 ? 1000 : -1000}px)`,
+      opacity: 0,
+      y: "-50%",
+    };
+  },
+};
+
+const wrap = (min: number, max: number, v: number) => {
+  // wrap around
+  if (v < min) return max - ((min - v) % max);
+  else return min + ((v - min) % max);
+};
 
 const BlogGallery: FC = () => {
   const [images, setImages] = React.useState<{ src: string; alt: string }[]>(
     []
   );
   const [opened, { open, close }] = useDisclosure(false);
-  const [currentImage, setCurrentImage] = React.useState(0);
-  const imagesRef = useRef<HTMLDivElement[]>([]);
+  // const [currentImage, setCurrentImage] = React.useState(0);
 
-  const [loading, setLoading] = React.useState(false);
+  const [[page, direction], setPage] = React.useState([0, 0]);
+
+  const imageIndex = wrap(0, images.length, page);
+
+  const paginate = (newDirection: number) => {
+    console.log("paginate", newDirection, page, direction);
+    setPage([page + newDirection, newDirection]);
+  };
+
+  const setImage = (i: number) => {
+    setPage(([page]) => [i, i > page ? 1 : -1]);
+  };
+
+  const imagesRef = useRef<HTMLDivElement[]>([]);
 
   React.useEffect(() => {
     const element = document.getElementById("blog-content");
@@ -34,10 +89,10 @@ const BlogGallery: FC = () => {
     );
 
     const handleImageClick = (i: number, src: string) => {
-      setCurrentImage(i);
-
       const img = new Image();
       img.src = src;
+
+      setImage(i);
 
       // change cursor to loading
       document.body.style.cursor = "wait";
@@ -58,13 +113,11 @@ const BlogGallery: FC = () => {
       }
 
       if (e.key === "ArrowRight") {
-        setCurrentImage((prev) => (prev + 1) % images.length);
-        setLoading(true);
+        paginate(1);
       }
 
       if (e.key === "ArrowLeft") {
-        setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
-        setLoading(true);
+        paginate(-1);
       }
     };
 
@@ -80,17 +133,17 @@ const BlogGallery: FC = () => {
 
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [page, direction]);
 
   React.useEffect(() => {
-    if (!imagesRef.current[currentImage]) return;
+    if (!imagesRef.current[imageIndex]) return;
 
-    imagesRef.current[currentImage].scrollIntoView({
+    imagesRef.current[imageIndex].scrollIntoView({
       behavior: opened ? "smooth" : "auto",
       block: "center",
       inline: "center",
     });
-  }, [currentImage, opened]);
+  }, [imageIndex, opened]);
 
   return (
     <div className={styles.overlay + " " + (opened ? styles.opened : "")}>
@@ -99,52 +152,57 @@ const BlogGallery: FC = () => {
       </div>
 
       <div className={styles.current_image}>
-        {loading && (
-          <div className={styles.loading}>
-            <div className={styles.loading_spinner}></div>
-          </div>
-        )}
         <button
           className={styles.slider_nav_button}
           onClick={() => {
-            currentImage === 0
-              ? setCurrentImage(images.length - 1)
-              : setCurrentImage(currentImage - 1);
-            setLoading(true);
+            paginate(-1);
           }}
         >
           <FiChevronLeft />
         </button>
 
-        <AnimatePresence>
-          <motion.img
-            key={images[currentImage]?.src}
-            src={images[currentImage]?.src}
-            alt={images[currentImage]?.alt}
-            onLoad={() => {
-              setLoading(false);
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          />
+        <AnimatePresence custom={[direction, opened]} initial={false}>
+          {opened && (
+            <motion.img
+              key={page}
+              src={images[imageIndex]?.src}
+              alt={images[imageIndex]?.alt}
+              // initial={{ opacity: 0 }}
+              // animate={{ opacity: 1 }}
+              // exit={{ opacity: 0 }}
+              // transition={
+              // }
+
+              style={{
+                originX: "50%",
+                originY: "50%",
+                x: "-50%",
+                y: "-50%",
+              }}
+              variants={variants}
+              custom={[direction, opened]}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
+            />
+          )}
         </AnimatePresence>
 
         <button
           className={styles.slider_nav_button}
           onClick={() => {
-            currentImage === images.length - 1
-              ? setCurrentImage(0)
-              : setCurrentImage(currentImage + 1);
-            setLoading(true);
+            paginate(1);
           }}
         >
           <FiChevronRight />
         </button>
       </div>
 
-      <p className={styles.alt}>{images[currentImage]?.alt}</p>
+      <p className={styles.alt}>{images[imageIndex]?.alt}</p>
 
       <div className={styles.slider_nav}>
         {images.map((img, i) => (
@@ -152,17 +210,14 @@ const BlogGallery: FC = () => {
             key={i}
             style={
               {
-                "--index": Math.abs(currentImage - i),
+                "--index": Math.abs(imageIndex - i),
               } as CSSProperties
             }
             onClick={() => {
-              setCurrentImage(i);
-              if (currentImage !== i) setLoading(true);
+              setImage(i);
             }}
             className={
-              styles.img_wrapper +
-              " " +
-              (currentImage === i ? styles.active : "")
+              styles.img_wrapper + " " + (imageIndex === i ? styles.active : "")
             }
             ref={(el) => el && (imagesRef.current[i] = el)}
           >

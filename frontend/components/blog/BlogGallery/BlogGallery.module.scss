@@ -90,6 +90,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    z-index: 100;
 
     width: 3rem;
     height: 3rem;
@@ -124,8 +125,8 @@
     max-height: 100%;
     object-fit: cover;
     border-radius: 1rem;
-    transform: translate(-50%, -50%) scale(0.8) ;
-    transition: transform 0.3s ease;
+    transform: translate(-50%, -50%) scale(0.8);
+    // transition: transform 0.3s ease;
 
     position: absolute;
     top: 50%;
@@ -215,7 +216,7 @@
       left: 0;
       margin: 0 1rem;
 
-      &:nth-child(3) {
+      &:last-child {
         left: auto;
         right: 0;
       }
