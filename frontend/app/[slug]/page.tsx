@@ -52,6 +52,36 @@ const fetchPostData = async (slug: string) => {
   return data;
 };
 
+export const generateMetadata = async ({
+  params,
+}: BlogPostProps): Promise<Metadata> => {
+  const data = await fetchPostData(params.slug);
+
+  const description =
+    data.content.length > 100
+      ? data.content.slice(0, 100) + "..."
+      : data.content;
+
+  return {
+    title: data.title,
+    description,
+    openGraph: {
+      title: data.title,
+      description,
+      images: data.banner
+        ? [
+            {
+              url: getFileUrl(data.banner.id),
+              width: 800,
+              height: 600,
+              alt: data.title,
+            },
+          ]
+        : undefined,
+    },
+  };
+};
+
 const BlogPost = async ({ params }: BlogPostProps) => {
   const data = await fetchPostData(params.slug);
 

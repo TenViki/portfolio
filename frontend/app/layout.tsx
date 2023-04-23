@@ -13,8 +13,10 @@ const inter = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Viki",
-  description: "Webová aplikace pro kontrolu a opravu textů",
+  title: {
+    template: "%s | VikiTheDev",
+    absolute: "VikiTheDev",
+  },
   colorScheme: "dark",
   viewport: "width=device-width, initial-scale=1",
   icons: [
