@@ -67,7 +67,7 @@ const BlogGallery: FC = () => {
   };
 
   const setImage = (i: number) => {
-    setPage(([page]) => [i, i > page ? 1 : -1]);
+    setPage(([page]) => [i, i > imageIndex ? 1 : -1]);
   };
 
   const imagesRef = useRef<HTMLDivElement[]>([]);
