@@ -10,12 +10,13 @@ type VariantArgument = [number, boolean];
 
 const variants = {
   enter: ([direction, opened]: VariantArgument) => {
-    if (!opened)
+    if (!opened || direction === 0)
       return {
         x: "-50%",
         y: "-50%",
-        scale: 0.5,
+        scale: 0.8,
       };
+
     return {
       x: `calc(-50% + ${direction > 0 ? 1000 : -1000}px)`,
       opacity: 0,
@@ -27,14 +28,15 @@ const variants = {
     x: "-50%",
     y: "-50%",
     opacity: 1,
+    scale: 1,
   },
 
   exit: ([direction, opened]: VariantArgument) => {
-    if (!opened)
+    if (!opened || direction === 0)
       return {
         x: "-50%",
         y: "-50%",
-        scale: 0.5,
+        scale: 0.7,
       };
     return {
       x: `calc(-50% + ${direction < 0 ? 1000 : -1000}px)`,
@@ -73,6 +75,10 @@ const BlogGallery: FC = () => {
   const imagesRef = useRef<HTMLDivElement[]>([]);
 
   React.useEffect(() => {
+    if (!opened) setPage([images.length - 1, 0]);
+  }, [opened]);
+
+  React.useEffect(() => {
     const element = document.getElementById("blog-content");
     if (!element) return;
 
@@ -92,7 +98,8 @@ const BlogGallery: FC = () => {
       const img = new Image();
       img.src = src;
 
-      setImage(i);
+      // setImage(i);
+      setPage([i, 0]);
 
       // change cursor to loading
       document.body.style.cursor = "wait";
@@ -187,6 +194,11 @@ const BlogGallery: FC = () => {
               transition={{
                 x: { type: "spring", stiffness: 300, damping: 30 },
                 opacity: { duration: 0.2 },
+                scale: {
+                  ease: (x) => 1 - Math.pow(1 - x, 3),
+                  duration: 0.4,
+                  damping: 10,
+                },
               }}
             />
           )}
