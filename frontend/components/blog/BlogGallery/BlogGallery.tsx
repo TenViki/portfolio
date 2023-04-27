@@ -48,8 +48,15 @@ const variants = {
 
 const wrap = (min: number, max: number, v: number) => {
   // wrap around
-  if (v < min) return max - ((min - v) % max);
-  else return min + ((v - min) % max);
+  if (v >= 0) {
+    if (v < min) return max - ((min - v) % max);
+    else return min + ((v - min) % max);
+  } else {
+    if (Math.abs(v) % max === 0) return 0;
+
+    if (v > max) return min + ((v - max) % max);
+    else return max - ((max - v) % max);
+  }
 };
 
 const BlogGallery: FC = () => {
