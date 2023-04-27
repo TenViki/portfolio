@@ -14,6 +14,7 @@ import { getBlogPosts } from "api/blog";
 import { useQuery } from "react-query";
 import { FiChevronRight } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const AnimatedBars = dynamic(() => import("./AnimatedBars"), {
   ssr: false,
@@ -126,10 +127,7 @@ const AboutMe = () => {
                   delay={300 + (i + 1) * 100}
                   key={post.id}
                 >
-                  <div
-                    className={styles.blog_post}
-                    onClick={() => router.push(`/${post.slug}`)}
-                  >
+                  <Link className={styles.blog_post} href={`/${post.slug}`}>
                     <div className={styles.blog_post_text}>
                       <div className={styles.blog_post_title}>{post.title}</div>
                       <div className={styles.blog_post_tags}>
@@ -140,7 +138,7 @@ const AboutMe = () => {
                     <div className={styles.blog_post_chevron}>
                       <FiChevronRight />
                     </div>
-                  </div>
+                  </Link>
                 </ScrollAnimation>
               ))}
             </div>
