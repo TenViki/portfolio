@@ -30,10 +30,21 @@
   }
 }
 
+.blog_listing {
+  width: 40rem;
+  max-width: calc(100% - 2rem);
+}
+
 .title {
   font-size: 3rem;
   font-weight: 300;
   margin-bottom: 1rem;
   color: #fff;
   text-align: center;
+}
+
+.posts {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
 }

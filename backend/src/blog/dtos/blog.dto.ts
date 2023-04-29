@@ -1,6 +1,7 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Transform, Type } from "class-transformer";
 import { UserLowDto } from "../../users/user-low.dto";
 import { FileDto } from "../../files/dtos/file.dto";
+import { getDescription } from "../../utils/blog";
 
 export class BlogPostListDto {
   @Expose()
@@ -26,6 +27,10 @@ export class BlogPostListDto {
   @Expose()
   @Type(() => FileDto)
   banner: FileDto;
+
+  @Expose()
+  @Transform(({ value }) => getDescription(JSON.parse(value)))
+  content: string;
 }
 
 export class BlogPostDto {
