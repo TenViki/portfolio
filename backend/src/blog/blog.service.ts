@@ -66,15 +66,8 @@ export class BlogService {
       skip: offset,
       relations: ["author", "tags", "banner"],
       order: { createdAt: "DESC" },
-      where: { published: true },
+      where: { published: true, tags: tag ? { slug: tag } : undefined },
     });
-
-    if (tag) {
-      return posts.filter((post) => {
-        const postTags = post.tags.map((tag) => tag.slug);
-        return postTags.includes(tag);
-      });
-    }
 
     return posts;
   }
