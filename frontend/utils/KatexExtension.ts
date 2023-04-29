@@ -94,8 +94,6 @@ export const KatexExtension = Node.create({
       const handleInput = (cnt?: string) => {
         const content = cnt || katexInputWindow.textContent!;
 
-        console.log("Node view handleInput: " + content);
-
         katex.render(content, katexRenderWindow, {
           throwOnError: false,
         });
@@ -109,8 +107,6 @@ export const KatexExtension = Node.create({
         contentDOM: katexInputWindow,
         update(node) {
           handleInput();
-
-          console.log(node);
 
           if (node.type.name !== extension.name) {
             // on node type change, destroy the node view

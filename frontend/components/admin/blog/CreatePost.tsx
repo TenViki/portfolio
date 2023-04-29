@@ -228,14 +228,10 @@ const CreatePost: FC<CreatePostProps> = ({
             }
 
             if (images.length > 1) {
-              console.log("initaiting gallery insert");
-
               const galleryNode = schema.nodes.gallery.create({
                 src: uploadedData.map((data) => data.src),
                 alt: uploadedData.map((data) => data.alt),
               });
-
-              console.log("Gallery node: ", galleryNode);
 
               const transaction = view.state.tr.insert(
                 coordinates!.pos,

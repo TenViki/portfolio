@@ -30,6 +30,7 @@ import { KatexExtension } from "utils/KatexExtension";
 import "../admin/blog/katex.scss";
 import { GalleryExtension } from "utils/GalleryExtension";
 import AddComment from "components/blog/BlogComments/AddComment";
+import Comments from "components/blog/BlogComments/Comments";
 
 interface BlogPostProps {
   params: {
@@ -151,7 +152,7 @@ const BlogPost = async ({ params }: BlogPostProps) => {
         }}
       ></div>
 
-      <AddComment />
+      <Comments />
 
       <BlogGallery />
       <BlogCode />

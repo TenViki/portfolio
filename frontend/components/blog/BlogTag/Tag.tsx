@@ -10,8 +10,6 @@ interface TagProps {
 }
 
 const Tag: FC<TagProps> = ({ tag, isNotLink, active }) => {
-  console.log(tag);
-
   if (isNotLink)
     return (
       <div
