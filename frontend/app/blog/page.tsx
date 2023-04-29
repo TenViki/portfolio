@@ -6,6 +6,7 @@ import styles from "./blog.module.scss";
 import Tag from "components/blog/BlogTag/Tag";
 import BlogTags from "components/blog/BlogTag/BlogTags";
 import BlogPostList from "components/blog/BlogPostList/BlogPostList";
+import BlogList from "components/blog/BlogPostList/BlogList";
 
 const getPosts = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog`, {
@@ -37,7 +38,7 @@ const getTags = async () => {
 };
 
 const BlogPage = async () => {
-  const [posts, tags] = await Promise.all([getPosts(), getTags()]);
+  const tags = await getTags();
 
   return (
     <div>
@@ -45,11 +46,8 @@ const BlogPage = async () => {
       <h1 className={styles.title}>Blog posts</h1>
       <BlogTags tags={tags} />
 
-      <div className={styles.posts}>
-        {posts.map((post) => (
-          <BlogPostList post={post} key={post.id} />
-        ))}
-      </div>
+      {/* @ts-expect-error Server Component */}
+      <BlogList />
     </div>
   );
 };
