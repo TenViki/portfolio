@@ -57,8 +57,8 @@ export const getBlogPosts = async ({
     method: "GET",
     url: "/blog/",
     queryParameters: {
-      limit: limit.toString(),
-      offset: offset.toString(),
+      l: limit.toString(),
+      o: offset.toString(),
       ...(tag && { tag }),
     },
   });

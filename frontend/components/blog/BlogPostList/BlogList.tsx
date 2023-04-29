@@ -2,12 +2,15 @@ import React, { FC } from "react";
 import { BlogPost } from "types/blog";
 import BlogPostList from "./BlogPostList";
 import styles from "app/blog/blog.module.scss";
+import BlogListInfiniteScroll from "./BlogListInfiniteScroll";
+
+export const PAGE_SIZE = 1;
 
 const getPosts = async (tagSlug?: string) => {
-  let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog`;
+  let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog?l=${PAGE_SIZE}`;
 
   if (tagSlug) {
-    url += `?tag=${tagSlug}`;
+    url += `&tag=${tagSlug}`;
   }
 
   const response = await fetch(url, {
@@ -34,6 +37,8 @@ const BlogList = async ({ tag }: BlogPostProps) => {
       {posts.map((post) => (
         <BlogPostList post={post} key={post.id} />
       ))}
+
+      <BlogListInfiniteScroll fetchedPosts={posts.length} tag={tag} />
     </div>
   );
 };
