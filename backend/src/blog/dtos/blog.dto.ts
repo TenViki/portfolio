@@ -68,5 +68,8 @@ export class TagDto {
   name: string;
 
   @Expose()
+  slug: string;
+
+  @Expose()
   color: string;
 }
