@@ -152,7 +152,7 @@ const BlogPost = async ({ params }: BlogPostProps) => {
         }}
       ></div>
 
-      <Comments />
+      <Comments postId={data.id} />
 
       <BlogGallery />
       <BlogCode />

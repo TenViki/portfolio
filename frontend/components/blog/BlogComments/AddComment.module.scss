@@ -1,8 +1,12 @@
 .form {
   word-wrap: break-word;
   white-space: nowrap;
+  display: flex;
+  width: calc(100% + 1rem + var(--button-width));
+  align-items: center;
+  transition: 0.3s width;
 
-  input {
+  textarea {
     padding: 0.7rem 1rem;
     border: 0;
     border-radius: 0.5rem;
@@ -10,15 +14,17 @@
     font-size: 1rem;
     flex: 1;
     width: 100%;
-    transition: width 0.3s;
     background: #222;
+    overflow: hidden;
 
-    &.filled {
-      width: calc(100% - var(--button-width) - 1rem);
+    resize: none;
+  }
 
-      & + button {
-        opacity: 1;
-      }
+  &.filled {
+    width: calc(100%);
+
+    button {
+      opacity: 1;
     }
   }
 

@@ -25,7 +25,7 @@ export class Comment {
   @ManyToOne(() => BlogPost, (post) => post.comments)
   post: BlogPost;
 
-  @ManyToOne(() => Comment, (comment) => comment.responses)
+  @ManyToOne(() => Comment, (comment) => comment.responses, { nullable: true })
   responseTo: Comment;
 
   @OneToMany(() => Comment, (comment) => comment.responseTo)

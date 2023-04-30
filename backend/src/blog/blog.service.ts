@@ -95,13 +95,18 @@ export class BlogService {
   }
 
   async getPostComments(postId: string, limit?: number, offset?: number) {
-    return this.commentsRepository.find({
+    const comments = await this.commentsRepository.find({
       order: { createdAt: "DESC" },
       where: { post: { id: postId } },
-      relations: ["user"],
+      relations: ["user", "responses"],
       take: limit,
       skip: offset,
     });
+
+    return comments.map((comment) => ({
+      ...comment,
+      responses: comment.responses.length,
+    }));
   }
 
   async createPost(object: NewPostDto, user: User) {
@@ -197,7 +202,7 @@ export class BlogService {
       return this.commentsRepository.save(newComment);
     }
 
-    const newComment = this.commentsRepository.create({ content, user });
+    const newComment = this.commentsRepository.create({ content, user, post });
     return this.commentsRepository.save(newComment);
   }
 
