@@ -4,7 +4,7 @@ import BlogPostList from "./BlogPostList";
 import styles from "app/blog/blog.module.scss";
 import BlogListInfiniteScroll from "./BlogListInfiniteScroll";
 
-export const PAGE_SIZE = 1;
+export const PAGE_SIZE = 2;
 
 const getPosts = async (tagSlug?: string) => {
   let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog?l=${PAGE_SIZE}`;

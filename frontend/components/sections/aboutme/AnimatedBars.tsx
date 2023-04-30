@@ -8,14 +8,15 @@ interface AnimatedBarsProps {
 }
 
 const AnimatedBars: React.FC<AnimatedBarsProps> = ({ reverse }) => {
-  const barWidth = 10;
+  const barWidth = 8;
+  const gap = 20;
   const [numberOfBars, setNumberOfBars] = React.useState(
-    Math.floor(typeof window !== "undefined" ? window.innerWidth / barWidth : 0)
+    Math.floor(window.innerWidth / (barWidth + gap))
   );
 
   React.useEffect(() => {
     const handleResize = () => {
-      setNumberOfBars(Math.floor(window.innerWidth / barWidth));
+      setNumberOfBars(Math.floor(window.innerWidth / (barWidth + gap)));
     };
 
     window.addEventListener("resize", handleResize);
