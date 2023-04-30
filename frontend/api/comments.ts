@@ -1,3 +1,4 @@
+import { Comment } from "types/blog";
 import { api } from "./server";
 
 interface NewComment {
@@ -11,7 +12,7 @@ export const getPostComments = async (
   limit: number,
   offset: number
 ) => {
-  return api.request({
+  return api.request<Comment[]>({
     method: "GET",
     url: `/blog/comments/${postId}?l=${limit}&o=${offset}`,
   });

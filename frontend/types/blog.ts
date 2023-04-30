@@ -27,3 +27,13 @@ export interface BlogPost {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  user: User;
+  post: BlogPost;
+  responseTo: Comment | null;
+  responses: number;
+}

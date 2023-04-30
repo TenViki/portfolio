@@ -8,18 +8,11 @@ import { useMutation } from "react-query";
 
 interface AddCommentProps {
   postId: string;
+  onCommentAdded: () => void;
 }
 
-const AddComment: FC<AddCommentProps> = ({ postId }) => {
+const AddComment: FC<AddCommentProps> = ({ postId, onCommentAdded }) => {
   const { user } = useUser();
-
-  if (!user) {
-    return (
-      <div className={styles.not_logged_in}>
-        You must be logged in to comment
-      </div>
-    );
-  }
 
   const [text, setText] = React.useState("");
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -29,6 +22,7 @@ const AddComment: FC<AddCommentProps> = ({ postId }) => {
   const addCommentMutation = useMutation(addComment, {
     onSuccess: () => {
       setText("");
+      onCommentAdded();
     },
   });
 
@@ -47,7 +41,15 @@ const AddComment: FC<AddCommentProps> = ({ postId }) => {
     console.log("buttonRef.current", buttonRef.current);
     if (!buttonRef.current) return;
     setButtonWidth(buttonRef.current.offsetWidth);
-  }, [buttonRef]);
+  }, [buttonRef.current]);
+
+  if (!user) {
+    return (
+      <div className={styles.not_logged_in}>
+        You must be logged in to comment
+      </div>
+    );
+  }
 
   return (
     <form

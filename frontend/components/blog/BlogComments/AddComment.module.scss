@@ -25,6 +25,7 @@
 
     button {
       opacity: 1;
+      visibility: visible;
     }
   }
 
@@ -38,6 +39,7 @@
     opacity: 0;
     transition: 0.3s;
     cursor: pointer;
+    visibility: hidden;
 
     background-color: #d35400;
 
