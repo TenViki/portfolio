@@ -11,10 +11,19 @@ interface AddCommentProps {
 }
 
 const AddComment: FC<AddCommentProps> = ({ postId }) => {
+  const { user } = useUser();
+
+  if (!user) {
+    return (
+      <div className={styles.not_logged_in}>
+        You must be logged in to comment
+      </div>
+    );
+  }
+
   const [text, setText] = React.useState("");
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [buttonWidth, setButtonWidth] = useState(0);
-  const { user } = useUser();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const addCommentMutation = useMutation(addComment, {
@@ -35,17 +44,10 @@ const AddComment: FC<AddCommentProps> = ({ postId }) => {
   }, [text]);
 
   React.useEffect(() => {
+    console.log("buttonRef.current", buttonRef.current);
     if (!buttonRef.current) return;
     setButtonWidth(buttonRef.current.offsetWidth);
   }, [buttonRef]);
-
-  if (!user) {
-    return (
-      <div className={styles.not_logged_in}>
-        You must be logged in to comment
-      </div>
-    );
-  }
 
   return (
     <form
