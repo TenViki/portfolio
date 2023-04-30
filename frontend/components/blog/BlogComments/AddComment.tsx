@@ -1,6 +1,6 @@
 "use client";
 
-import React, { CSSProperties, FC } from "react";
+import React, { CSSProperties, FC, useState } from "react";
 import styles from "./AddComment.module.scss";
 import { useUser } from "utils/useUser";
 import { addComment } from "api/comments";
@@ -13,6 +13,7 @@ interface AddCommentProps {
 const AddComment: FC<AddCommentProps> = ({ postId }) => {
   const [text, setText] = React.useState("");
   const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const [buttonWidth, setButtonWidth] = useState(0);
   const { user } = useUser();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -33,6 +34,11 @@ const AddComment: FC<AddCommentProps> = ({ postId }) => {
     )}px`;
   }, [text]);
 
+  React.useEffect(() => {
+    if (!buttonRef.current) return;
+    setButtonWidth(buttonRef.current.offsetWidth);
+  }, [buttonRef]);
+
   if (!user) {
     return (
       <div className={styles.not_logged_in}>
@@ -46,7 +52,7 @@ const AddComment: FC<AddCommentProps> = ({ postId }) => {
       className={styles.form + " " + (!!text.trim() && styles.filled)}
       style={
         {
-          "--button-width": buttonRef.current?.offsetWidth + "px",
+          "--button-width": buttonWidth + "px",
         } as CSSProperties
       }
       onSubmit={(e) => {
