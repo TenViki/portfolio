@@ -32,6 +32,7 @@ import { GalleryExtension } from "utils/GalleryExtension";
 import AddComment from "components/blog/BlogComments/AddComment";
 import Comments from "components/blog/BlogComments/Comments";
 import BlogReactions from "components/blog/BlogReactions/BlogReactions";
+import ReactionsIndicator from "components/blog/BlogReactions/ReactionsIndicator";
 
 interface BlogPostProps {
   params: {
@@ -139,10 +140,19 @@ const BlogPost = async ({ params }: BlogPostProps) => {
         </div>
       </div>
 
-      <div className={styles.tags}>
-        {data.tags.map((tag) => (
-          <Tag tag={tag} key={tag.id} />
-        ))}
+      <div className={styles.post_meta}>
+        <div className={styles.tags}>
+          {data.tags.map((tag) => (
+            <Tag tag={tag} key={tag.id} />
+          ))}
+        </div>
+
+        <div className={styles.reactions}>
+          <ReactionsIndicator
+            reactions={data.publicReactions}
+            hoverable={true}
+          />
+        </div>
       </div>
 
       <div

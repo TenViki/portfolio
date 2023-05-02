@@ -49,7 +49,10 @@ const BlogReactions: FC<BlogReactionsProps> = ({
   );
 
   return (
-    <div className={styles.reactions + " " + (!user && styles.not_logged_in)}>
+    <div
+      className={styles.reactions + " " + (!user && styles.not_logged_in)}
+      {...{ id: postId ? "blog-reactions" : undefined }}
+    >
       {Object.keys(reactions).map((reaction, i) => (
         <Reaction
           key={i}

@@ -8,7 +8,7 @@ interface ReactionProps {
   onClick?: () => void;
 }
 
-const emojiList: { [key: string]: string } = {
+export const emojiList: { [key: string]: string } = {
   fire: "🔥",
   heart: "❤️",
   mindBlown: "💀",

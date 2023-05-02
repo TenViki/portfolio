@@ -12,6 +12,10 @@
   position: relative;
 }
 
+.post_meta {
+  display: flex;
+}
+
 .header {
   position: relative;
   border-radius: 0.5rem;
@@ -39,8 +43,6 @@
     height: 100%;
     object-fit: cover;
     z-index: -2;
-
-    
   }
 
   .overlay {
@@ -93,6 +95,7 @@
 .tags {
   display: flex;
   margin-bottom: 1rem;
+  flex-grow: 1;
 }
 
 .content {
