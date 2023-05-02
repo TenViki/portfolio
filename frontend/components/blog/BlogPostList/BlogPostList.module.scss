@@ -8,6 +8,7 @@
   position: relative;
   overflow: hidden;
   transition: 0.2s ease;
+  margin-bottom: 1rem;
 
   .banner_img {
     object-fit: cover;
@@ -25,7 +26,6 @@
     font-weight: 400;
     margin-bottom: 0.5rem;
     color: #fff;
-    text-shadow: 0 0 0.5rem #00000088;
 
     display: -webkit-box;
     line-clamp: 2;
@@ -52,12 +52,26 @@
 
   .description {
     color: #ffffffaa;
-    padding-bottom: 1rem;
+    padding-bottom: 0.5rem;
   }
 
   &:not(:last-child) {
-    .description {
-      border-bottom: 1px solid #ffffff22;
+  }
+
+  .footer {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+
+    .comments {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+
+      svg {
+        margin-right: 0.5rem;
+        font-size: 1.25rem;
+      }
     }
   }
 }

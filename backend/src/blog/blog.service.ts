@@ -71,12 +71,15 @@ export class BlogService {
     const posts = await this.postsRepository.find({
       take: limit,
       skip: offset,
-      relations: ["author", "tags", "banner", "reactions"],
+      relations: ["author", "tags", "banner", "reactions", "comments"],
       order: { createdAt: "DESC" },
       where: { published: true, tags: tag ? { slug: tag } : undefined },
     });
 
-    return posts;
+    return posts.map((post) => ({
+      ...post,
+      comments: post.comments.length,
+    }));
   }
 
   async getAllBlogPostsAdmin(limit?: number, offset?: number) {

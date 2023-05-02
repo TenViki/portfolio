@@ -5,6 +5,8 @@ import { getFileUrl } from "utils/files";
 
 import styles from "./BlogPostList.module.scss";
 import Tag from "../BlogTag/Tag";
+import { FiMessageCircle } from "react-icons/fi";
+import ReactionsIndicator from "../BlogReactions/ReactionsIndicator";
 
 interface BlogPostListProps {
   post: BlogPost;
@@ -34,6 +36,14 @@ const BlogPostList: FC<BlogPostListProps> = ({ post }) => {
       </div>
 
       <p className={styles.description}>{post.content}</p>
+
+      <div className={styles.footer}>
+        <div className={styles.comments}>
+          <FiMessageCircle /> {post.comments} comments
+        </div>
+
+        <ReactionsIndicator reactions={post.publicReactions} />
+      </div>
     </div>
   );
 };

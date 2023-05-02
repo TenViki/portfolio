@@ -28,6 +28,7 @@ export interface BlogPost {
   updatedAt: string;
   views: number;
   publicReactions: Reactions;
+  comments: number;
 }
 
 export interface Reactions {
