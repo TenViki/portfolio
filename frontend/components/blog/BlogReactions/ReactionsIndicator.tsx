@@ -4,6 +4,7 @@ import React, { FC, useMemo } from "react";
 import { Reactions } from "types/blog";
 import { emojiList } from "./Reaction";
 import styles from "./ReactionsIndicator.module.scss";
+import { formatNumber } from "utils/numbers";
 
 interface ReactionsIndicatorProps {
   reactions: Reactions;
@@ -54,7 +55,7 @@ const ReactionsIndicator: FC<ReactionsIndicatorProps> = ({
         </div>
       ))}
 
-      <div className={styles.sum}>{sum}</div>
+      <div className={styles.sum}>{formatNumber(sum)}</div>
     </div>
   );
 };

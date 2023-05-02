@@ -1,6 +1,7 @@
 .reaction_indicator {
   display: flex;
   align-items: center;
+  color: #999;
 
   &.hoverable {
     cursor: pointer;
