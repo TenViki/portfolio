@@ -22,6 +22,7 @@ import { NewCommentDto } from "./dtos/new-comment.dto";
 import { AuthGuard } from "../guards/auth.guard";
 import { NewTagDto } from "./dtos/new-tag.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { ReactionInDto } from "./dtos/reaction-in.dto";
 
 @Controller("blog")
 export class BlogController {
@@ -115,7 +116,19 @@ export class BlogController {
 
   @Get("/:slug")
   @Serialize(BlogPostDto)
-  getPost(@Param("slug") slug: string) {
+  getPost(@Param("slug") slug: string, @CurrentUser() user: User) {
     return this.blogService.getPost(slug);
+  }
+
+  @Post("/react")
+  @UseGuards(AuthGuard)
+  reactToPost(@Body() body: ReactionInDto, @CurrentUser() user: User) {
+    return this.blogService.addReaction(body, user);
+  }
+
+  @Get("/:postId/my-reaction")
+  @UseGuards(AuthGuard)
+  getPostReactions(@Param("postId") postId: string, @CurrentUser() user: User) {
+    return this.blogService.getUserPostReactions(postId, user);
   }
 }

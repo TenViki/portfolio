@@ -34,6 +34,32 @@ export class BlogPostListDto {
 
   @Expose()
   publicReactions: any;
+
+  @Expose()
+  views: number;
+
+  @Expose()
+  comments: number;
+
+  @Expose()
+  userReaction: any;
+}
+
+export class UserReactionDto {
+  @Expose()
+  heart: boolean;
+
+  @Expose()
+  fire: boolean;
+
+  @Expose()
+  mindBlown: boolean;
+
+  @Expose()
+  rocket: boolean;
+
+  @Expose()
+  thumbsDown: boolean;
 }
 
 export class BlogPostDto {
