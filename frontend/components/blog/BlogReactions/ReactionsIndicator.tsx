@@ -25,7 +25,7 @@ const ReactionsIndicator: FC<ReactionsIndicatorProps> = ({
 
     r.sort((a, b) => b.value - a.value);
 
-    return r.slice(0, 3);
+    return r.slice(0, 3).filter((r) => r.value > 0);
   }, [reactions]);
 
   const sum = useMemo(() => {
