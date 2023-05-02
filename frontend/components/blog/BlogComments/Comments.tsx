@@ -5,6 +5,7 @@ import AddComment from "./AddComment";
 import styles from "./Comments.module.scss";
 import { useInfiniteQuery } from "react-query";
 import { getPostComments } from "api/comments";
+import Comment from "./Comment";
 
 const PAGE_SIZE = 10;
 
@@ -41,7 +42,7 @@ const Comments: FC<CommentsProps> = ({ postId }) => {
       {commentsQuery.data &&
         commentsQuery.data.pages
           .flat()
-          .map((comment, i) => <div key={i}>{comment.content}</div>)}
+          .map((comment, i) => <Comment key={i} comment={comment} />)}
     </div>
   );
 };
