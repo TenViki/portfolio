@@ -30,7 +30,7 @@ const BlogReactions: FC<BlogReactionsProps> = ({
     thumbsDown: false,
   });
 
-  const selfReactionsQuery = useQuery(
+  useQuery(
     ["self-reactions", postId, commentId],
     () =>
       postId
@@ -41,11 +41,12 @@ const BlogReactions: FC<BlogReactionsProps> = ({
         if (!data) return;
         setSelfReactions(data);
       },
+      refetchOnWindowFocus: false,
     }
   );
 
   return (
-    <div>
+    <div className={styles.reactions}>
       {Object.keys(reactions).map((reaction, i) => (
         <Reaction
           key={i}
