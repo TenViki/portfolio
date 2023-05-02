@@ -31,6 +31,9 @@ export class BlogPostListDto {
   @Expose()
   @Transform(({ value }) => getDescription(JSON.parse(value)))
   content: string;
+
+  @Expose()
+  publicReactions: any;
 }
 
 export class BlogPostDto {

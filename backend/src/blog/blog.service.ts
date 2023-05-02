@@ -5,11 +5,16 @@ import { BlogPost } from "./post.entity";
 import { Comment } from "./comment.entity";
 import { User } from "../users/users.entity";
 import { Tag } from "./tag.entity";
-import { NotFoundException } from "@nestjs/common/exceptions";
+import {
+  BadRequestException,
+  NotFoundException,
+} from "@nestjs/common/exceptions";
 import { NewPostDto } from "./dtos/new-post.dto";
 import { NewTagDto } from "./dtos/new-tag.dto";
 import { filterXSS } from "xss";
 import { FilesService } from "../files/files.service";
+import { ReactionInDto } from "./dtos/reaction-in.dto";
+import { Reactions } from "./reactions.entity";
 
 @Injectable()
 export class BlogService {
@@ -17,6 +22,8 @@ export class BlogService {
     @InjectRepository(BlogPost) private postsRepository: Repository<BlogPost>,
     @InjectRepository(Comment) private commentsRepository: Repository<Comment>,
     @InjectRepository(Tag) private tagsRepository: Repository<Tag>,
+    @InjectRepository(Reactions)
+    private reactionsRepository: Repository<Reactions>,
     private filesService: FilesService,
   ) {}
 
@@ -64,7 +71,7 @@ export class BlogService {
     const posts = await this.postsRepository.find({
       take: limit,
       skip: offset,
-      relations: ["author", "tags", "banner"],
+      relations: ["author", "tags", "banner", "reactions"],
       order: { createdAt: "DESC" },
       where: { published: true, tags: tag ? { slug: tag } : undefined },
     });
@@ -78,7 +85,7 @@ export class BlogService {
     return this.postsRepository.find({
       take: limit,
       skip: offset,
-      relations: ["author", "tags", "banner"],
+      relations: ["author", "tags", "banner", "reactions"],
       order: { createdAt: "DESC" },
     });
   }
@@ -86,7 +93,7 @@ export class BlogService {
   async getPost(slug: string) {
     const post = await this.postsRepository.findOne({
       where: { slug, published: true },
-      relations: ["author", "tags", "banner"],
+      relations: ["author", "tags", "banner", "reactions"],
     });
 
     if (!post) throw new NotFoundException("Post not found");
@@ -225,5 +232,66 @@ export class BlogService {
       where: { responseTo: { id: commentId } },
       relations: ["user"],
     });
+  }
+
+  async addReactionToPost(reactionDto: ReactionInDto, user: User) {
+    if (!reactionDto.commentId || !reactionDto.postId) {
+      throw new BadRequestException("Missing commentId or postId");
+    }
+
+    if (reactionDto.postId) {
+      const post = await this.postsRepository.findOne({
+        where: { id: reactionDto.postId },
+        relations: ["reactions"],
+      });
+
+      if (!post) throw new NotFoundException("No post with that id");
+
+      const reaction = await this.reactionsRepository.findOne({
+        where: { post: { id: reactionDto.postId }, user: { id: user.id } },
+      });
+
+      if (reaction) {
+        Object.assign(reaction, reactionDto);
+        return this.reactionsRepository.save(reaction);
+      }
+
+      const newReaction = this.reactionsRepository.create({
+        ...reactionDto,
+        user,
+        post,
+      });
+
+      return this.reactionsRepository.save(newReaction);
+    }
+
+    if (reactionDto.commentId) {
+      const comment = await this.commentsRepository.findOne({
+        where: { id: reactionDto.commentId },
+        relations: ["reactions"],
+      });
+
+      if (!comment) throw new NotFoundException("No comment with that id");
+
+      const reaction = await this.reactionsRepository.findOne({
+        where: {
+          comment: { id: reactionDto.commentId },
+          user: { id: user.id },
+        },
+      });
+
+      if (reaction) {
+        Object.assign(reaction, reactionDto);
+        return this.reactionsRepository.save(reaction);
+      }
+
+      const newReaction = this.reactionsRepository.create({
+        ...reactionDto,
+        user,
+        comment,
+      });
+
+      return this.reactionsRepository.save(newReaction);
+    }
   }
 }

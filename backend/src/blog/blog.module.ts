@@ -6,10 +6,14 @@ import { BlogPost } from "./post.entity";
 import { Tag } from "./tag.entity";
 import { Comment } from "./comment.entity";
 import { FilesModule } from "../files/files.module";
+import { Reactions } from "./reactions.entity";
 
 @Module({
   providers: [BlogService],
   controllers: [BlogController],
-  imports: [TypeOrmModule.forFeature([BlogPost, Comment, Tag]), FilesModule],
+  imports: [
+    TypeOrmModule.forFeature([BlogPost, Comment, Tag, Reactions]),
+    FilesModule,
+  ],
 })
 export class BlogModule {}
