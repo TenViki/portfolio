@@ -60,6 +60,16 @@ export class BlogController {
     return this.blogService.getPostComments(postId, +l, +o);
   }
 
+  @Get("/comments/:postId/:commentId")
+  getCommentReplies(
+    @Param("postId") postId: string,
+    @Param("commentId") commentId: string,
+    @Query("l") l: string,
+    @Query("o") o: string,
+  ) {
+    return this.blogService.getCommentReplies(postId);
+  }
+
   @Post("/tags")
   @UseGuards(AdminGuard)
   createTag(@Body() newTagObj: NewTagDto) {

@@ -305,4 +305,15 @@ export class BlogService {
       return this.reactionsRepository.save(newReaction);
     }
   }
+
+  async getCommentReplies(commentId: string) {
+    const comment = await this.commentsRepository.findOne({
+      where: { id: commentId },
+      relations: ["responses"],
+    });
+
+    if (!comment) throw new NotFoundException("No comment with that id");
+
+    return comment.responses;
+  }
 }
