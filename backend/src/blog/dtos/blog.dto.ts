@@ -3,6 +3,23 @@ import { UserLowDto } from "../../users/user-low.dto";
 import { FileDto } from "../../files/dtos/file.dto";
 import { getDescription } from "../../utils/blog";
 
+export class ReactionsDto {
+  @Expose()
+  heart: number;
+
+  @Expose()
+  fire: number;
+
+  @Expose()
+  mindBlown: number;
+
+  @Expose()
+  rocket: number;
+
+  @Expose()
+  thumbsDown: number;
+}
+
 export class BlogPostListDto {
   @Expose()
   id: string;
@@ -33,16 +50,14 @@ export class BlogPostListDto {
   content: string;
 
   @Expose()
-  publicReactions: any;
+  @Type(() => ReactionsDto)
+  publicReactions: ReactionsDto;
 
   @Expose()
   views: number;
 
   @Expose()
   comments: number;
-
-  @Expose()
-  userReaction: any;
 }
 
 export class UserReactionDto {
@@ -92,6 +107,13 @@ export class BlogPostDto {
   @Expose()
   @Type(() => FileDto)
   banner: FileDto;
+
+  @Expose()
+  @Type(() => ReactionsDto)
+  publicReactions: ReactionsDto;
+
+  @Expose()
+  views: number;
 }
 
 export class TagDto {
