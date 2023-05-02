@@ -31,6 +31,7 @@ import "../admin/blog/katex.scss";
 import { GalleryExtension } from "utils/GalleryExtension";
 import AddComment from "components/blog/BlogComments/AddComment";
 import Comments from "components/blog/BlogComments/Comments";
+import BlogReactions from "components/blog/BlogReactions/BlogReactions";
 
 interface BlogPostProps {
   params: {
@@ -151,6 +152,8 @@ const BlogPost = async ({ params }: BlogPostProps) => {
           __html: output,
         }}
       ></div>
+
+      <BlogReactions reactions={data.publicReactions} postId={data.id} />
 
       <Comments postId={data.id} />
 

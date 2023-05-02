@@ -104,7 +104,7 @@ export class BlogService {
   }
 
   async getUserPostReactions(postId: string, user: User) {
-    const reactions = await this.reactionsRepository.find({
+    const reactions = await this.reactionsRepository.findOne({
       where: { post: { id: postId }, user },
     });
 
@@ -245,7 +245,7 @@ export class BlogService {
   }
 
   async addReaction(reactionDto: ReactionInDto, user: User) {
-    if (!reactionDto.commentId || !reactionDto.postId) {
+    if (!reactionDto.commentId && !reactionDto.postId) {
       throw new BadRequestException("Missing commentId or postId");
     }
 

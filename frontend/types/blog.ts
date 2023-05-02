@@ -26,6 +26,24 @@ export interface BlogPost {
   author: User;
   createdAt: string;
   updatedAt: string;
+  views: number;
+  publicReactions: Reactions;
+}
+
+export interface Reactions {
+  heart: number;
+  fire: number;
+  mindBlown: number;
+  rocket: number;
+  thumbsDown: number;
+}
+
+export interface SelfReactions {
+  heart: boolean;
+  fire: boolean;
+  mindBlown: boolean;
+  rocket: boolean;
+  thumbsDown: boolean;
 }
 
 export interface Comment {
