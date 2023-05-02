@@ -10,6 +10,7 @@ import {
   getUserReactionsForComment,
   getUserReactionsForPost,
 } from "api/reactions";
+import { useUser } from "utils/useUser";
 
 interface BlogReactionsProps {
   reactions: Reactions;
@@ -30,6 +31,8 @@ const BlogReactions: FC<BlogReactionsProps> = ({
     thumbsDown: false,
   });
 
+  const { user } = useUser();
+
   useQuery(
     ["self-reactions", postId, commentId],
     () =>
@@ -46,7 +49,7 @@ const BlogReactions: FC<BlogReactionsProps> = ({
   );
 
   return (
-    <div className={styles.reactions}>
+    <div className={styles.reactions + " " + (!user && styles.not_logged_in)}>
       {Object.keys(reactions).map((reaction, i) => (
         <Reaction
           key={i}

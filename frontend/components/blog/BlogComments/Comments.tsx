@@ -32,8 +32,6 @@ const Comments: FC<CommentsProps> = ({ postId }) => {
 
   return (
     <div className={styles.comments}>
-      <h3>Comments</h3>
-
       <AddComment
         postId={postId}
         onCommentAdded={() => commentsQuery.refetch()}

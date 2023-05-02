@@ -1,9 +1,17 @@
 .reactions {
   display: flex;
   align-items: center;
-  justify-content: center;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+
+  &.not_logged_in {
+    pointer-events: none;
+
+    .reaction {
+      background-color: transparent;
+      border-color: transparent;
+    }
+  }
 }
 
 .reaction {
