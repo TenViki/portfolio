@@ -76,8 +76,6 @@ export class BlogPost {
   countReactions() {
     const reactions = this.reactions;
 
-    console.log(reactions);
-
     this.publicReactions = {
       heart: 0,
       fire: 0,

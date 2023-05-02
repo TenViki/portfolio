@@ -30,8 +30,6 @@ const BlogCode = () => {
     });
 
     katexViews.forEach((katexView) => {
-      console.log("rendering katex");
-
       katexView.setAttribute("x-content", katexView.textContent || "");
       katex.render(katexView.textContent || "", katexView, {
         throwOnError: false,

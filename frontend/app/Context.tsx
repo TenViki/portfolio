@@ -29,7 +29,6 @@ export default function AppContextSettings({
       enabled: !!window && !!localStorage.getItem("token"),
       onSuccess: (data) => {
         setUser(data);
-        console.log("Authenticated user");
       },
       refetchOnWindowFocus: false,
     });
@@ -41,7 +40,6 @@ export default function AppContextSettings({
           const data = await loginWithToken(res.credential);
           setUser(data.user);
           localStorage.setItem("token", data.token);
-          console.log("Authenticated user");
         },
         auto_select: true,
       });

@@ -35,7 +35,6 @@ export class BlogController {
     @Query("o") o: string,
     @Query("tag") t: string,
   ) {
-    console.log(l, o, t);
     if (isNaN(+l)) l = "10";
     if (isNaN(+o)) o = "0";
     return this.blogService.getPosts(+l, +o, t);

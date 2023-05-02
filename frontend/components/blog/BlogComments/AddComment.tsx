@@ -38,7 +38,6 @@ const AddComment: FC<AddCommentProps> = ({ postId, onCommentAdded }) => {
   }, [text]);
 
   React.useEffect(() => {
-    console.log("buttonRef.current", buttonRef.current);
     if (!buttonRef.current) return;
     setButtonWidth(buttonRef.current.offsetWidth);
   }, [buttonRef.current]);

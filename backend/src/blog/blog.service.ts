@@ -96,8 +96,6 @@ export class BlogService {
       relations: ["author", "tags", "banner", "reactions"],
     });
 
-    console.log(post);
-
     if (!post) throw new NotFoundException("Post not found");
 
     return post;

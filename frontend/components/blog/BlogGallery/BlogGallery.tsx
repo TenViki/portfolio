@@ -71,7 +71,6 @@ const BlogGallery: FC = () => {
   const imageIndex = wrap(0, images.length, page);
 
   const paginate = (newDirection: number) => {
-    console.log("paginate", newDirection, page, direction);
     setPage([page + newDirection, newDirection]);
   };
 

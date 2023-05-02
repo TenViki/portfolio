@@ -17,18 +17,18 @@ export class Reactions {
   @ManyToOne(() => Comment, (post) => post.reactions, { nullable: true })
   comment: Comment;
 
-  @Column()
+  @Column({ type: "bool" })
   heart: boolean;
 
-  @Column()
+  @Column({ type: "bool" })
   fire: boolean;
 
-  @Column()
+  @Column({ type: "bool" })
   mindBlown: boolean;
 
-  @Column()
+  @Column({ type: "bool" })
   rocket: boolean;
 
-  @Column()
+  @Column({ type: "bool" })
   thumbsDown: boolean;
 }
