@@ -2,12 +2,7 @@ import { IsBoolean, IsOptional, IsString } from "class-validator";
 
 export class ReactionInDto {
   @IsString()
-  @IsOptional()
   postId: string;
-
-  @IsString()
-  @IsOptional()
-  commentId: string;
 
   @IsBoolean()
   heart: boolean;

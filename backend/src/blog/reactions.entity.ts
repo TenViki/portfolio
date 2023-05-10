@@ -14,9 +14,6 @@ export class Reactions {
   @ManyToOne(() => BlogPost, (post) => post.reactions, { nullable: true })
   post: BlogPost;
 
-  @ManyToOne(() => Comment, (post) => post.reactions, { nullable: true })
-  comment: Comment;
-
   @Column({ type: "bool" })
   heart: boolean;
 

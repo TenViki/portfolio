@@ -1,7 +1,5 @@
 .comment {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #ffffff22;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -10,6 +8,38 @@
     display: flex;
     align-items: center;
     margin-bottom: 0.5rem;
+
+    .name {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .respond {
+    background-color: #ffffff11;
+    opacity: 0;
+    transition: 0.2s;
+  }
+
+  button {
+    width: 2.75rem;
+    height: 2.75rem;
+
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: 0;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:active {
+      transform: scale(0.9);
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
   img {
@@ -21,9 +51,92 @@
 
   .content {
     color: #ffffffaa;
+    margin-bottom: 0.5rem;
   }
 
   &:last-child {
     margin-bottom: 2rem;
+  }
+
+  .date {
+    color: #777;
+  }
+}
+
+.comment_card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 0.5rem;
+  transition: 0.3s;
+  z-index: 2;
+  background-color: #121212;
+
+  &:hover .respond {
+    opacity: 1;
+  }
+
+  // &.active {
+  //   background-color: #ffffff11;
+  //   padding: 1rem;
+  // }
+}
+
+.comment_content {
+  flex-grow: 1;
+}
+
+.reply_form {
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  max-height: 0;
+  transition: 0.3s;
+  padding-top: 0.5rem;
+
+  &.active {
+    max-height: 3.25rem;
+  }
+
+  & > *:not(:last-child) {
+    margin-right: 1rem;
+  }
+
+  & > div {
+    height: 2.75rem;
+  }
+
+  input {
+    flex-grow: 1;
+    height: 2.75rem;
+    border-radius: 0.5rem;
+    border: 0;
+    font-size: 1rem;
+    padding: 0 1rem;
+    background-color: #ffffff11;
+    outline: 0;
+    transition: 0.2s background-color;
+
+    &:focus {
+      background-color: #ffffff22;
+    }
+  }
+
+  .cancel {
+    color: #e74c3c;
+    background-color: #e74c3c33;
+
+    &:hover {
+      background-color: #e74c3c55;
+    }
+  }
+
+  .submit {
+    color: #2ecc71;
+    background-color: #2ecc7133;
+
+    &:hover {
+      background-color: #2ecc7155;
+    }
   }
 }

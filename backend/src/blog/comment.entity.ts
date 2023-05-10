@@ -32,14 +32,12 @@ export class Comment {
   @ManyToOne(() => Comment, (comment) => comment.responses, { nullable: true })
   responseTo: Comment;
 
-  @OneToMany(() => Comment, (comment) => comment.responseTo)
+  @OneToMany(() => Comment, (comment) => comment.responseTo, {
+    nullable: true,
+    cascade: true,
+  })
   responses: Comment[];
 
   @Column({ default: () => "CURRENT_TIMESTAMP" })
   updatedAt: Date;
-
-  @OneToMany(() => Reactions, (reactions) => reactions.comment, {
-    nullable: true,
-  })
-  reactions: Reactions[];
 }

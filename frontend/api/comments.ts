@@ -3,7 +3,7 @@ import { api } from "./server";
 
 interface NewComment {
   content: string;
-  postId: string;
+  postId?: string;
   parentCommentId?: string;
 }
 
