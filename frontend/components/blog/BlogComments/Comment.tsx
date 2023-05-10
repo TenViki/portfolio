@@ -4,11 +4,16 @@ import React, { FC, useEffect } from "react";
 import { Comment } from "types/blog";
 import styles from "./Comment.module.scss";
 import { getFileUrl } from "utils/files";
-import { FiArrowUpRight, FiCornerDownRight, FiX } from "react-icons/fi";
+import {
+  FiArrowUpRight,
+  FiChevronRight,
+  FiCornerDownRight,
+  FiX,
+} from "react-icons/fi";
 import RespondButton from "./RespondButton/RespondButton";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMutation, useQueryClient } from "react-query";
-import { addComment } from "api/comments";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { addComment, getCommentReplies } from "api/comments";
 
 interface CommentProps {
   comment: Comment;
@@ -18,12 +23,17 @@ interface CommentProps {
 const Comment: FC<CommentProps> = ({ comment, postId }) => {
   const [isResponding, setIsResponding] = React.useState(false);
   const [reply, setReply] = React.useState("");
+  const [showReplies, setShowReplies] = React.useState(false);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
   const replyMutation = useMutation(addComment);
+
+  const replies = useQuery(["replies", comment.id], () =>
+    getCommentReplies(postId, comment.id)
+  );
 
   const handleSend = async () => {
     await replyMutation.mutateAsync({
@@ -125,10 +135,35 @@ const Comment: FC<CommentProps> = ({ comment, postId }) => {
       </form>
 
       {!!comment.responses && (
-        <div>
-          Show {comment.responses} response{comment.responses > 1 && "s"}
-        </div>
+        <button
+          className={
+            styles.responses_count + " " + (showReplies && styles.active)
+          }
+          onClick={() => setShowReplies(!showReplies)}
+        >
+          <FiChevronRight />
+          {showReplies ? "Hide" : "Show"} {comment.responses} response
+          {comment.responses > 1 && "s"}
+        </button>
       )}
+
+      <div className={styles.replies}>
+        <AnimatePresence>
+          {showReplies && (
+            <motion.div
+              className={styles.reply_card}
+              initial={{ opacity: 0, y: -10, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: -10, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {replies.data?.map((reply) => (
+                <Comment comment={reply} postId={postId} />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

@@ -274,11 +274,14 @@ export class BlogService {
   async getCommentReplies(commentId: string) {
     const comment = await this.commentsRepository.findOne({
       where: { id: commentId },
-      relations: ["responses"],
+      relations: ["user", "responses", "responses.user", "responses.responses"],
     });
 
     if (!comment) throw new NotFoundException("No comment with that id");
 
-    return comment.responses;
+    return comment.responses.map((comment) => ({
+      ...comment,
+      responses: comment.responses.length,
+    }));
   }
 }

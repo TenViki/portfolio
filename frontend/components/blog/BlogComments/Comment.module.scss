@@ -2,7 +2,8 @@
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
+  justify-content: stretch;
 
   .author {
     display: flex;
@@ -18,28 +19,6 @@
     background-color: #ffffff11;
     opacity: 0;
     transition: 0.2s;
-  }
-
-  button {
-    width: 2.75rem;
-    height: 2.75rem;
-
-    font-size: 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.5rem;
-    border: 0;
-    cursor: pointer;
-    transition: 0.2s;
-
-    &:active {
-      transform: scale(0.9);
-    }
-
-    &:hover {
-      opacity: 0.8;
-    }
   }
 
   img {
@@ -84,6 +63,29 @@
 
 .comment_content {
   flex-grow: 1;
+}
+
+.reply_form button,
+.comment_card button {
+  width: 2.75rem;
+  height: 2.75rem;
+
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 0;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .reply_form {
@@ -137,6 +139,73 @@
 
     &:hover {
       background-color: #2ecc7155;
+    }
+  }
+
+  & + .responses_count {
+    margin-top: 0;
+    transition: 0.2s;
+  }
+
+  &.active + .responses_count {
+    margin-top: 0.5rem;
+  }
+}
+
+.responses_count {
+  font-size: 1rem;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  color: #777;
+  cursor: pointer;
+
+  svg {
+    margin-right: 0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: 0.2s;
+  }
+
+  &:hover {
+    color: #ffffffaa;
+  }
+
+  &:active {
+    color: #fff;
+  }
+
+  &.active {
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.replies {
+  padding-left: 2rem;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(1.25rem / 2 - 3px);
+    width: 6px;
+    height: calc(100% - 2rem);
+    background-color: #ffffff11;
+    border-radius: 3px;
+  }
+
+  .comment {
+    margin-top: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
     }
   }
 }

@@ -67,7 +67,7 @@ export class BlogController {
     @Query("l") l: string,
     @Query("o") o: string,
   ) {
-    return this.blogService.getCommentReplies(postId);
+    return this.blogService.getCommentReplies(commentId);
   }
 
   @Post("/tags")

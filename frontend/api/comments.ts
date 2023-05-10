@@ -26,3 +26,10 @@ export const addComment = async (data: NewComment) => {
     useAuth: true,
   });
 };
+
+export const getCommentReplies = async (postId: string, commentId: string) => {
+  return api.request<Comment[]>({
+    method: "GET",
+    url: `/blog/comments/${postId}/${commentId}`,
+  });
+};
