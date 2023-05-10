@@ -14,16 +14,19 @@ import RespondButton from "./RespondButton/RespondButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { addComment, getCommentReplies } from "api/comments";
+import { useUser } from "utils/useUser";
 
 interface CommentProps {
   comment: Comment;
   postId: string;
+  nestage: number;
 }
 
-const Comment: FC<CommentProps> = ({ comment, postId }) => {
+const Comment: FC<CommentProps> = ({ comment, postId, nestage }) => {
   const [isResponding, setIsResponding] = React.useState(false);
   const [reply, setReply] = React.useState("");
   const [showReplies, setShowReplies] = React.useState(false);
+  const user = useUser();
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -43,6 +46,7 @@ const Comment: FC<CommentProps> = ({ comment, postId }) => {
     });
 
     queryClient.invalidateQueries(["comments", postId]);
+    queryClient.invalidateQueries(["replies", comment.id]);
 
     setIsResponding(false);
   };
@@ -74,12 +78,14 @@ const Comment: FC<CommentProps> = ({ comment, postId }) => {
           </div>
         </div>
         <div className={styles.reply}>
-          <button
-            className={styles.respond}
-            onClick={() => setIsResponding(!isResponding)}
-          >
-            <FiCornerDownRight />
-          </button>
+          {nestage < 3 && (
+            <button
+              className={styles.respond}
+              onClick={() => setIsResponding(!isResponding)}
+            >
+              <FiCornerDownRight />
+            </button>
+          )}
         </div>
       </div>
 
@@ -158,7 +164,11 @@ const Comment: FC<CommentProps> = ({ comment, postId }) => {
               transition={{ duration: 0.3 }}
             >
               {replies.data?.map((reply) => (
-                <Comment comment={reply} postId={postId} />
+                <Comment
+                  comment={reply}
+                  postId={postId}
+                  nestage={nestage + 1}
+                />
               ))}
             </motion.div>
           )}

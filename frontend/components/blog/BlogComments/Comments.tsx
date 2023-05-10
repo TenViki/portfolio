@@ -41,7 +41,7 @@ const Comments: FC<CommentsProps> = ({ postId }) => {
         commentsQuery.data.pages
           .flat()
           .map((comment, i) => (
-            <Comment postId={postId} key={i} comment={comment} />
+            <Comment postId={postId} key={i} comment={comment} nestage={1} />
           ))}
     </div>
   );
