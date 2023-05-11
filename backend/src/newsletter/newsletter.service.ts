@@ -16,7 +16,6 @@ export class NewsletterService {
   async addSubscriber(name: string, email: string) {
     // default all subscribers to all tags
     const tags = await this.tagRepo.find();
-
     return this.mailingRepo.save({ name, email, preferences: tags });
   }
 }

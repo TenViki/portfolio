@@ -32,7 +32,7 @@ const Comment: FC<CommentProps> = ({
   const [isResponding, setIsResponding] = React.useState(false);
   const [reply, setReply] = React.useState("");
   const [showReplies, setShowReplies] = React.useState(false);
-  const user = useUser();
+  const { user } = useUser();
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -85,7 +85,7 @@ const Comment: FC<CommentProps> = ({
           </div>
         </div>
         <div className={styles.reply}>
-          {nestage < 3 && (
+          {nestage < 3 && !!user && (
             <button
               className={styles.respond}
               onClick={() => setIsResponding(!isResponding)}
