@@ -4,6 +4,7 @@ import { LoginDto } from "./login.dto";
 import { UsersService } from "../users/users.service";
 import * as jwt from "jsonwebtoken";
 import { SessionsService } from "./sessions/sessions.service";
+import { NewsletterService } from "../newsletter/newsletter.service";
 
 @Injectable()
 export class AuthService {
@@ -11,6 +12,7 @@ export class AuthService {
     private googleService: GoogleService,
     private usersService: UsersService,
     private sessionsService: SessionsService,
+    private newsletterService: NewsletterService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -26,6 +28,8 @@ export class AuthService {
         googleId: userData.sub,
         email: userData.email,
       });
+
+      await this.newsletterService.addSubscriber(userData.name, userData.email);
     } else {
       user.picture = userData.picture;
       user.name = userData.name;

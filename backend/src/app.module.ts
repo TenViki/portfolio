@@ -10,7 +10,9 @@ import { UsersModule } from "./users/users.module";
 import { BlogModule } from "./blog/blog.module";
 import { APP_PIPE } from "@nestjs/core";
 import { ValidationPipeCheck } from "./interceptors/validation.pipe";
-import { FilesModule } from './files/files.module';
+import { FilesModule } from "./files/files.module";
+import { NewsletterModule } from "./newsletter/newsletter.module";
+import { NewsletterRecord } from "./newsletter/newsletter.entity";
 
 @Module({
   imports: [
@@ -37,6 +39,7 @@ import { FilesModule } from './files/files.module';
     UsersModule,
     BlogModule,
     FilesModule,
+    NewsletterModule,
   ],
   controllers: [AppController],
   providers: [

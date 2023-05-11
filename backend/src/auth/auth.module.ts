@@ -8,11 +8,17 @@ import { Session } from "./sessions/sessions.entity";
 import { UsersModule } from "../users/users.module";
 import { MiddlewareConsumer } from "@nestjs/common/interfaces";
 import { CurrentUserMiddleware } from "../middleware/current-user.middleware";
+import { NewsletterModule } from "../newsletter/newsletter.module";
 
 @Module({
   providers: [AuthService, SessionsService],
   controllers: [AuthController],
-  imports: [GoogleModule, TypeOrmModule.forFeature([Session]), UsersModule],
+  imports: [
+    GoogleModule,
+    TypeOrmModule.forFeature([Session]),
+    UsersModule,
+    NewsletterModule,
+  ],
 })
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {
