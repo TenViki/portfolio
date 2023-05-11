@@ -14,7 +14,7 @@ interface BlogHeaderProps {
 
 const BlogHeader: FC<BlogHeaderProps> = ({ linkBackHref, linkBackText }) => {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, setUser } = useUser();
 
   return (
     <nav className={styles.nav}>
@@ -32,7 +32,12 @@ const BlogHeader: FC<BlogHeaderProps> = ({ linkBackHref, linkBackText }) => {
           <img src={user.picture} alt="Userpfp" />
           <span>{user.name}</span>
 
-          <button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              setUser(null);
+            }}
+          >
             <FiLogOut />
           </button>
         </div>
