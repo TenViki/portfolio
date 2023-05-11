@@ -1,16 +1,12 @@
 import {
   Column,
   Entity,
-  JoinColumn,
-  JoinTable,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "../users/users.entity";
 import { BlogPost } from "./post.entity";
-import { Reactions } from "./reactions.entity";
 
 @Entity()
 export class Comment {
