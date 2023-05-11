@@ -20,9 +20,15 @@ interface CommentProps {
   comment: Comment;
   postId: string;
   nestage: number;
+  parentCommentId?: string;
 }
 
-const Comment: FC<CommentProps> = ({ comment, postId, nestage }) => {
+const Comment: FC<CommentProps> = ({
+  comment,
+  postId,
+  nestage,
+  parentCommentId,
+}) => {
   const [isResponding, setIsResponding] = React.useState(false);
   const [reply, setReply] = React.useState("");
   const [showReplies, setShowReplies] = React.useState(false);
@@ -46,8 +52,9 @@ const Comment: FC<CommentProps> = ({ comment, postId, nestage }) => {
     });
 
     queryClient.invalidateQueries(["comments", postId]);
-    queryClient.invalidateQueries(["replies", comment.id]);
+    queryClient.invalidateQueries(["replies", parentCommentId]);
 
+    setReply("");
     setIsResponding(false);
   };
 
@@ -118,7 +125,10 @@ const Comment: FC<CommentProps> = ({ comment, postId, nestage }) => {
               >
                 <button
                   className={styles.cancel}
-                  onClick={() => setIsResponding(false)}
+                  onClick={() => {
+                    setIsResponding(false);
+                    setReply("");
+                  }}
                   type="button"
                 >
                   <FiX />
@@ -168,6 +178,7 @@ const Comment: FC<CommentProps> = ({ comment, postId, nestage }) => {
                   comment={reply}
                   postId={postId}
                   nestage={nestage + 1}
+                  parentCommentId={comment.id}
                 />
               ))}
             </motion.div>
