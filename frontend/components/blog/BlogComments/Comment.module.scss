@@ -169,7 +169,7 @@
     margin-right: 0.5rem;
     width: 1.25rem;
     height: 1.25rem;
-    transition: 0.2s;
+    transition: 0.2s transform;
   }
 
   &:hover {
@@ -229,4 +229,9 @@
   &:hover {
     background-color: #e74c3c55;
   }
+}
+
+.uninteractive {
+  pointer-events: none;
+  margin: 0;
 }

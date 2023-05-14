@@ -6,6 +6,8 @@ import styles from "./Comments.module.scss";
 import { useInfiniteQuery } from "react-query";
 import { getPostComments } from "api/comments";
 import Comment from "./Comment";
+import { ModalsProvider } from "@mantine/modals";
+import { MantineProvider } from "@mantine/core";
 
 const PAGE_SIZE = 10;
 
@@ -31,19 +33,42 @@ const Comments: FC<CommentsProps> = ({ postId }) => {
   );
 
   return (
-    <div className={styles.comments}>
-      <AddComment
-        postId={postId}
-        onCommentAdded={() => commentsQuery.refetch()}
-      />
+    <MantineProvider theme={{ colorScheme: "dark" }}>
+      <ModalsProvider
+        modalProps={{
+          styles: {
+            header: {
+              backgroundColor: "#121212",
+            },
+            body: {
+              backgroundColor: "#121212",
+            },
+            overlay: {
+              backdropFilter: "blur(25px)",
+            },
+          },
+        }}
+      >
+        <div className={styles.comments}>
+          <AddComment
+            postId={postId}
+            onCommentAdded={() => commentsQuery.refetch()}
+          />
 
-      {commentsQuery.data &&
-        commentsQuery.data.pages
-          .flat()
-          .map((comment, i) => (
-            <Comment postId={postId} key={i} comment={comment} nestage={1} />
-          ))}
-    </div>
+          {commentsQuery.data &&
+            commentsQuery.data.pages
+              .flat()
+              .map((comment, i) => (
+                <Comment
+                  postId={postId}
+                  key={i}
+                  comment={comment}
+                  nestage={1}
+                />
+              ))}
+        </div>
+      </ModalsProvider>
+    </MantineProvider>
   );
 };
 
