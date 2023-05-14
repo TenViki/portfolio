@@ -22,6 +22,12 @@ const BlogCode = () => {
 
       copyButton.addEventListener("click", () => {
         copyToClipboard(block.textContent || "");
+
+        copyButton.src = "/icons/check.svg";
+
+        setTimeout(() => {
+          copyButton.src = "/icons/copy.svg";
+        }, 3000);
       });
 
       block.parentElement?.appendChild(copyButton);
