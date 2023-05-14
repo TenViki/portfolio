@@ -20,7 +20,7 @@
     opacity: 0;
     transition: 0.2s;
 
-    @media (pointer:coarse) { 
+    @media (pointer: coarse) {
       opacity: 1;
     }
   }
@@ -211,5 +211,22 @@
     &:last-child {
       margin-bottom: 0;
     }
+  }
+}
+
+.reply {
+  display: flex;
+
+  & > *:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+.delete {
+  color: #e74c3c;
+  background-color: transparent;
+
+  &:hover {
+    background-color: #e74c3c55;
   }
 }

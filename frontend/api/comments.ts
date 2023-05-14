@@ -33,3 +33,11 @@ export const getCommentReplies = async (postId: string, commentId: string) => {
     url: `/blog/comments/${postId}/${commentId}`,
   });
 };
+
+export const deleteComment = async (commentId: string) => {
+  return api.request({
+    method: "DELETE",
+    url: `/blog/comments/${commentId}`,
+    useAuth: true,
+  });
+};

@@ -25,12 +25,14 @@ export class Comment {
   @ManyToOne(() => BlogPost, (post) => post.comments)
   post: BlogPost;
 
-  @ManyToOne(() => Comment, (comment) => comment.responses, { nullable: true })
+  @ManyToOne(() => Comment, (comment) => comment.responses, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   responseTo: Comment;
 
   @OneToMany(() => Comment, (comment) => comment.responseTo, {
     nullable: true,
-    cascade: true,
   })
   responses: Comment[];
 

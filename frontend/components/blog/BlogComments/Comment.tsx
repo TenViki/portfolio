@@ -8,12 +8,13 @@ import {
   FiArrowUpRight,
   FiChevronRight,
   FiCornerDownRight,
+  FiTrash,
   FiX,
 } from "react-icons/fi";
 import RespondButton from "./RespondButton/RespondButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { addComment, getCommentReplies } from "api/comments";
+import { addComment, deleteComment, getCommentReplies } from "api/comments";
 import { useUser } from "utils/useUser";
 
 interface CommentProps {
@@ -43,6 +44,13 @@ const Comment: FC<CommentProps> = ({
   const replies = useQuery(["replies", comment.id], () =>
     getCommentReplies(postId, comment.id)
   );
+
+  const deleteMutation = useMutation(deleteComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["comments", postId]);
+      queryClient.invalidateQueries(["replies", parentCommentId]);
+    },
+  });
 
   const handleSend = async () => {
     await replyMutation.mutateAsync({
@@ -91,6 +99,19 @@ const Comment: FC<CommentProps> = ({
               onClick={() => setIsResponding(!isResponding)}
             >
               <FiCornerDownRight />
+            </button>
+          )}
+
+          {(user?.admin || user?.id === comment.user.id) && (
+            <button
+              className={styles.delete}
+              onClick={async () => {
+                await deleteMutation.mutate(comment.id);
+                queryClient.invalidateQueries(["comments", postId]);
+                queryClient.invalidateQueries(["replies", parentCommentId]);
+              }}
+            >
+              <FiTrash />
             </button>
           )}
         </div>
@@ -179,6 +200,7 @@ const Comment: FC<CommentProps> = ({
                   postId={postId}
                   nestage={nestage + 1}
                   parentCommentId={comment.id}
+                  key={reply.id}
                 />
               ))}
             </motion.div>
