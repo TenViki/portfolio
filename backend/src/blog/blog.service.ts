@@ -232,8 +232,6 @@ export class BlogService {
 
     if (!comment) throw new NotFoundException("No comment with that id");
 
-    console.log(comment.user.id, user.id);
-
     if (comment.user.id !== user.id && !user.admin) {
       throw new ForbiddenException("You can only delete your own comments");
     }
