@@ -1,0 +1,104 @@
+.dropdown {
+  &_label {
+    margin-bottom: 0.15rem;
+    color: #777;
+  }
+
+  &_head {
+    border-radius: 0.3rem;
+    background-color: #333;
+    cursor: pointer;
+    display: flex;
+    height: 2.5rem;
+    align-items: center;
+    padding: 0 0.75rem;
+    padding-right: 0.5rem;
+    transition: 0.2s;
+
+    &_text {
+      flex-grow: 1;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      transition: 0.2s;
+    }
+
+    &:hover {
+      background-color: #3a3a3a;
+    }
+
+    &:active {
+      background-color: #282828;
+    }
+  }
+
+  &_input {
+    position: relative;
+
+    &.active {
+      .dropdown_head svg {
+        transform: rotate(180deg);
+      }
+
+      .dropdown_options {
+        transform: translateY(100%) scaleY(1);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+      }
+    }
+  }
+
+  &_options {
+    border-radius: 0.3rem;
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 100%;
+    max-height: 20rem;
+    overflow-y: auto;
+    transform: translateY(90%) scaleY(0.8);
+    transform-origin: 50% 0;
+    transition: 0.2s;
+    opacity: 0;
+    visibility: hidden;
+    background-color: #333;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  &_option {
+    height: 2.5rem;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s background-color;
+    padding-left: 1.3rem + 0.5rem + 0.5rem;
+
+    svg {
+      width: 1.3rem;
+      height: 1.3rem;
+      margin-right: 0.5rem;
+      margin-left: 0.5rem;
+      color: #27ae60;
+    }
+
+    &.active {
+      padding-left: 0;
+    }
+
+    &:hover {
+      background-color: #3a3a3a;
+    }
+
+    &.active,
+    &:active {
+      background-color: #282828;
+    }
+  }
+}

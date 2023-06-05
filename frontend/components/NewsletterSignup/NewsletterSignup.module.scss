@@ -1,0 +1,92 @@
+.newsletter {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+
+  h2 {
+    font-size: 3rem;
+    font-weight: 100;
+    color: #777;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-right: 5rem;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  & > div {
+    width: 50%;
+  }
+
+  form {
+    & > *:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+
+    button {
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 0.3rem;
+      background-color: #d35400;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:hover {
+        background-color: #e67e22;
+      }
+
+      &:active {
+        background-color: #f39c12;
+      }
+    }
+  }
+
+  .input_group {
+    display: flex;
+
+    & > div:first-child {
+      margin-right: 1rem;
+      flex-grow: 1;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .newsletter {
+    flex-direction: column;
+    justify-content: center;
+
+    & > div {
+      width: 100%;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    p {
+      margin-right: 0;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .input_group {
+    flex-direction: column;
+
+    & > div:first-child {
+      margin-right: 0 !important;
+      margin-bottom: 1rem;
+    }
+  }
+}

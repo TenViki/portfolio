@@ -3,6 +3,7 @@ import Hero from "../components/sections/hero/Hero";
 import AboutMe from "../components/sections/aboutme/AboutMe";
 import GoogleLogin from "../components/GoogleLogin/GoogleLogin";
 import UserProfile from "../components/User/UserProfile";
+import NewsletterSinup from "components/NewsletterSignup/NewsletterSinup";
 
 const MainPage = () => {
   return (
@@ -11,12 +12,7 @@ const MainPage = () => {
 
       <div className="background">
         <AboutMe />
-        <div style={{ height: "100vh" }}>
-          <div id="google-login">
-            <GoogleLogin />
-          </div>
-          Current user state: <UserProfile />
-        </div>
+        <NewsletterSinup />
       </div>
     </div>
   );

@@ -9,6 +9,7 @@
     "dev": "concurrently \"cd frontend && yarn dev\" \"cd backend && yarn start:dev\""
   },
   "dependencies": {
-    "concurrently": "^8.0.1"
+    "concurrently": "^8.0.1",
+    "react-click-away-listener": "^2.2.3"
   }
 }
