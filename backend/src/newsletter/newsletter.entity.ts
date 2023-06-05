@@ -21,4 +21,10 @@ export class NewsletterRecord {
   @ManyToMany(() => Tag)
   @JoinTable()
   preferences: Tag[];
+
+  @Column({ default: false })
+  confirmed: boolean;
+
+  @Column({ default: "en" })
+  language: string;
 }

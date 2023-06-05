@@ -8,7 +8,9 @@ export class Reactions {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, {
+    onDelete: "CASCADE",
+  })
   user: User;
 
   @ManyToOne(() => BlogPost, (post) => post.reactions, { nullable: true })

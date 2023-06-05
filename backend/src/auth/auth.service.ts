@@ -29,7 +29,7 @@ export class AuthService {
         email: userData.email,
       });
 
-      await this.newsletterService.addSubscriber(userData.name, userData.email);
+      await this.newsletterService.signup(userData.email, userData.name);
     } else {
       user.picture = userData.picture;
       user.name = userData.name;

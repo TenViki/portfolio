@@ -49,6 +49,7 @@ const fetchPostData = async (slug: string) => {
   );
 
   if (!response.ok) {
+    console.log("pulling", response.url);
     throw new Error("Failed to fetch post data");
   }
 
