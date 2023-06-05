@@ -17,6 +17,24 @@ export class NewsletterService {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   }
 
+  getSubjectName(language: string) {
+    if (language === "en") return "Viki's newsletter";
+    else if (language === "cs") return "Vikiho novinky";
+    else throw new BadRequestException("Invalid language");
+  }
+
+  getWelcomeSubject(language: string) {
+    if (language === "en") return "Welcome to my newsletter!";
+    else if (language === "cs") return "Vítejte v mém newsletteru!";
+    else throw new BadRequestException("Invalid language");
+  }
+
+  getConfirmationSubject(language: string) {
+    if (language === "en") return "Subscription confirmed!";
+    else if (language === "cs") return "Přihlášení newsletteru potvrzeno!";
+    else throw new BadRequestException("Invalid language");
+  }
+
   async getNewsletterRecord(email: string) {
     return this.mailingRepo.findOne({ where: { email, confirmed: true } });
   }
@@ -46,8 +64,8 @@ export class NewsletterService {
 
     const message = {
       to: email,
-      from: "Viki's newsletter <blog@vikithedev.eu>",
-      subject: "Welcome to my Blog!",
+      from: this.getSubjectName("en") + " <blog@vikithedev.eu>",
+      subject: this.getWelcomeSubject("en"),
       html: content,
     };
 
@@ -80,11 +98,56 @@ export class NewsletterService {
 
     const message = {
       to: email,
-      from: "Viki's newsletter <blog@vikithedev.eu>",
-      subject: "Welcome to my Blog!",
+      from: this.getSubjectName(language) + " <blog@vikithedev.eu>",
+      subject: this.getWelcomeSubject(language),
       html: content,
     };
 
     await await sgMail.send(message);
+  }
+
+  async getPreferences(id: string) {
+    const record = await this.mailingRepo.findOne({
+      where: { id },
+      relations: ["preferences"],
+    });
+    if (!record) throw new BadRequestException("Invalid ID");
+
+    let hasConfirmed = false;
+
+    const preferencesLink = `${process.env.FRONTEND_URL}/newsletter/preferences/${id}`;
+
+    if (!record.confirmed) {
+      const content = (
+        await fs.readFile(
+          `./templates/confirmed_${record.language}.html`,
+          "utf-8",
+        )
+      )
+        .replaceAll("{{name}}", record.name)
+        .replaceAll("{{preferences_url}}", preferencesLink);
+
+      const message = {
+        to: record.email,
+        from: this.getSubjectName(record.language) + " <blog@vikithedev.eu>",
+        subject: this.getConfirmationSubject(record.language),
+        html: content,
+      };
+
+      await sgMail.send(message);
+
+      record.confirmed = true;
+
+      hasConfirmed = true;
+
+      await this.mailingRepo.save(record);
+    }
+
+    return {
+      preferences: record.preferences,
+      hasConfirmed,
+      language: record.language,
+      name: record.name,
+    };
   }
 }

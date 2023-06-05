@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { NewsletterService } from "./newsletter.service";
 import { SubscribeDto } from "./dtos/subscribe.dto";
 
@@ -13,5 +13,10 @@ export class MailingController {
       body.name,
       body.language,
     );
+  }
+
+  @Get("preferences/:id")
+  async getPreferences(@Param("id") id: string) {
+    return this.newsletterService.getPreferences(id);
   }
 }
