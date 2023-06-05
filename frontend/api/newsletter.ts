@@ -1,3 +1,4 @@
+import { Tag } from "types/blog";
 import { api } from "./server";
 
 interface SubscribeParams {
@@ -15,5 +16,19 @@ export const subscribe = async ({ email, name, language }: SubscribeParams) => {
       name,
       language,
     },
+  });
+};
+
+interface Preferences {
+  preferences: Tag[];
+  hasConfirmed: boolean;
+  language: string;
+  name: string;
+}
+
+export const getPreferences = async (id: string) => {
+  return api.request<Preferences>({
+    method: "GET",
+    url: `/mailing/preferences/${id}`,
   });
 };
