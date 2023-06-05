@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NewsletterRecord } from "./newsletter.entity";
 import { Repository } from "typeorm";
@@ -18,7 +18,7 @@ export class NewsletterService {
   }
 
   async getNewsletterRecord(email: string) {
-    return this.mailingRepo.findOne({ where: { email } });
+    return this.mailingRepo.findOne({ where: { email, confirmed: true } });
   }
 
   async signup(email: string, name: string) {
@@ -42,6 +42,40 @@ export class NewsletterService {
       await fs.readFile("./templates/welcome_signup_en.html", "utf-8")
     )
       .replaceAll("{{preferences_url}}", preferencesLink)
+      .replaceAll("{{name}}", name);
+
+    const message = {
+      to: email,
+      from: "Viki's newsletter <blog@vikithedev.eu>",
+      subject: "Welcome to my Blog!",
+      html: content,
+    };
+
+    await await sgMail.send(message);
+  }
+
+  async signupWithConfirmation(email: string, name: string, language: string) {
+    if (language !== "en" && language !== "cs") language = "en";
+    if (await this.getNewsletterRecord(email))
+      throw new BadRequestException("Email already registered");
+
+    const tags = await this.tagRepo.find();
+
+    const record = this.mailingRepo.create({
+      email,
+      name,
+      preferences: tags,
+      language,
+    });
+
+    const savedRecord = await this.mailingRepo.save(record);
+
+    const confirmationLink = `${process.env.FRONTEND_URL}/newsletter/preferences/${savedRecord.id}`;
+
+    const content = (
+      await fs.readFile(`./templates/welcome_confirm_${language}.html`, "utf-8")
+    )
+      .replaceAll("{{confirmation_url}}", confirmationLink)
       .replaceAll("{{name}}", name);
 
     const message = {

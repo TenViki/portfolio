@@ -4,16 +4,46 @@ import React from "react";
 import styles from "./NewsletterSignup.module.scss";
 import TextField from "components/Input/TextField";
 import Dropdown from "components/Input/Dropdown";
+import { useMutation } from "react-query";
+import { subscribe } from "api/newsletter";
 
 const NewsletterSinup = () => {
   const [email, setEmail] = React.useState<string>("");
   const [name, setName] = React.useState<string>("");
   const [language, setLanguage] = React.useState<string>("en");
 
-  const subscribeMutation = () => {};
+  const [status, setStatus] = React.useState<string>();
+
+  const subscribeMutation = useMutation(subscribe);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!email || !name || !language) {
+      setStatus("Please fill all the fields.");
+
+      setTimeout(() => {
+        setStatus(undefined);
+      }, 3000);
+      return;
+    }
+
+    subscribeMutation.mutate(
+      {
+        email,
+        name,
+        language,
+      },
+      {
+        onSuccess: () => {
+          setStatus("Success! Check your email for confirmation.");
+
+          setTimeout(() => {
+            setStatus(undefined);
+          }, 3000);
+        },
+      }
+    );
   };
 
   return (
@@ -30,11 +60,7 @@ const NewsletterSinup = () => {
       </div>
 
       <div className={styles.newsletter_signup}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
+        <form onSubmit={handleSubmit}>
           <TextField
             value={name}
             setValue={setName}
@@ -61,7 +87,7 @@ const NewsletterSinup = () => {
             />
           </div>
 
-          <button type="submit">Subscribe</button>
+          <button type="submit">{status ? status : "Subscribe"}</button>
         </form>
       </div>
     </div>
