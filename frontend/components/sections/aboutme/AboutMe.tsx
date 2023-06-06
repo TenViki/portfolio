@@ -72,7 +72,7 @@ const AboutMe = () => {
             <AnimatedBars reverse={true} />
           </div>
           <ArrowScroll id="hero" facing="top" margin={2} />
-          <ArrowScroll id="hero" facing="bottom" margin={2} />
+          <ArrowScroll id="newsletter" facing="bottom" margin={2} />
 
           <div className={styles.about_me_spotify_widget}>
             <Spotify />
@@ -109,14 +109,16 @@ const AboutMe = () => {
 
             <ScrollAnimation animation="fade-in" delay={300}>
               <div className={styles.about_me_text}>
-                I am{" "}
-                {new Date().getFullYear() - new Date(2006, 1, 1).getFullYear()}{" "}
-                years old. Lorem ipsum dolor sit, amet consectetur adipisicing
-                elit. Cupiditate deserunt odio ducimus labore quis vitae
-                voluptas impedit ex sit quidem. Soluta voluptates illum nihil,
-                explicabo labore rerum, vitae eligendi neque atque sequi alias
-                amet earum cumque velit, quos dolores ex illo! Minus architecto
-                earum ducimus cupiditate quibusdam iure iste totam?
+                Hey there! I'm Viki, a passionate{" "}
+                {new Date().getFullYear() - new Date(2006, 1, 1).getFullYear()}
+                -year-old web developer deeply enthralled by the world of
+                frontend and backend development. My expertise lies in
+                leveraging technologies like Next.js, React, and Nest.js to
+                build captivating digital experiences. I thrive on the intricate
+                details that make user interfaces come alive and the robust
+                functionality that powers them. Always eager to learn and grow,
+                I stay up to date with the latest industry trends to ensure I'm
+                at the cutting edge of web development.
               </div>
             </ScrollAnimation>
 

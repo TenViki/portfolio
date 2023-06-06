@@ -47,7 +47,7 @@ const NewsletterSinup = () => {
   };
 
   return (
-    <div className={styles.newsletter + " container"}>
+    <div className={styles.newsletter + " container"} id="newsletter">
       <div className={styles.newsletter_text}>
         <h2>Join my newsletter!</h2>
         <p>
