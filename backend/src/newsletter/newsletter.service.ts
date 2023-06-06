@@ -208,4 +208,17 @@ export class NewsletterService {
 
     await this.mailingRepo.delete(record.id);
   }
+
+  async addTag(tag: Tag) {
+    // add this tag to all users
+
+    const records = await this.mailingRepo.find({
+      relations: ["preferences"],
+    });
+
+    for (const record of records) {
+      record.preferences.push(tag);
+      await this.mailingRepo.save(record);
+    }
+  }
 }

@@ -15,6 +15,7 @@ import { filterXSS } from "xss";
 import { FilesService } from "../files/files.service";
 import { ReactionInDto } from "./dtos/reaction-in.dto";
 import { Reactions } from "./reactions.entity";
+import { NewsletterService } from "../newsletter/newsletter.service";
 
 @Injectable()
 export class BlogService {
@@ -25,6 +26,7 @@ export class BlogService {
     @InjectRepository(Reactions)
     private reactionsRepository: Repository<Reactions>,
     private filesService: FilesService,
+    private newsletterService: NewsletterService,
   ) {}
 
   async getTags() {
@@ -47,7 +49,11 @@ export class BlogService {
       color: tag.color,
       slug: this.toSlug(tag.name),
     });
-    return this.tagsRepository.save(newTag);
+
+    const savedTag = await this.tagsRepository.save(newTag);
+    await this.newsletterService.addTag(savedTag);
+
+    return savedTag;
   }
 
   async deleteTag(id: string) {

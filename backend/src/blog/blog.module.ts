@@ -7,6 +7,7 @@ import { Tag } from "./tag.entity";
 import { Comment } from "./comment.entity";
 import { FilesModule } from "../files/files.module";
 import { Reactions } from "./reactions.entity";
+import { NewsletterModule } from "../newsletter/newsletter.module";
 
 @Module({
   providers: [BlogService],
@@ -14,6 +15,7 @@ import { Reactions } from "./reactions.entity";
   imports: [
     TypeOrmModule.forFeature([BlogPost, Comment, Tag, Reactions]),
     FilesModule,
+    NewsletterModule,
   ],
 })
 export class BlogModule {}
