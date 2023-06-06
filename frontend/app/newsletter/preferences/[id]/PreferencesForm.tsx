@@ -1,13 +1,14 @@
 "use client";
 
-import { getPreferences } from "api/newsletter";
+import { getPreferences, unsubscribe, updatePreferences } from "api/newsletter";
 import { getTags } from "api/tags";
 import React, { FC } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import styles from "./PreferenceForm.module.scss";
 import TextField from "components/Input/TextField";
 import Dropdown from "components/Input/Dropdown";
 import TagSwitch from "./TagSwitch";
+import { useRouter } from "next/navigation";
 
 interface PreferencesFormProps {
   id: string;
@@ -17,6 +18,12 @@ const PreferencesForm: FC<PreferencesFormProps> = ({ id }) => {
   const [name, setName] = React.useState<string>("");
   const [preferences, setPreferences] = React.useState<string[]>([]);
   const [language, setLanguage] = React.useState<string>("en");
+
+  const [state, setState] = React.useState("idle");
+
+  const router = useRouter();
+
+  const updatePreferencesMutation = useMutation(updatePreferences);
 
   const tagsQuery = useQuery("tags", getTags);
   const preferencesQuery = useQuery("preferences", () => getPreferences(id), {
@@ -39,6 +46,32 @@ const PreferencesForm: FC<PreferencesFormProps> = ({ id }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setState("loading");
+
+    updatePreferencesMutation.mutate(
+      {
+        id,
+        name,
+        language,
+        preferences,
+      },
+      {
+        onSuccess: () => {
+          setState("success");
+
+          setTimeout(() => {
+            setState("idle");
+          }, 2000);
+        },
+      }
+    );
+  };
+
+  const handleUnsubscribe = async () => {
+    await unsubscribe(id);
+
+    router.push("/newsletter/unsubscribe");
   };
 
   return (
@@ -92,7 +125,20 @@ const PreferencesForm: FC<PreferencesFormProps> = ({ id }) => {
         </div>
       </div>
 
-      <button className={styles.button}>Save Preferences</button>
+      <button
+        className={styles.button}
+        disabled={updatePreferencesMutation.isLoading}
+      >
+        {updatePreferencesMutation.isLoading
+          ? "Loading..."
+          : state === "success"
+          ? "Saved!"
+          : "Save preferences"}
+      </button>
+
+      <div className={styles.footer} onClick={handleUnsubscribe}>
+        Unsubscribe from all e-mails
+      </div>
     </form>
     //   <MantineProvider theme={{ colorScheme: "dark" }}>
     //     {preferencesQuery.data?.hasConfirmed && (

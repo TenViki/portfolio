@@ -35,6 +35,12 @@ export class NewsletterService {
     else throw new BadRequestException("Invalid language");
   }
 
+  getUnsubscribeSubject(language: string) {
+    if (language === "en") return "Unsubscribed from newsletter";
+    else if (language === "cs") return "Odhlášení z newsletteru";
+    else throw new BadRequestException("Invalid language");
+  }
+
   async getNewsletterRecord(email: string) {
     return this.mailingRepo.findOne({ where: { email, confirmed: true } });
   }
@@ -172,5 +178,34 @@ export class NewsletterService {
     record.language = lang;
 
     await this.mailingRepo.save(record);
+  }
+
+  async unsubscribe(id: string) {
+    const record = await this.mailingRepo.findOne({ where: { id } });
+    if (!record) throw new BadRequestException("Invalid ID");
+
+    const subscribe_link = `${process.env.FRONTEND_URL}/#newsletter`;
+
+    const content = (
+      await fs.readFile(
+        `./templates/unsubscribed_${record.language}.html`,
+        "utf-8",
+      )
+    )
+
+      .replaceAll("{{subscribe_url}}", subscribe_link)
+
+      .replaceAll("{{name}}", record.name);
+
+    const message = {
+      to: record.email,
+      from: this.getSubjectName(record.language) + " <blog@vikithedev.eu>",
+      subject: this.getUnsubscribeSubject(record.language),
+      html: content,
+    };
+
+    await sgMail.send(message);
+
+    await this.mailingRepo.delete(record.id);
   }
 }

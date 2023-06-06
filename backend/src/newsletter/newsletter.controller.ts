@@ -33,4 +33,9 @@ export class MailingController {
       language,
     );
   }
+
+  @Post("unsubscribe/:id")
+  async unsubscribe(@Param("id") id: string) {
+    return this.newsletterService.unsubscribe(id);
+  }
 }

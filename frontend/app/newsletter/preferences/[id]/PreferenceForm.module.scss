@@ -42,5 +42,42 @@
     &:active {
       background-color: #f39c12;
     }
+
+    &:disabled {
+      background-color: #414141;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.footer {
+  margin-top: 1rem;
+  text-align: center;
+  color: #777;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:active {
+    color: #aaa;
+  }
+}
+
+.alert {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.3rem;
+  background-color: #27ae60;
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 100;
+    margin-bottom: 1rem;
   }
 }

@@ -10,6 +10,7 @@
     <style>
       body {
         font-family: "Nunito", sans-serif;
+        padding: 1rem;
       }
 
       .unsubscribe {
@@ -19,7 +20,6 @@
       .container {
         max-width: 30rem;
         margin: 0 auto;
-        padding: 1rem;
       }
 
       * {
@@ -48,35 +48,28 @@
         margin-bottom: 1rem;
       }
 
-      .confirm {
-        background-color: #f39c12;
-        border: none;
-        border-radius: 0.5rem;
-        padding: 0.5rem 1rem;
-        margin-bottom: 1rem;
-        color: #fefefe;
-        font-weight: 300;
-        cursor: pointer;
-        font-size: 1rem;
-        text-decoration: none;
+      a {
+        color: #f39c12;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h2 class="centered">Vítejte na mém blogu!</h2>
+      <h2 class="centered">Successfully unsubscribed from my newsletter!</h2>
 
       <p>
-        Protože jste se zaregistrovali na mém webu, budete nyní dostávat
-        upozornění na nové články a novinky. Nejdříve ale musíte potvrdit svou
-        e-mailovou adresu kliknutím na tlačítko níže.
+        We are sorry to see you go. If you change your mind, you can always
+        subscribe again.
       </p>
 
-      <div class="centered">
-        <a href="{{confirmation_url}}" class="confirm" style="color: #fefefe">
-          Potvrdit e-mailovou adresu
-        </a>
-      </div>
+      <p>
+        <a href="{{subscribe_url}}"> Subscribe again </a>
+      </p>
+
+      <p>
+        Sincerely,<br />
+        <strong>Viki</strong>
+      </p>
     </div>
   </body>
 </html>
