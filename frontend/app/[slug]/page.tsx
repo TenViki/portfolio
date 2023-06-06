@@ -70,9 +70,11 @@ export const generateMetadata = async ({
   return {
     title: data.title,
     description,
+    themeColor: "#f1c40f",
     openGraph: {
-      title: data.title,
+      title: data.title + " | VikiTheDev",
       description,
+      url: "https://vikithedev.eu/" + params.slug,
       images: data.banner
         ? [
             {
