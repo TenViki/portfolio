@@ -1,0 +1,58 @@
+.form {
+  word-wrap: break-word;
+  white-space: nowrap;
+  display: flex;
+  width: calc(100% + 1rem + var(--button-width));
+  align-items: center;
+  transition: 0.3s width;
+
+  textarea {
+    padding: 0.7rem 1rem;
+    border: 0;
+    border-radius: 0.5rem;
+    outline: none;
+    font-size: 1rem;
+    flex: 1;
+    width: 100%;
+    background: #222;
+    overflow: hidden;
+
+    resize: none;
+  }
+
+  &.filled {
+    width: calc(100%);
+
+    button {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  button {
+    flex-shrink: 1;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border: 0;
+    border-radius: 0.5rem;
+    margin-left: 1rem;
+    opacity: 0;
+    transition: 0.3s;
+    cursor: pointer;
+    visibility: hidden;
+
+    background-color: #d35400;
+
+    &:hover {
+      background-color: #c0392b;
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+}
+
+.not_logged_in {
+  color: #777;
+}

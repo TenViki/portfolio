@@ -1,0 +1,43 @@
+.bar_wrapper {
+  width: fit-content;
+  height: 2rem;
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+
+  animation: bar-wrapper 1.5s infinite linear;
+}
+
+.bar_wrapper.reverse {
+  animation: bar-wrapper-reverse 1.5s infinite linear;
+}
+
+.bar_about_me {
+  width: 0.6rem;
+  background-color: #ffffff22;
+  flex-shrink: 0;
+  position: relative;
+  top: -50%;
+  height: 200%;
+  transform: rotate(45deg);
+
+  animation: bar-about-me 1s infinite alternate;
+}
+
+@keyframes bar-wrapper {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-1.25rem - 0.6rem);
+  }
+}
+
+@keyframes bar-wrapper-reverse {
+  0% {
+    transform: translateX(-1.25rem - 0.6rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

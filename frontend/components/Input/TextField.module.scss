@@ -1,0 +1,123 @@
+.textfield {
+  .textfield_label {
+    // font-size: 0.9rem;
+    margin-bottom: 0.15rem;
+    color: #777;
+  }
+
+  .textfield_input {
+    background-color: #333;
+    border-radius: 0.3rem;
+    display: flex;
+    height: 2.5rem;
+    align-items: center;
+    transition: 0.2s;
+    border: 1px solid transparent;
+
+    &.error {
+      border: 1px solid #e74c3c;
+    }
+
+    position: relative;
+  }
+
+  .textfield_error {
+    color: lighten(#e74c3c, 5%);
+    margin-top: 0.15rem;
+    height: 0;
+    overflow: hidden;
+    animation: showError 0.35s forwards;
+  }
+
+  .textfield_icon {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0.2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-left: 0.25rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+
+    svg {
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+  }
+
+  input {
+    padding: 0 0.5rem;
+    flex-grow: 1;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  &:focus-within {
+    .textfield_icon {
+      color: #d35400;
+      background-color: #d3540022;
+    }
+
+    .textfield_input {
+      background-color: #282828;
+    }
+  }
+
+  .shown_icon {
+    position: absolute;
+    right: 0.5rem;
+    width: 1.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    .shown_icon_item {
+      position: absolute;
+      width: 1.3rem;
+      height: 1.3rem;
+      transition: 0.35s;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+
+      svg {
+        width: 1.3rem;
+        height: 1.3rem;
+      }
+
+      &.shown {
+        transform: rotateY(180deg);
+        color: #e74c3c;
+      }
+    }
+
+    &.active {
+      .shown {
+        transform: rotateY(0deg);
+      }
+
+      .show {
+        transform: rotateY(180deg);
+      }
+    }
+  }
+}
+
+@keyframes showError {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: 1.3rem;
+  }
+}

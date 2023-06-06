@@ -1,0 +1,12 @@
+.banner {
+  overflow: hidden;
+  border-radius: 0.5rem;
+
+  img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  margin-bottom: 1rem;
+  position: relative;
+}

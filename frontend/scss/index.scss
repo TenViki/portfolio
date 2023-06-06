@@ -1,0 +1,116 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  // scroll-snap-type: y mandatory;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 400;
+  text-align: center;
+  margin: 0 auto;
+
+  // clip background gradient
+  background: -webkit-linear-gradient(0deg, #c0392b, #d35400);
+  width: fit-content;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: var(--font-nunito);
+}
+
+iframe {
+  color-scheme: auto !important;
+}
+
+body {
+  background: #121212;
+  color: #fff;
+}
+
+.waves {
+  position: relative;
+  aspect-ratio: 1440 / 160;
+
+  svg {
+    width: 100%;
+    // height: 4rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scaleY(0.5) translateY(calc(-50% - 0.568rem));
+  }
+
+  #wave-dark {
+    width: 100%;
+    top: 0.568rem;
+  }
+}
+
+.background {
+  background-color: #121212;
+}
+
+.container {
+  width: 80%;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.link {
+  color: #999;
+  text-decoration: none;
+  transition: 0.2s;
+
+  &:hover {
+    color: #d35400;
+  }
+
+  &:active {
+    color: #c0392b;
+  }
+}
+
+body::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+body::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+body::-webkit-scrollbar-track-piece {
+  display: none;
+}
+
+gallery-view {
+  display: grid;
+  gap: 1rem;
+
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+
+  img {
+    margin: 0 !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+
+    border-radius: 0.5rem;
+  }
+
+  margin-bottom: 1rem;
+}
+
+pre code * {
+  font-family: monospace;
+}

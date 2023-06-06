@@ -1,0 +1,37 @@
+@import url("https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css");
+
+.katex-block {
+  background-color: #121212;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.katex-input-window {
+  margin-top: 1rem;
+  background-color: #121212;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+
+  font-family: monospace;
+}
+
+.katex-render-window {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+katex-view {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  font-family: unset;
+  width: fit-content;
+
+  * {
+    font-family: unset;
+  }
+}

@@ -1,0 +1,23 @@
+.scroll-animation {
+  &.fade-in {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: 0.5s;
+
+    &.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &.fade-in-right {
+    opacity: 0;
+    transform: translateX(1rem);
+    transition: 0.5s;
+
+    &.in-view {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}

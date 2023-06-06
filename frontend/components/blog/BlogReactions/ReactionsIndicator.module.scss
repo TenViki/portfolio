@@ -1,0 +1,36 @@
+.reaction_indicator {
+  display: flex;
+  align-items: center;
+  color: #999;
+
+  &.hoverable {
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 0 10rem 10rem 0;
+    padding-right: 0.5rem;
+
+    &:hover {
+      background-color: #333;
+
+      .emoji {
+        background-color: #333;
+      }
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+.sum {
+  margin-left: 0.5rem;
+}
+
+.emoji {
+  transition: 0.2s;
+  margin-left: -0.75rem;
+  background-color: #121212;
+  border-radius: 50%;
+  font-size: 1.25rem;
+}
