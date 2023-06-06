@@ -37,6 +37,10 @@ const getTags = async () => {
   return data;
 };
 
+export const metadata = {
+  title: "Blog",
+};
+
 const BlogPage = async () => {
   const tags = await getTags();
 
