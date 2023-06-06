@@ -33,6 +33,7 @@ import AddComment from "components/blog/BlogComments/AddComment";
 import Comments from "components/blog/BlogComments/Comments";
 import BlogReactions from "components/blog/BlogReactions/BlogReactions";
 import ReactionsIndicator from "components/blog/BlogReactions/ReactionsIndicator";
+import { getDescription } from "utils/blog";
 
 interface BlogPostProps {
   params: {
@@ -73,7 +74,7 @@ export const generateMetadata = async ({
     themeColor: "#f1c40f",
     openGraph: {
       title: data.title + " | VikiTheDev",
-      description,
+      description: getDescription(JSON.parse(data.content)) || "Check it out!",
       url: "https://vikithedev.eu/" + params.slug,
       images: data.banner
         ? [
@@ -170,6 +171,10 @@ const BlogPost = async ({ params }: BlogPostProps) => {
 
       <BlogGallery />
       <BlogCode />
+
+      <div className={styles.back}>
+        Viktor Komárek &copy; {new Date().getFullYear()}
+      </div>
     </>
   );
 };
