@@ -156,7 +156,9 @@ export class BlogService {
       banner: file,
     });
     newPost.author = user;
-    return this.postsRepository.save(newPost);
+    const blogPost = await this.postsRepository.save(newPost);
+    if (blogPost.published) this.newsletterService.sendBlog(blogPost);
+    return blogPost;
   }
 
   async updatePost(id: string, postData: NewPostDto) {
@@ -180,6 +182,9 @@ export class BlogService {
     if (postData.bannerImageId) {
       file = await this.filesService.getFile(postData.bannerImageId);
     }
+
+    if (postData.published && !post.published)
+      this.newsletterService.sendBlog(post);
 
     post.title = postData.title;
     post.slug = postData.slug;

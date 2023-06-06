@@ -1,10 +1,12 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NewsletterRecord } from "./newsletter.entity";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { Tag } from "../blog/tag.entity";
 import * as fs from "fs/promises";
 import * as sgMail from "@sendgrid/mail";
+import { BlogPost } from "../blog/post.entity";
+import { getDescription } from "../utils/blog";
 
 @Injectable()
 export class NewsletterService {
@@ -220,5 +222,70 @@ export class NewsletterService {
       record.preferences.push(tag);
       await this.mailingRepo.save(record);
     }
+  }
+
+  async sendBlog(blog: BlogPost) {
+    const records = await this.mailingRepo.find({
+      relations: ["preferences"],
+      where: {
+        confirmed: true,
+        preferences: {
+          id: In(blog.tags.map((t) => t.id)),
+        },
+      },
+    });
+
+    const languages = records.map((r) => r.language);
+    const languagesDeduped = [...new Set(languages)];
+
+    const contents = await Promise.all(
+      languagesDeduped.map(async (lang) => {
+        return {
+          lang,
+          content: (
+            await fs.readFile(`./templates/new_article_${lang}.html`, "utf-8")
+          )
+            .replaceAll("{{title}}", blog.title)
+            .replaceAll(
+              "{{article_url}}",
+              `${process.env.FRONTEND_URL}/${blog.slug}`,
+            )
+            .replaceAll(
+              "{{image_url}}",
+              `${process.env.BACKEND_URL}/files/${blog.banner.id}/data`,
+            )
+            .replaceAll(
+              "{{tags}}",
+              blog.tags
+                .map(
+                  (t) =>
+                    `<span style="background-color: ${t.color}">${t.name}</span>`,
+                )
+                .join(" "),
+            )
+            .replaceAll(
+              "{{content}}",
+              getDescription(JSON.parse(blog.content)),
+            ),
+        };
+      }),
+    );
+
+    for (const record of records) {
+      const content = contents.find((c) => c.lang === record.language).content;
+
+      const preferencesLink = `${process.env.FRONTEND_URL}/newsletter/preferences/${record.id}`;
+
+      const message = {
+        to: record.email,
+        from: this.getSubjectName(record.language) + " <blog@vikithedev.eu>",
+        subject: blog.title,
+        html: content.replaceAll("{{preferences_url}}", preferencesLink),
+      };
+
+      await sgMail.send(message);
+    }
+
+    return records.length;
   }
 }
