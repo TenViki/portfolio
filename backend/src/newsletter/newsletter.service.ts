@@ -150,4 +150,27 @@ export class NewsletterService {
       name: record.name,
     };
   }
+
+  async updatePreferences(
+    id: string,
+    preferences: string[],
+    name: string,
+    lang: string,
+  ) {
+    const record = await this.mailingRepo.findOne({
+      where: { id },
+      relations: ["preferences"],
+    });
+    if (!record) throw new BadRequestException("Invalid ID");
+
+    const newPreferences = await this.tagRepo.find({
+      where: preferences.map((p) => ({ id: p })),
+    });
+
+    record.name = name;
+    record.preferences = newPreferences;
+    record.language = lang;
+
+    await this.mailingRepo.save(record);
+  }
 }

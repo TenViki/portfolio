@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
 import { NewsletterService } from "./newsletter.service";
 import { SubscribeDto } from "./dtos/subscribe.dto";
+import { UpdatePreferencesDto } from "./dtos/updatePreferences.dto";
 
 @Controller("mailing")
 export class MailingController {
@@ -18,5 +19,18 @@ export class MailingController {
   @Get("preferences/:id")
   async getPreferences(@Param("id") id: string) {
     return this.newsletterService.getPreferences(id);
+  }
+
+  @Patch("preferences/:id")
+  async updatePreferences(
+    @Param("id") id: string,
+    @Body() { preferences, name, language }: UpdatePreferencesDto,
+  ) {
+    return this.newsletterService.updatePreferences(
+      id,
+      preferences,
+      name,
+      language,
+    );
   }
 }
