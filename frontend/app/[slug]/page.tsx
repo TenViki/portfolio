@@ -79,8 +79,6 @@ export const generateMetadata = async ({
         ? [
             {
               url: getFileUrl(data.banner.id),
-              width: 800,
-              height: 600,
               alt: data.title,
             },
           ]
