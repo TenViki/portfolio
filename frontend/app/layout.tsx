@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   viewport: "width=device-width, initial-scale=1",
   icons: [
     {
-      url: "/assets/logo.svg",
+      url: "/favicon.svg",
     },
   ],
 };
