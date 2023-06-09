@@ -108,8 +108,6 @@ export class NewsletterService {
       },
     });
 
-    console.log(ipRecords);
-
     if (ipRecords > 3)
       throw new BadRequestException(
         "Too many registrations from this IP address - please wait 24 hours before trying again",
