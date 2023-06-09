@@ -1,18 +1,20 @@
-import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Req } from "@nestjs/common";
 import { NewsletterService } from "./newsletter.service";
 import { SubscribeDto } from "./dtos/subscribe.dto";
 import { UpdatePreferencesDto } from "./dtos/updatePreferences.dto";
+import { Request } from "express";
 
 @Controller("mailing")
 export class MailingController {
   constructor(private newsletterService: NewsletterService) {}
 
   @Post("subscribe")
-  async subscribe(@Body() body: SubscribeDto) {
+  async subscribe(@Body() body: SubscribeDto, @Req() req: Request) {
     await this.newsletterService.signupWithConfirmation(
       body.email,
       body.name,
       body.language,
+      req.header("cf-connecting-ip") || req.ip,
     );
   }
 

@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NewsletterRecord } from "./newsletter.entity";
-import { In, Repository } from "typeorm";
+import { In, MoreThan, Repository } from "typeorm";
 import { Tag } from "../blog/tag.entity";
 import * as fs from "fs/promises";
 import * as sgMail from "@sendgrid/mail";
@@ -44,12 +44,12 @@ export class NewsletterService {
   }
 
   async getNewsletterRecord(email: string) {
-    return this.mailingRepo.findOne({ where: { email, confirmed: true } });
+    return this.mailingRepo.findOne({ where: { email } });
   }
 
   async signup(email: string, name: string) {
-    console.log("email:", await this.getNewsletterRecord(email));
-    if (await this.getNewsletterRecord(email)) return;
+    const recordAlready = await this.getNewsletterRecord(email);
+    if (recordAlready.confirmed) return;
 
     const tags = await this.tagRepo.find();
 
@@ -80,10 +80,40 @@ export class NewsletterService {
     await await sgMail.send(message);
   }
 
-  async signupWithConfirmation(email: string, name: string, language: string) {
+  async signupWithConfirmation(
+    email: string,
+    name: string,
+    language: string,
+    ip: string,
+  ) {
     if (language !== "en" && language !== "cs") language = "en";
-    if (await this.getNewsletterRecord(email))
+
+    const recordAlready = await this.getNewsletterRecord(email);
+
+    if (recordAlready?.confirmed)
       throw new BadRequestException("Email already registered");
+
+    if (
+      recordAlready &&
+      recordAlready.createdAt > new Date(Date.now() - 1000 * 60 * 60 * 24)
+    )
+      throw new BadRequestException(
+        "Email already registered - please wait 24 hours before trying again",
+      );
+
+    const ipRecords = await this.mailingRepo.count({
+      where: {
+        regIP: ip,
+        createdAt: MoreThan(new Date(Date.now() - 1000 * 60 * 60 * 24)),
+      },
+    });
+
+    console.log(ipRecords);
+
+    if (ipRecords > 3)
+      throw new BadRequestException(
+        "Too many registrations from this IP address - please wait 24 hours before trying again",
+      );
 
     const tags = await this.tagRepo.find();
 
@@ -92,6 +122,7 @@ export class NewsletterService {
       name,
       preferences: tags,
       language,
+      regIP: ip,
     });
 
     const savedRecord = await this.mailingRepo.save(record);

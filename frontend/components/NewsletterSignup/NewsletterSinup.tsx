@@ -74,6 +74,7 @@ const NewsletterSinup = () => {
               setValue={setEmail}
               label="Where can I send the emails?"
               placeholder="Write your e-mail address here."
+              error={(subscribeMutation.error as Error)?.message}
             />
 
             <Dropdown
