@@ -32,6 +32,6 @@ export class NewsletterRecord {
   @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   regIP: string;
 }
