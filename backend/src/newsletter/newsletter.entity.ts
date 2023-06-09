@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -18,7 +19,7 @@ export class NewsletterRecord {
   @Column()
   name: string;
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, { onDelete: "CASCADE" })
   @JoinTable()
   preferences: Tag[];
 
@@ -27,4 +28,10 @@ export class NewsletterRecord {
 
   @Column({ default: "en" })
   language: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Column()
+  regIP: string;
 }

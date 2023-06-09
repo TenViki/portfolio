@@ -47,7 +47,7 @@ const NewsletterSinup = () => {
   };
 
   return (
-    <div className={styles.newsletter + " container"}>
+    <div className={styles.newsletter + " container"} id="newsletter">
       <div className={styles.newsletter_text}>
         <h2>Join my newsletter!</h2>
         <p>
@@ -74,6 +74,7 @@ const NewsletterSinup = () => {
               setValue={setEmail}
               label="Where can I send the emails?"
               placeholder="Write your e-mail address here."
+              error={(subscribeMutation.error as Error)?.message}
             />
 
             <Dropdown

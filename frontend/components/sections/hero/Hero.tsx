@@ -17,7 +17,7 @@ const Hero = () => {
   ]);
 
   const copyDiscord = () => {
-    copyToClipboard("TenViki#0001");
+    copyToClipboard("TenViki#3645");
     setCopied(true);
     setTimeout(() => setCopied(false), 3000);
   };
