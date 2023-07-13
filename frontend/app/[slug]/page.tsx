@@ -41,7 +41,17 @@ interface BlogPostProps {
   };
 }
 
-const fetchPostData = async (slug: string) => {
+const fetchPostData = async (
+  slug: string
+): Promise<
+  | {
+      sucess: true;
+      data: BlogPost;
+    }
+  | {
+      sucess: false;
+    }
+> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/${slug}`,
     {
@@ -51,17 +61,33 @@ const fetchPostData = async (slug: string) => {
 
   if (!response.ok) {
     console.log("pulling", response.url);
-    throw new Error("Failed to fetch post data");
+
+    return {
+      sucess: false,
+    };
   }
 
   const data = (await response.json()) as BlogPost;
-  return data;
+  return {
+    data: data,
+    sucess: true,
+  };
 };
 
 export const generateMetadata = async ({
   params,
 }: BlogPostProps): Promise<Metadata> => {
-  const data = await fetchPostData(params.slug);
+  const page = await fetchPostData(params.slug);
+
+  if (!page.sucess) {
+    return {
+      title: "404",
+      description: "Page not found",
+      themeColor: "#f1c40f",
+    };
+  }
+
+  const data = page.data;
 
   const description =
     data.content.length > 100
@@ -89,7 +115,18 @@ export const generateMetadata = async ({
 };
 
 const BlogPost = async ({ params }: BlogPostProps) => {
-  const data = await fetchPostData(params.slug);
+  const page = await fetchPostData(params.slug);
+
+  if (!page.sucess) {
+    return (
+      <div className={styles.not_found}>
+        <h1>404</h1>
+        <p>Page not found</p>
+      </div>
+    );
+  }
+
+  const data = page.data;
 
   const output = generateHTML(JSON.parse(data.content), [
     StarterKit,
