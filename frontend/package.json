@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 6100"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -47,6 +47,7 @@
     "mantine-datatable": "^2.2.9",
     "next": "^13.1.7-canary.10",
     "react": "latest",
+    "react-click-away-listener": "^2.2.3",
     "react-dom": "latest",
     "react-icons": "^4.6.0",
     "react-intersection-observer": "^9.4.1",

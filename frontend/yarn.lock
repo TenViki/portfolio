@@ -2160,6 +2160,11 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.0.tgz#f67fa67c94da8f4d0cfff981aee4118064199b8f"
   integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
 
+react-click-away-listener@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/react-click-away-listener/-/react-click-away-listener-2.2.3.tgz#a5c3e37d94cc86dac3546dbb753db14bacb63186"
+  integrity sha512-p63JRQtK9d085+QHUJ2Pje22P/N4tEaXsS2x7tbbptriQqZ9o8xEk7G1JrxwND5YmEVc/VO4fC3+cSBsqqgLUQ==
+
 react-dom@latest:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"

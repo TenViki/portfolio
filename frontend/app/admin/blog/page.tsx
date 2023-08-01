@@ -162,6 +162,12 @@ const BlogAdminPage = () => {
             sortable: true,
           },
           {
+            accessor: "views",
+            title: "Zobrazení",
+            render: (record) => <Text>{record.views}</Text>,
+            sortable: true,
+          },
+          {
             accessor: "author",
             title: "Autor",
             render: (record) => (

@@ -107,6 +107,10 @@ export class BlogService {
 
     if (!post) throw new NotFoundException("Post not found");
 
+    post.views += 1;
+
+    await this.postsRepository.save(post);
+
     return post;
   }
 
